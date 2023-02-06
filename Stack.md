@@ -1,0 +1,616 @@
+# Stack
+
+## [Valid Parentheses](https://leetcode.com/problems/valid-parentheses)
+
+A: 左括号入栈，右括号出栈。
+
+```cpp
+class Solution {
+public:
+    bool isValid(string s) {
+        deque<char> stack;
+        int len = s.size();
+        for (int i = 0; i < len; i++) {
+            if (s[i] == '(' || s[i] == '[' || s[i] == '{') {
+                stack.push_back(s[i]);
+            }
+            else {
+                switch(s[i]) {
+                    case ')':
+                        if (!stack.empty() && stack.back() == '(')    stack.pop_back();
+                        else    return false;
+                        break;
+                    case ']':
+                        if (!stack.empty() && stack.back() == '[')    stack.pop_back();
+                        else    return false;
+                        break;
+                    case '}':
+                        if (!stack.empty() && stack.back() == '{')    stack.pop_back();
+                        else    return false;
+                        break;
+                    default:
+                        return false;
+                }
+            }
+        }
+        if (stack.empty())  return true;
+        else return false;
+    }
+};
+```
+
+## [Min Stack](https://leetcode.com/problems/min-stack)
+
+A: 用另一个栈存储每次push操作的最小值。
+
+```cpp
+class MinStack {
+public:
+    stack<int> stack;
+    std::stack<int> minStack;
+    MinStack() {
+        
+    }
+    
+    void push(int val) {
+        stack.push(val);
+        if (minStack.empty()) {
+            minStack.push(val);
+        } else {
+            minStack.push(min(val, minStack.top()));
+        }
+    }
+    
+    void pop() {
+        stack.pop();
+        minStack.pop();
+    }
+    
+    int top() {
+        return stack.top();
+    }
+    
+    int getMin() {
+        return minStack.top();
+    }
+};
+
+/**
+ * Your MinStack object will be instantiated and called as such:
+ * MinStack* obj = new MinStack();
+ * obj->push(val);
+ * obj->pop();
+ * int param_3 = obj->top();
+ * int param_4 = obj->getMin();
+ */
+ ```
+
+## [Evaluate Reverse Polish Notation](https://leetcode.com/problems/evaluate-reverse-polish-notation)
+
+A: 遇到数字则入栈，遇到运算符则两次出栈运算，注意cpp判断字符串是否为数字的方法。
+
+```cpp
+int evalRPN(vector<string>& tokens) {
+    stack<int> stn;
+    for(auto s:tokens) {
+        if(s.size()>1 || isdigit(s[0])) stn.push(stoi(s));
+        else {
+            auto x2=stn.top(); stn.pop();
+            auto x1=stn.top(); stn.pop();
+            switch(s[0]) {
+                case '+': x1+=x2; break;
+                case '-': x1-=x2; break;
+                case '*': x1*=x2; break;
+                case '/': x1/=x2; break;
+            }
+            stn.push(x1);
+        }
+    }
+    return stn.top();
+}
+```
+
+## [Daily Temperatures](https://leetcode.com/problems/daily-temperatures)
+
+A: Next Greater Element，从后往前遍历，用栈保存历史较大元素（通过每次遍历判断较大元素）。
+
+[详解NGE](https://leetcode.com/problems/daily-temperatures/solutions/1574806/c-easy-standard-sol-intuitive-approach-with-dry-run-stack-appraoch/?orderBy=most_votes)
+
+```cpp
+class Solution {
+public:
+    vector<int> dailyTemperatures(vector<int>& temperatures) {
+        
+        int n = temperatures.size();
+        vector<int>nge(n, 0); // initially all 0, stores distance between their next greater element and current temperature
+        stack<int>st{};
+        
+        // move from right to left
+        for(int i = n-1; i>=0; --i){
+            // pop until we find next greater element to the right
+            // since we came from right stack will have element from right only
+            // s.top() is the index of elements so we put that index inside temperatures vector to check
+            while(!st.empty() && temperatures[st.top()] <= temperatures[i])
+                st.pop();
+
+            // if stack not empty, then we have some next greater element, 
+            // so we take distance between next greater and current temperature
+            // as we are storing indexes in the stack
+            if(!st.empty())
+                nge[i] = st.top()-i; // distance between next greater and current
+            
+            // push the index of current temperature in the stack,
+            // same as pushing current temperature in stack
+            st.push(i);
+        }
+        
+        return nge;
+    }
+};
+```
+
+## [Car Fleet](https://leetcode.com/problems/car-fleet)
+
+A: 按照位置反向遍历，通过到达目的地时间合并车辆。
+
+```cpp
+class Solution {
+public:
+    int carFleet(int target, vector<int>& position, vector<int>& speed) {
+        int n = position.size();
+        
+        vector<pair<int, double>> cars;
+        for (int i = 0; i < n; i++) {
+            double time = (double) (target - position[i]) / speed[i];
+            cars.push_back({position[i], time});
+        }
+        sort(cars.begin(), cars.end());
+        
+        double maxTime = 0.0;
+        int result = 0;
+        
+        for (int i = n - 1; i >= 0; i--) {
+            double time = cars[i].second;
+            if (time > maxTime) {
+                maxTime = time;
+                result++;
+            }
+        }
+        
+        return result;
+    }
+};
+```
+
+## [Largest Rectangle in Histogram](https://leetcode.com/problems/largest-rectangle-in-histogram)
+
+A: 条形图升序时，入栈；降序时开始比较计算结果。
+
+```cpp
+class Solution {
+public:
+    int largestRectangleArea(vector<int>& heights) {
+        // pair: [index, height]
+        stack<pair<int, int>> stk;
+        int result = 0;
+        
+        for (int i = 0; i < heights.size(); i++) {
+            int start = i;
+            
+            while (!stk.empty() && stk.top().second > heights[i]) {
+                int index = stk.top().first;
+                int width = i - index;
+                int height = stk.top().second;
+                stk.pop();
+                
+                result = max(result, height * width);
+                start = index;
+            }
+            
+            stk.push({start, heights[i]});
+        }
+        
+        while (!stk.empty()) {
+            int width = heights.size() - stk.top().first;
+            int height = stk.top().second;
+            stk.pop();
+            
+            result = max(result, height * width);
+        }
+                          
+        return result;
+    }
+};
+```
+
+## [Baseball Game](https://leetcode.com/problems/baseball-game)
+
+A: 注意+入栈顺序。
+
+```cpp
+class Solution {
+public:
+    int calPoints(vector<string>& ops) {
+        stack<int> stack;
+        int sum =  0;
+        
+        for (int i = 0; i < ops.size(); i++){
+            if (ops[i] == "+"){
+                int first = stack.top();
+                stack.pop();
+                
+                int second = stack.top();
+                
+                stack.push(first);
+                
+                stack.push(first + second);
+                
+                sum += first + second;
+            }
+            
+            else if (ops[i] == "D"){
+                sum += 2 * stack.top();
+                stack.push(2 * stack.top());
+            }
+            
+            else if (ops[i] == "C"){
+                sum -= stack.top();
+                stack.pop();
+            }
+            
+            else{
+                sum += stoi(ops[i]);
+                stack.push(stoi(ops[i]));
+            }
+        }
+        
+        return sum;
+        
+        
+    }
+};
+```
+
+## [Asteroid Collision](https://leetcode.com/problems/asteroid-collision)
+
+A: 用vector模拟栈。
+
+```cpp
+class Solution {
+public:
+    vector<int> asteroidCollision(vector<int>& a) {
+        vector<int> s; // use vector to simulate stack.
+        for (int i = 0; i < a.size(); i++) {
+            if (a[i] > 0 || s.empty() || s.back() < 0) // a[i] is positive star or a[i] is negative star and there is no positive on stack
+                s.push_back(a[i]);
+            else if (s.back() <= -a[i]) { // a[i] is negative star and stack top is positive star
+                if(s.back() < -a[i]) i--; // only positive star on stack top get destroyed, stay on i to check more on stack.
+                s.pop_back(); // destroy positive star on the frontier;
+            } // else : positive on stack bigger, negative star destroyed.
+        }
+        return s;
+    }
+};
+```
+
+## [Online Stock Span](https://leetcode.com/problems/online-stock-span)
+
+A: 栈保存历史日期和当天结果，类似于回溯。
+
+```cpp
+class StockSpanner {
+public:
+    StockSpanner() {
+    }
+    
+    stack<pair<int, int>> s;
+    int next(int price) {
+        int res = 1;
+        while (!s.empty() && s.top().first <= price) {
+            res += s.top().second;
+            s.pop();
+        }
+        s.push({price, res});
+        return res;
+    }
+};
+
+/**
+ * Your StockSpanner object will be instantiated and called as such:
+ * StockSpanner* obj = new StockSpanner();
+ * int param_1 = obj->next(price);
+ */
+```
+
+```go
+type StockSpanner struct {
+    monoStack [][2]int    
+}
+
+func Constructor() StockSpanner {
+    return StockSpanner{[][2]int{}}
+}
+
+func (this *StockSpanner) Next(price int) int {
+    res := 1
+    for l := len(this.monoStack)-1; l > -1 && this.monoStack[l][0] <= price; l-- {
+        res += this.monoStack[l][1]
+        this.monoStack = this.monoStack[:l]
+    }
+    this.monoStack = append(this.monoStack, [2]int{price, res})
+    return res   
+}
+
+// Runtime 160 ms Beats 93.51%
+// Memory 8.4 MB Beats 88.31%
+
+/**
+ * Your StockSpanner object will be instantiated and called as such:
+ * obj := Constructor();
+ * param_1 := obj.Next(price);
+ */
+```
+
+## [Simplify Path](https://leetcode.com/problems/simplify-path)
+
+A: 用栈保存历史文件目录。
+
+```cpp
+class Solution {
+public:
+    string simplifyPath(string path) {
+        
+        stack<string> st;
+        string res;
+        
+        for(int i = 0;  i<path.size(); ++i)
+        {
+            if(path[i] == '/')    
+                continue;
+            string temp;
+            // iterate till we doesn't traverse the whole string and doesn't encounter the last /
+            while(i < path.size() && path[i] != '/')
+            {
+            // add path to temp string
+                temp += path[i];
+                ++i;
+            }
+            if(temp == ".")
+                continue;
+            // pop the top element from stack if exists
+            else if(temp == "..")
+            {
+                if(!st.empty())
+                    st.pop();
+            }
+            else
+            // push the directory file name to stack
+                st.push(temp);
+        }
+        
+        // adding all the stack elements to res
+        while(!st.empty())
+        {
+            res = "/" + st.top() + res;
+            st.pop();
+        }
+        
+        // if no directory or file is present
+        if(res.size() == 0)
+            return "/";
+        
+        return res;
+    }
+};
+```
+
+## [Decode String](https://leetcode.com/problems/decode-string)
+
+A: 以递归形式返回后续生成字符串，重复指定次数。
+
+```cpp
+class Solution {
+public:
+    string decodeString(const string& s, int& i) {
+        string res;
+        
+        while (i < s.length() && s[i] != ']') {
+            if (!isdigit(s[i]))
+                res += s[i++];
+            else {
+                int n = 0;
+                while (i < s.length() && isdigit(s[i]))
+                    n = n * 10 + s[i++] - '0';
+                    
+                i++; // '['
+                string t = decodeString(s, i);
+                i++; // ']'
+                
+                while (n-- > 0)
+                    res += t;
+            }
+        }
+        
+        return res;
+    }
+
+    string decodeString(string s) {
+        int i = 0;
+        return decodeString(s, i);
+    }
+};
+```
+
+## [Remove K Digits](https://leetcode.com/problems/remove-k-digits)
+
+A: 升序栈，仅当字符串出现降序时需要移除降序部分中较大的数字。
+
+```cpp
+class Solution {
+public:
+    string removeKdigits(string num, int k) {
+      int n = num.size();
+      
+      stack<char>s;
+      int count = k;
+      
+      for(int i = 0 ; i < n; i++)
+      {
+        while(!s.empty() && count > 0 && s.top() > num[i])
+        {
+            // 在k范围内移除较大数字
+          s.pop();
+          count--;
+        }
+        s.push(num[i]);
+      }
+      
+      // In case the num was already in a non increasing order (e.x: 123456)
+      while(s.size() != n - k) s.pop();
+     
+      string res = "";
+      while(!s.empty())
+      {
+        res += s.top();
+        s.pop();
+      }
+      reverse(res.begin() , res.end());
+      // Remove the zeros from the left if they exist.
+      while (res[0] == '0') res.erase(0 , 1);
+    
+      
+      return (res == "") ? "0": res;
+    }
+};
+```
+
+## [Remove All Adjacent Duplicates in String II](https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string-ii)
+
+A: 当出现相同字符，则自增检验是否达到k。
+
+```cpp
+class Solution {
+public:
+    string removeDuplicates(string s, int k) {
+        vector<pair<int, char>> stack = {{0, '#'}};
+        for (char c: s) {
+            if (stack.back().second != c) {
+                stack.push_back({1, c});
+            } else if (++stack.back().first == k)
+                stack.pop_back();
+        }
+        string res;
+        for (auto & p : stack) {
+            res.append(p.first, p.second);
+        }
+        return res;
+    }
+};
+```
+
+## [132 Pattern](https://leetcode.com/problems/132-pattern)
+
+A: 前缀最小值数组记录1，降序栈记录3，如果不满足降序栈，则可能找到2，出栈直到发现1。
+
+```cpp
+class Solution {
+public:
+    bool find132pattern(vector<int>& nums) {
+        stack <pair<int,int>> st;
+        vector<int> prefix(nums.size(), INT_MAX);
+
+        int mini = INT_MAX;
+
+        for(int i = 0; i<nums.size(); i++){
+            prefix[i] = mini;
+            mini = min(mini, nums[i]);    
+        }
+        
+        for(int i = 0; i<nums.size(); i++){
+            if(st.empty()) st.push({nums[i],i});
+            else{
+                while(!st.empty() and nums[i]>=st.top().first) st.pop();
+
+                if(!st.empty() and prefix[st.top().second]<nums[i]) return true;
+                
+                st.push({nums[i],i});
+            }
+        }
+        return false;
+    }
+};
+```
+
+## [Implement Stack using Queues](https://leetcode.com/problems/implement-stack-using-queues)
+
+A: 用两个队列保证其中一个队列q1的元素顺序是栈顺序的。
+
+```cpp
+class MyStack {
+public:
+    /** Initialize your data structure here. */
+    queue<int> q1;
+    queue<int> q2;
+    MyStack() {
+        
+    }
+    
+    /** Push element x onto stack. */
+    void push(int x) {
+        q2.push(x);
+        while(!q1.empty()){
+            q2.push(q1.front());    q1.pop();
+        }
+        swap(q1, q2);
+    }
+    
+    /** Removes the element on top of the stack and returns that element. */
+    int pop() {
+        int result = top();
+        q1.pop();
+        return result;
+    }
+    
+    /** Get the top element. */
+    int top() {
+        return q1.front();
+    }
+    
+    /** Returns whether the stack is empty. */
+    bool empty() {
+        return q1.empty();
+    }
+};
+```
+
+## [Maximum Frequency Stack](https://leetcode.com/problems/maximum-frequency-stack)
+
+A: 记录maxFreq，建立{val, freq}和{freq, stack}的映射进行维护。
+
+```cpp
+class FreqStack {
+public:
+    unordered_map<int, int> freq; // val, freq
+    unordered_map<int, stack<int>> m; // freq, stack
+    int maxfreq = 0;
+
+    void push(int x) {
+        maxfreq = max(maxfreq, ++freq[x]);
+        m[freq[x]].push(x);
+    }
+
+    int pop() {
+        int x = m[maxfreq].top();
+        m[maxfreq].pop();
+        if (!m[freq[x]--].size()) maxfreq--;
+        return x;
+    }
+};
+
+/**
+ * Your FreqStack object will be instantiated and called as such:
+ * FreqStack* obj = new FreqStack();
+ * obj->push(val);
+ * int param_2 = obj->pop();
+ */
+```
