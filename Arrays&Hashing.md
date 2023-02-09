@@ -927,6 +927,58 @@ private:
 };
 ```
 
+```go
+func strStr(haystack string, needle string) int {
+    len1, len2 := len(haystack), len(needle)
+    if len2 > len1 {
+        // impossible cases
+        return -1
+    }
+    var pmt = kmp(needle) // init partial match table
+    for i, j := 0, 0; i < len1; {
+        if haystack[i] == needle[j] {
+            // if the two strings match each other partially
+            i++; j++
+        }
+        if j == len2 { // first occurence
+            return i - j
+        }
+        if i < len1 && haystack[i] != needle[j] {
+            // the two strings differ
+            if j != 0 {
+                // try another prefix
+                j = pmt[j - 1]
+            } else {
+                i++
+            }
+        }
+    }
+    return -1
+}
+
+func kmp(needle string) []int {
+    size := len(needle)
+    pmt := make([]int, size) // partial match table {idx, max partial match prefix length}
+    for i, len := 1, 0; i < size; {
+        // len means the longest proper prefix length
+        // i starts from 1 because there's no prefix at pos 0
+        if needle[i] == needle[len] {
+            // the longest prefix([0, i - 1]) matches
+            pmt[i] = len + 1
+            i++; len++
+        } else if len != 0 {
+            // if they don't match, check if another sub-prefix([0, i - 2]) matches
+            len = pmt[len - 1]
+        } else {
+            // if there's no more prefix availiable
+            pmt[i] = 0
+            i++
+        }
+    }
+    return pmt
+}
+```
+
 ## [Wiggle Sort](https://www.lintcode.com/problem/508)
 
 A: 排序后每两个数字交换顺序。
