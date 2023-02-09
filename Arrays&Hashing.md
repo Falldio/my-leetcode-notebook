@@ -1407,6 +1407,20 @@ public:
 };
 ```
 
+```go
+func removeElement(nums []int, val int) int {
+    i, j := 0, 0
+    for i < len(nums) {
+        if nums[i] != val {
+            nums[j] = nums[i]
+            j++
+        }
+        i++
+    }
+    return j
+}
+```
+
 ## [Unique Email Addresses](https://leetcode.com/problems/unique-email-addresses)
 
 A: 用@分割字符串，然后将local部分中的.和+之后的部分去掉，最后将local和domain拼接起来，放入set中。
