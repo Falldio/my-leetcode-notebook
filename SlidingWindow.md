@@ -384,3 +384,26 @@ public:
     }
 };
 ```
+
+## [Fruit Into Baskets](https://leetcode.com/problems/fruit-into-baskets)
+
+A: 滑动窗口。
+
+```go
+func totalFruit(tree []int) int {
+    var res int
+    var m = make(map[int]int)
+    for i, j := 0, 0; j < len(tree); j++ {
+        m[tree[j]]++
+        for len(m) > 2 {
+            m[tree[i]]--
+            if m[tree[i]] == 0 {
+                delete(m, tree[i])
+            }
+            i++
+        }
+        res = max(res, j-i+1)
+    }
+    return res
+}
+```
