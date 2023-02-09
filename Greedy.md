@@ -159,6 +159,68 @@ public:
 };
 ```
 
+```go
+func jump(nums []int) int {
+    ans := 0
+    q := []int {0} // stores index
+    if len(nums) == 1 {
+        return 0
+    }
+    for ; len(q) > 0; {
+        ans++ // a new step
+        for cnt := len(q); cnt > 0; cnt-- {
+            cur := q[0] // current position
+            q = q[1:]
+            for i := nums[cur]; i > 0; i-- {
+                // start from the farthest distance to trim
+                next := cur + i
+                if next < len(nums) - 1 {
+                    if nums[next] != -1 {
+                        q = append(q, next)
+                    }
+                } else {
+                    return ans
+                }
+            }
+            nums[cur] = -1 // label as visited
+        }
+    }
+    return -1
+}
+```
+
+A: Greedy，记录当前位置能到达的最远位置，当到达当前位置时，更新最远位置，同时步数+1。
+
+```go
+func jump(nums []int) int {
+    ans, n, curEnd, curFar := 0, len(nums), 0, 0
+    // initially, curEnd = 0, since we reach nums[0]
+    for i := 0; i < n-1; i++ {
+        // we have to update curFar timely to find
+        // the farthest next position
+        curFar = max(curFar, i + nums[i])
+        if i == curEnd {
+            // when we reach cuEnd, we've already
+            // enumerated every possibility from the current position
+            ans++
+            if curFar >= n {
+                // Once we can reach nums[n - 1], return!
+                return ans
+            }
+            curEnd = curFar
+        }
+    }
+    return ans
+}
+
+func max(x, y int) int {
+    if x > y {
+        return x
+    }
+    return y
+}
+```
+
 ## [Gas Station](https://leetcode.com/problems/gas-station)
 
 A: 若A无法到达B，则A与B中所有中间点都无法达到B（A可以到达中间点）。
