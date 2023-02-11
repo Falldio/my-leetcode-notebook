@@ -343,6 +343,33 @@ public:
 };
 ```
 
+```go
+func minSubArrayLen(target int, nums []int) int {
+    ans, i, j, sum:= math.MaxInt, 0, 0, 0
+    for j < len(nums) {
+        sum += nums[j]
+        for sum >= target {
+            ans = min(ans, j - i + 1)
+            sum -= nums[i]
+            i++
+        }
+        j++
+    }
+    if ans == math.MaxInt {
+        ans = 0
+    }
+    return ans
+}
+
+func min(n1, n2 int) int {
+    if n1 < n2 {
+        return n1
+    } else {
+        return n2
+    }
+}
+```
+
 ## [Find K Closest Elements](https://leetcode.com/problems/find-k-closest-elements)
 
 A: 利用二分查找找到最接近x的元素，双指针法。
