@@ -426,3 +426,33 @@ public:
     }
 };
 ```
+
+## [Squares of a Sorted Array](https://leetcode.com/problems/squares-of-a-sorted-array)
+
+A: 双指针，指向数组两端，比较绝对值，从后往前填充答案。
+
+```go
+func sortedSquares(nums []int) []int {
+    ans := make([]int, len(nums))
+    i, j, cur := 0, len(nums) - 1, len(nums) - 1
+    for cur >= 0 {
+        if abs(nums[i]) > abs(nums[j]) {
+            ans[cur] = nums[i] * nums[i]
+            i++
+        } else {
+            ans[cur] = nums[j] * nums[j]
+            j--
+        }
+        cur--
+    }
+    return ans
+}
+
+func abs(n int) int {
+    if n >= 0 {
+        return n
+    } else {
+        return -n
+    }
+}
+```
