@@ -1660,3 +1660,47 @@ public:
     }
 };
 ```
+
+## [Spiral Matrix II](https://leetcode.com/problems/spiral-matrix-ii)
+
+A: 以拐点为每个方向填充的起始点，注意奇偶数两种情况和offset的更新。
+
+```go
+func generateMatrix(n int) [][]int {
+    ans := make([][]int, n)
+    for idx := range ans {
+        ans[idx] = make([]int, n)
+    }
+    startX, startY := 0, 0
+    mid, loop := n / 2, n / 2
+    cnt, offset := 1, 1
+
+    for ;loop > 0; loop-- {
+        i, j := startX, startY
+        for j = startY; j < startY + n - offset; j++ {
+            ans[startX][j] = cnt
+            cnt++
+        }
+        for i = startX; i < startX + n - offset; i++ {
+            ans[i][j] = cnt
+            cnt++
+        }
+        for ; j > startY; j-- {
+            ans[i][j] = cnt
+            cnt++
+        }
+        for ; i > startX; i-- {
+            ans[i][j] = cnt
+            cnt++
+        }
+        startX++
+        startY++
+        offset += 2
+    }
+    
+    if n % 2 != 0 {
+        ans[mid][mid] = cnt
+    }
+    return ans
+}
+```
