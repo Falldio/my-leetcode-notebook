@@ -20,6 +20,32 @@ public:
 };
 ```
 
+```go
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+func reverseList(head *ListNode) *ListNode {
+    if head == nil {
+        return head
+    }
+    dummy := &ListNode{}
+    pre, cur, next := dummy, head, head.Next
+    for next != nil {
+        cur.Next = pre
+        pre = cur
+        cur = next
+        next = next.Next
+    }
+    cur.Next = pre
+    head.Next = nil
+    return cur
+}
+```
+
 A: 递归，当前节点（head)、前一个节点、后一个节点依次交换赋值。
 
 ```cpp
