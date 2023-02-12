@@ -937,6 +937,32 @@ public:
 };
 ```
 
+```go
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+func removeElements(head *ListNode, val int) *ListNode {
+    dummy := &ListNode{Val: 0, Next: head}
+    if head == nil {
+        return head
+    }
+    var cur, pre *ListNode = head, dummy
+    for cur != nil {
+        if cur.Val == val {
+            pre.Next = cur.Next
+        } else {
+            pre = cur
+        }
+        cur = cur.Next
+    }
+    return dummy.Next
+}
+```
+
 ## [Palindrome Linked List](https://leetcode.com/problems/palindrome-linked-list)
 
 A: 快慢指针找到链表中点，将后半段reverse，然后两边同时遍历并比较。
