@@ -719,6 +719,112 @@ public:
  */
 ```
 
+```go
+type MyLinkedList struct {
+    Head *Node
+    Tail *Node
+    cnt int
+}
+
+type Node struct {
+    Val int
+    Next *Node
+    Pre *Node
+}
+
+func Constructor() MyLinkedList {
+    head := &Node{}
+    tail := &Node{Pre: head}
+    head.Next = tail
+    return MyLinkedList{Head: head, Tail: tail}
+}
+
+
+func (this *MyLinkedList) Get(index int) int {
+    if !this.isValid(index) {
+        return -1
+    }
+    cur := this.Head.Next
+    for i := 0; i < index; i++ {
+        cur = cur.Next
+    }
+    return cur.Val
+}
+
+func (this *MyLinkedList) AddAtHead(val int)  {
+    node := &Node{Pre: this.Head, Next: this.Head.Next, Val: val}
+    this.cnt++
+    next := this.Head.Next
+    next.Pre = node
+    this.Head.Next = node
+}
+
+
+func (this *MyLinkedList) AddAtTail(val int)  {
+    node := &Node{Pre: this.Tail.Pre, Next: this.Tail, Val: val}
+    this.cnt++
+    pre := this.Tail.Pre
+    pre.Next = node
+    this.Tail.Pre = node
+}
+
+
+func (this *MyLinkedList) AddAtIndex(index int, val int)  {
+    if index == this.cnt {
+        this.AddAtTail(val)
+        return
+    }
+    if !this.isValid(index) {
+        return 
+    }
+    pre, cur := this.Head, this.Head.Next
+    for i := 0; i < index; i++ {
+        pre = cur
+        cur = cur.Next
+    }
+    node := &Node{Pre: pre, Next: cur, Val: val}
+    cur.Pre = node
+    pre.Next = node
+    this.cnt++
+}
+
+
+func (this *MyLinkedList) DeleteAtIndex(index int)  {
+    if !this.isValid(index) {
+        return
+    }
+    pre, cur := this.Head, this.Head.Next
+    for i := 0; i <= index; i++ {
+        pre = cur
+        cur = cur.Next
+    }
+    if pre.Pre != nil {
+        pre.Pre.Next = cur
+    }
+    cur.Pre = pre.Pre
+    this.cnt--
+}
+
+func (this *MyLinkedList) isValid(index int) bool {
+    if index >= this.cnt {
+        return false
+    } else {
+        return true
+    }
+}
+
+
+/**
+ * Your MyLinkedList object will be instantiated and called as such:
+ * obj := Constructor();
+ * param_1 := obj.Get(index);
+ * obj.AddAtHead(val);
+ * obj.AddAtTail(val);
+ * obj.AddAtIndex(index,val);
+ * obj.DeleteAtIndex(index);
+ */
+ ```
+
 ## [Design Browser History](https://leetcode.com/problems/design-browser-history)
 
 A: 用两个栈分别存储后退和前进历史。
