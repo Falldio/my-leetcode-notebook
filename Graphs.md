@@ -1250,3 +1250,80 @@ public:
     }
 };
 ```
+
+## [Minimum Fuel Cost to Report to the Capital](https://leetcode.com/problems/minimum-fuel-cost-to-report-to-the-capital)
+
+A: 
+
+```cpp
+class Solution {
+ public:
+  long long minimumFuelCost(vector<vector<int>>& roads, int seats) {
+    long long ans = 0;
+    vector<vector<int>> graph(roads.size() + 1);
+
+    for (const vector<int>& road : roads) {
+      const int u = road[0];
+      const int v = road[1];
+      graph[u].push_back(v);
+      graph[v].push_back(u);
+    }
+
+    dfs(graph, 0, -1, seats, ans);
+    return ans;
+  }
+
+ private:
+  int dfs(const vector<vector<int>>& graph, int u, int prev, int seats,
+          long long& ans) {
+    int people = 1;
+    for (const int v : graph[u]) {
+      if (v == prev)
+        continue;
+      people += dfs(graph, v, u, seats, ans);
+    }
+    if (u > 0)
+      // # of cars needed = ceil(people / seats)
+      ans += (people + seats - 1) / seats;
+    return people;
+  }
+};
+```
+
+```go
+func minimumFuelCost(roads [][]int, seats int) int64 {
+    var ans int64 = 0
+    adj := make(map[int][]int)
+    // initialize the adjacency list
+    for _, v := range roads {
+        if _, ok := adj[v[0]]; !ok {
+            adj[v[0]] = make([]int, 0)
+        }
+        if _, ok := adj[v[1]]; !ok {
+            adj[v[1]] = make([]int, 0)
+        }
+        adj[v[0]] = append(adj[v[0]], v[1])
+        adj[v[1]] = append(adj[v[1]], v[0])
+    }
+    dfs(int64(seats), adj, &ans, 0, -1)
+    return ans
+}
+
+// minimum cost at node cur
+func dfs(seats int64, adj map[int][]int, ans *int64, cur, pre int) int64 {
+    var load int64 = 1 // how much representatives we have at the cur node
+    for _, node := range adj[cur] {
+        if node == pre {
+            // we only traverse children of the cur node
+            continue
+        }
+        load += dfs(seats, adj, ans, node, cur)
+    }
+    if cur != 0 {
+        // if cur is not the root, we need to add the cost of the car
+        // ceil(load / seats)
+        *ans += (load + seats - 1) / seats
+    }
+    return load
+}
+```
