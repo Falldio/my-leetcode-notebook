@@ -202,6 +202,32 @@ ListNode* removeNthFromEnd(ListNode* head, int n) {
 }
 ```
 
+```go
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+func removeNthFromEnd(head *ListNode, n int) *ListNode {
+    dummy := &ListNode{Next: head}
+    slow, fast := dummy, dummy
+    for i := 0; i < n; i++ {
+        fast = fast.Next
+    }
+    var pre, next *ListNode
+    for fast != nil {
+        fast = fast.Next
+        pre = slow
+        slow = slow.Next
+        next = slow.Next
+    }
+    pre.Next = next
+    return dummy.Next
+}
+```
+
 ## [Linked List Cycle](https://leetcode.com/problems/linked-list-cycle)
 
 A: 快慢指针，快指针比慢指针快一倍，两者相遇则有环。
