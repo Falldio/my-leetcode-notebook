@@ -1199,3 +1199,44 @@ public:
     }
 };
 ```
+
+A: 计算两个链表的长度差，然后长的先走差值步，然后同时走，直到相遇。
+
+```go
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+func getIntersectionNode(headA, headB *ListNode) *ListNode {
+    curA, curB := headA, headB
+    lenA, lenB := 0, 0
+    for curA != nil {
+        lenA++
+        curA = curA.Next
+    }
+    for curB != nil {
+        lenB++
+        curB = curB.Next
+    }
+    if lenA > lenB {
+        lenA, lenB = lenB, lenA
+        headA, headB = headB, headA
+    }
+    gap := lenB - lenA
+    for gap > 0 {
+        headB = headB.Next
+        gap--
+    }
+    for headA != nil && headB != nil {
+        if headA == headB {
+            return headA
+        }
+        headA = headA.Next
+        headB = headB.Next
+    }
+    return nil
+}
+```
