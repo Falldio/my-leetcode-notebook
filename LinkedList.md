@@ -1240,3 +1240,36 @@ func getIntersectionNode(headA, headB *ListNode) *ListNode {
     return nil
 }
 ```
+
+## [Linked List Cycle II](https://leetcode.com/problems/linked-list-cycle-ii)
+
+A: 快慢指针，然后找到相遇点，然后从相遇点和头节点同时走，相遇点即为环的入口。
+
+```go
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+func detectCycle(head *ListNode) *ListNode {
+    if head == nil {
+        return nil
+    }
+    slow, fast := head, head
+    for fast != nil && fast.Next != nil {
+        fast = fast.Next.Next
+        slow = slow.Next
+        if slow == fast {
+            cur1, cur2 := fast, head
+            for cur1 != cur2 {
+                cur1 = cur1.Next
+                cur2 = cur2.Next
+            }
+            return cur1
+        }
+    }
+    return nil
+}
+```
