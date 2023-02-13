@@ -110,6 +110,19 @@ vector<int> twoSum(vector<int>& nums, int target) {
 }
 ```
 
+```go
+func twoSum(nums []int, target int) []int {
+    s := make(map[int]int)
+    for k, v := range nums {
+        if _, ok := s[target-v]; ok {
+            return []int{k, s[target-v]}
+        }
+        s[v] = k
+    }
+    return []int{}
+}
+```
+
 ## [Group Anagrams](https://leetcode.com/problems/group-anagrams/)
 
 A: 按排序结果分组，将哈希表转换为双重数组。
