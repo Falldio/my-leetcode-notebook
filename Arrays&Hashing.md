@@ -1704,3 +1704,24 @@ func generateMatrix(n int) [][]int {
     return ans
 }
 ```
+
+## [Intersection of Two Arrays](https://leetcode.com/problems/intersection-of-two-arrays)
+
+A: 用哈希表记录nums1，遍历nums2，出现相同元素则加入ans，同时**删除**相应的哈希表元素。
+
+```go
+func intersection(nums1 []int, nums2 []int) []int {
+    s := make(map[int]struct{})
+    for k := range nums1 {
+        s[nums1[k]] = struct{}{}
+    }
+    ans := []int{}
+    for k := range nums2 {
+        if _, ok := s[nums2[k]]; ok {
+            ans = append(ans, nums2[k])
+            delete(s, nums2[k])
+        }
+    }
+    return ans
+}
+```
