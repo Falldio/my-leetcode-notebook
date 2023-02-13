@@ -1725,3 +1725,27 @@ func intersection(nums1 []int, nums2 []int) []int {
     return ans
 }
 ```
+
+## [Happy Number](https://leetcode.com/problems/happy-number)
+
+A: 哈希表记录中间计算结果，若重复则不是快乐数。
+
+```go
+func isHappy(n int) bool {
+    s := make(map[int]struct{})
+    for n != 1 {
+        cur := 0
+        for n != 0 {
+            digit := n % 10
+            n /= 10
+            cur += digit * digit
+        }
+        if _, ok := s[cur]; ok {
+            return false
+        }
+        s[cur] = struct{}{}
+        n = cur
+    }
+    return true
+}
+```
