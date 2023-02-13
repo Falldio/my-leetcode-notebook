@@ -1762,3 +1762,27 @@ func isHappy(n int) bool {
     return true
 }
 ```
+
+## [4Sum II](https://leetcode.com/problems/4sum-ii)
+
+A: 分为两个部分，计算前两个数组和的情况，记录{sum, count}，在后面两个数组的求和中查询对应的相反数。
+
+```go
+func fourSumCount(nums1 []int, nums2 []int, nums3 []int, nums4 []int) int {
+    s := make(map[int]int)
+    ans := 0
+    for i := 0; i < len(nums1); i++ {
+        for j := 0; j < len(nums2); j++ {
+            s[nums1[i] + nums2[j]]++
+        }
+    }
+    for i := 0; i < len(nums3); i++ {
+        for j := 0; j < len(nums4); j++ {
+            if _, ok := s[-(nums3[i] + nums4[j])]; ok {
+                ans += s[-(nums3[i] + nums4[j])]
+            }
+        }
+    }
+    return ans
+}
+```
