@@ -195,7 +195,7 @@ public:
 };
 ```
 
-## [4Sum](https://leetcode.com/problems/4sum)
+## [4Sum](https://leetcode.com/problems/sum)
 
 A: 排序，固定两数变为2Sum。
 
@@ -228,6 +228,46 @@ public:
         return ans;
     }
 };
+```
+
+```go
+func fourSum(nums []int, target int) [][]int {
+    ans := [][]int{}
+    sort.Ints(nums)
+    for i := 0; i < len(nums) - 3; i++ {
+        if (nums[i] > target && nums[i] >= 0) {
+            break
+        }
+        if i > 0 && nums[i] == nums[i - 1] {
+            continue
+        }
+        for j := i + 1; j < len(nums) - 2; j++ {
+            if j > i + 1 && nums[j] == nums[j - 1] {
+                continue
+            }
+            left, right := j + 1, len(nums) - 1
+            for left < right {
+                nLeft, nRight := nums[left], nums[right]
+                sum := nums[i] + nums[j] + nLeft + nRight
+                if sum == target {
+                    quad := []int{nums[i], nums[j], nLeft, nRight}
+                    ans = append(ans, quad)
+                    for left < right && nums[left] == nLeft {
+                        left++
+                    }
+                    for left < right && nums[right] == nRight {
+                        right--
+                    }
+                } else if sum > target {
+                    right--
+                } else {
+                    left++
+                }
+            }
+        }
+    }
+    return ans
+}
 ```
 
 ## [Number of Subsequences That Satisfy The Given Sum Condition](https://leetcode.com/problems/number-of-subsequences-that-satisfy-the-given-sum-condition)
