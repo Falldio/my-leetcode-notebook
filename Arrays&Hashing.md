@@ -1786,3 +1786,38 @@ func fourSumCount(nums1 []int, nums2 []int, nums3 []int, nums4 []int) int {
     return ans
 }
 ```
+
+## [Ransom Note](https://leetcode.com/problems/ransom-note)
+
+A: 记录字符出现次数，在另一个字符串中减去，如果出现异常值则无法construct。
+
+```go
+func canConstruct(ransomNote string, magazine string) bool {
+    s := make(map[rune]int)
+    for _, m := range magazine {
+        s[m]--
+    }
+    for _, rn := range ransomNote {
+        s[rn]++
+        if s[rn] > 0 {
+            return false
+        }
+    }
+    return true
+}
+```
+
+A: 库函数。
+
+`strings.Count`: 统计字符串中某个字符出现的次数。
+
+```go
+func canConstruct(ransomNote string, magazine string) bool {
+    	for _, v := range ransomNote {
+		if strings.Count(ransomNote, string(v)) > strings.Count(magazine, string(v)) {
+			return false
+		}
+	}
+	return true
+}
+```
