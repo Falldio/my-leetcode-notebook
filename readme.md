@@ -1,6 +1,6 @@
 # My LeetCode Notebook📚
 
-一个个人[LeetCode]([LeetCode - The World's Leading Online Programming Learning Platform](https://leetcode.com/))刷题笔记,后续会根据文档内容自己再做总结，希望能找到工作~🙏
+一个个人([LeetCode](https://leetcode.com/))刷题笔记,后续会根据文档内容自己再做总结，希望能找到工作~🙏
 
 ## 题目分类
 
