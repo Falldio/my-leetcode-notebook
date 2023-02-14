@@ -448,6 +448,36 @@ func reverseString(s []byte)  {
 }
 ```
 
+## [Reverse String II](https://leetcode.com/problems/reverse-string-ii)
+
+A: 双指针法，但需要按照剩余字符数量分两种情况反转字符串。
+
+```go
+func reverseStr(s string, k int) string {
+    i := 0
+    str := []byte(s) // covert string to []byte (or []rune) to support swaping
+    for i < len(s) {
+        if i + k - 1 < len(s) {
+            // there are enough runes in the string, we will reverse [i, i + k - 1]
+            reverse(str, i, i + k - 1)
+        } else {
+            // there are less than k runes, we will reverse [i, end of the string]
+            reverse(str, i, len(s) - 1)
+        }
+        i += 2*k
+    }
+    return string(str)
+}
+
+func reverse(s []byte, i, j int) {
+    for j - i >= 1 {
+        s[i], s[j] = s[j], s[i]
+        i++
+        j--
+    }
+}
+```
+
 ## [Merge Sorted Array](https://leetcode.com/problems/merge-sorted-array)
 
 A: 从后往前比较赋值，如果nums2先消耗完，则nums1的元素不用再考虑位置。
