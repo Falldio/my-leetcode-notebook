@@ -437,6 +437,17 @@ public:
 };
 ```
 
+```go
+func reverseString(s []byte)  {
+    i, j := 0, len(s) - 1
+    for i < j {
+        s[i], s[j] = s[j], s[i]
+        i++
+        j--
+    }
+}
+```
+
 ## [Merge Sorted Array](https://leetcode.com/problems/merge-sorted-array)
 
 A: 从后往前比较赋值，如果nums2先消耗完，则nums1的元素不用再考虑位置。
