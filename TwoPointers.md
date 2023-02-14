@@ -666,3 +666,50 @@ func reverse(b *[]byte, left, right int) {
 	}
 }
 ```
+
+## [左旋转字符串](https://leetcode.cn/problems/zuo-xuan-zhuan-zi-fu-chuan-lcof)
+
+A: 双指针法，用额外数组保存需要转移的字符，原字符串中剩余部分移动之后再填充这些字符。
+
+```go
+func reverseLeftWords(s string, n int) string {
+    buffer, temp := []byte(s), []byte{}
+    slow, fast := 0, 0
+    for ; fast < n; fast++ {
+        temp = append(temp, buffer[fast])
+    }
+    for fast < len(s) {
+        buffer[slow] = buffer[fast]
+        slow++
+        fast++
+    }
+    for i := 0; i < n; i++ {
+        buffer[slow] = temp[i]
+        slow++
+    }
+    return string(buffer)
+}
+```
+
+A: 依次反转前n个字符，剩余字符，再全部反转。
+
+```go
+func reverseLeftWords(s string, n int) string {
+    b := []byte(s)
+    // 1. 反转前n个字符
+    // 2. 反转第n到end字符
+    // 3. 反转整个字符
+    reverse(b, 0, n-1)
+    reverse(b, n, len(b)-1)
+    reverse(b, 0, len(b)-1)
+    return string(b)
+}
+// 切片是引用传递
+func reverse(b []byte, left, right int){
+    for left < right{
+        b[left], b[right] = b[right],b[left]
+        left++
+        right--
+    }
+}
+```
