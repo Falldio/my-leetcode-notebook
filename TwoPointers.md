@@ -713,3 +713,26 @@ func reverse(b []byte, left, right int){
     }
 }
 ```
+
+## [Repeated Substring Pattern](https://leetcode.com/problems/repeated-substring-pattern)
+
+A: KMP。
+
+```go
+func repeatedSubstringPattern(s string) bool {
+    nxt := make([]int, len(s))
+    j := 0 // 前缀长度
+    for i := 1; i < len(s); i++ {
+        for j > 0 && s[i] != s[j] {
+            j = nxt[j-1] // 尝试更短前缀
+        }
+        if s[i] == s[j] {
+            j++
+        }
+        nxt[i] = j
+    }
+    n := len(s)
+    // 整个字符串长度n，前缀长度nxt[n-1]，则重复子串长度n-nxt[n-1]，需要能被整除
+    return nxt[n-1] > 0 && n % (n-nxt[n-1]) == 0
+}
+```
