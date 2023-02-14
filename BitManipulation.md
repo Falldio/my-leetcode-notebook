@@ -166,3 +166,35 @@ public:
     }
 };
 ```
+
+```go
+// 代码可以精简为一个for
+func addBinary(a string, b string) string {
+    i, j := len(a) - 1, len(b) - 1
+    ans := ""
+    pre := 0 // add digit
+    for i >= 0 && j >= 0 {
+        sum := int(a[i] - '0') + int(b[j] - '0') + pre
+        ans = strconv.Itoa(sum % 2) + ans
+        pre = sum / 2
+        i--
+        j--
+    }
+    for i >= 0 {
+        sum := int(a[i] - '0') + pre
+        ans = strconv.Itoa(sum % 2) + ans
+        pre = sum / 2
+        i--
+    }
+    for j >= 0 {
+        sum := int(b[j] - '0') + pre
+        ans = strconv.Itoa(sum % 2) + ans
+        pre = sum / 2
+        j--
+    }
+    if pre != 0 {
+        ans = strconv.Itoa(pre) + ans
+    }
+    return ans
+}
+```
