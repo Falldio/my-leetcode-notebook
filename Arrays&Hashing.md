@@ -1821,3 +1821,33 @@ func canConstruct(ransomNote string, magazine string) bool {
 	return true
 }
 ```
+
+## [Add to Array-Form of Integer](https://leetcode.com/problems/add-to-array-form-of-integer)
+
+A: 类似于[Add Binary](https://leetcode.com/problems/add-binary)。
+
+```go
+func addToArrayForm(A []int, K int) []int {
+    ans := []int{}
+    carry := 0
+    for i := len(A) - 1; i >= 0; i-- {
+        sum := A[i] + K % 10 + carry
+        carry = sum / 10
+        ans = append(ans, sum % 10)
+        K /= 10
+    }
+    for K != 0 {
+        sum := K % 10 + carry
+        carry = sum / 10
+        ans = append(ans, sum % 10)
+        K /= 10
+    }
+    if carry != 0 {
+        ans = append(ans, carry)
+    }
+    for i := 0; i < len(ans) / 2; i++ {
+        ans[i], ans[len(ans) - 1 - i] = ans[len(ans) - 1 - i], ans[i]
+    }
+    return ans
+}
+```
