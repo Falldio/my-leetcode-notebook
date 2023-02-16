@@ -195,6 +195,38 @@ public:
 };
 ```
 
+A: 单调栈
+
+```go
+func trap(height []int) int {
+	var stack []int
+	var ans int
+	for i := 0; i < len(height); i++ {
+        // 出现递增，则可能有储水
+		for len(stack) > 0 && height[stack[len(stack)-1]] < height[i] {
+			item := stack[len(stack)-1] // 此处为河床高度
+			stack = stack[:len(stack)-1]
+			var w int
+			if len(stack) == 0 {
+				continue
+			}
+			w = i - stack[len(stack)-1] - 1
+			h := min(height[i], height[stack[len(stack)-1]]) - height[item]
+			ans += w * h
+		}
+		stack = append(stack, i)
+	}
+	return ans
+}
+
+func min(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
+}
+```
+
 ## [4Sum](https://leetcode.com/problems/sum)
 
 A: 排序，固定两数变为2Sum。
