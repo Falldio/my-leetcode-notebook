@@ -82,6 +82,39 @@ public:
 };
 ```
 
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func maxDepth(root *TreeNode) int {
+   if root == nil {
+       return 0
+   } 
+   q := []*TreeNode{root}
+   ans := 0
+   for len(q) != 0 {
+       ans++
+       size := len(q)
+       for i := 0; i < size; i++ {
+           cur := q[0]
+           q = q[1:]
+           if cur.Left != nil {
+               q = append(q, cur.Left)
+           }
+           if cur.Right != nil {
+               q = append(q, cur.Right)
+           }
+       }
+   }
+   return ans
+}
+```
+
 ## [Same Tree](https://leetcode.com/problems/same-tree)
 
 A: 递归比较子树。
