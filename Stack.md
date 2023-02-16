@@ -541,6 +541,68 @@ public:
 };
 ```
 
+## [Implement Queue using Stacks](https://leetcode.com/problems/implement-queue-using-stacks)
+
+A: 用输入栈和输出栈模拟队列操作。
+
+```go
+type MyQueue struct {
+    s1, s2 []int
+}
+
+
+func Constructor() MyQueue {
+    return MyQueue{[]int{}, []int{}}
+}
+
+
+func (this *MyQueue) Push(x int)  {
+    for len(this.s2) != 0 {
+        cur := this.s2[len(this.s2) - 1]
+        this.s2 = this.s2[:len(this.s2) - 1]
+        this.s1 = append(this.s1, cur)
+    }
+    this.s1 = append(this.s1, x)
+}
+
+
+func (this *MyQueue) Pop() int {
+    for len(this.s1) != 0 {
+        cur := this.s1[len(this.s1) - 1]
+        this.s1 = this.s1[:len(this.s1) - 1]
+        this.s2 = append(this.s2, cur)
+    }
+    ans := this.s2[len(this.s2) - 1]
+    this.s2 = this.s2[:len(this.s2) - 1]
+    return ans
+}
+
+
+func (this *MyQueue) Peek() int {
+    for len(this.s1) != 0 {
+        cur := this.s1[len(this.s1) - 1]
+        this.s1 = this.s1[:len(this.s1) - 1]
+        this.s2 = append(this.s2, cur)
+    }
+    return this.s2[len(this.s2) - 1]
+}
+
+
+func (this *MyQueue) Empty() bool {
+    return len(this.s1) == 0 && len(this.s2) == 0
+}
+
+
+/**
+ * Your MyQueue object will be instantiated and called as such:
+ * obj := Constructor();
+ * obj.Push(x);
+ * param_2 := obj.Pop();
+ * param_3 := obj.Peek();
+ * param_4 := obj.Empty();
+ */
+ ```
+
 ## [Implement Stack using Queues](https://leetcode.com/problems/implement-stack-using-queues)
 
 A: 用两个队列保证其中一个队列q1的元素顺序是栈顺序的。
