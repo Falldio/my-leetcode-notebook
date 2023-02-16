@@ -645,6 +645,66 @@ public:
 };
 ```
 
+A: 只用一个队列，当需要栈顶元素时，将队列中的元素依次出队并入队，直到剩下一个元素，即为栈顶元素。
+
+```go
+type MyStack struct {
+    q []int
+}
+
+
+func Constructor() MyStack {
+    return MyStack{[]int{}}
+}
+
+
+func (this *MyStack) Push(x int)  {
+    this.q = append(this.q, x)
+}
+
+
+func (this *MyStack) Pop() int {
+    size := len(this.q)
+    for i := 0; i < size - 1; i++ {
+        cur := this.q[0]
+        this.q = this.q[1:]
+        this.q = append(this.q, cur)
+    }
+    ans := this.q[0]
+    this.q = this.q[1:]
+    return ans
+}
+
+
+func (this *MyStack) Top() int {
+    size := len(this.q)
+    for i := 0; i < size - 1; i++ {
+        cur := this.q[0]
+        this.q = this.q[1:]
+        this.q = append(this.q, cur)
+    }
+    ans := this.q[0]
+    this.q = this.q[1:]
+    this.q = append(this.q, ans)
+    return ans
+}
+
+
+func (this *MyStack) Empty() bool {
+    return len(this.q) == 0
+}
+
+
+/**
+ * Your MyStack object will be instantiated and called as such:
+ * obj := Constructor();
+ * obj.Push(x);
+ * param_2 := obj.Pop();
+ * param_3 := obj.Top();
+ * param_4 := obj.Empty();
+ */
+ ```
+
 ## [Maximum Frequency Stack](https://leetcode.com/problems/maximum-frequency-stack)
 
 A: 记录maxFreq，建立{val, freq}和{freq, stack}的映射进行维护。
