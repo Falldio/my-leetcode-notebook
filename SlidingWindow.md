@@ -180,7 +180,7 @@ public:
 
 ## [Sliding Window Maximum](https://leetcode.com/problems/sliding-window-maximum)
 
-A: 维持队列的降序，进入队列时剔除无需再比较的更小元素。
+A: **单调队列**，维持队列的降序，进入队列时剔除无需再比较的更小元素。
 
 ```cpp
 class Solution {
@@ -204,6 +204,34 @@ public:
        return ans;
    }
 };
+```
+
+```go
+func maxSlidingWindow(nums []int, k int) []int {
+    ans := []int{}
+    q := []int{}
+    for i := 0; i < len(nums); i++ {
+        if len(q) == 0 {
+            q = append(q, i)
+        } else {
+            if nums[i] < nums[q[len(q) - 1]] {
+                q = append(q, i)
+            } else {
+                for len(q) > 0 && nums[q[len(q) - 1]] < nums[i] {
+                    q = q[:len(q) - 1]
+                }
+                q = append(q, i)
+            }
+        }
+        if i >= k - 1 {
+            if q[0] < i - k + 1 {
+                q = q[1:]
+            }
+            ans = append(ans, nums[q[0]])
+        }
+    }
+    return ans
+}
 ```
 
 ## [Frequency of The Most Frequent Element](https://leetcode.com/problems/frequency-of-the-most-frequent-element)
