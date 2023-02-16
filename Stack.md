@@ -767,3 +767,27 @@ public:
  * int param_2 = obj->pop();
  */
 ```
+
+## [Remove All Adjacent Duplicates In String](https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string)
+
+A: 出现相同字母则出栈。
+
+```go
+func removeDuplicates(s string) string {
+    stk := []rune{}
+    for _, r := range s {
+        if len(stk) == 0 {
+            stk = append(stk, r)
+            continue
+        }
+
+        top := stk[len(stk) - 1]
+        if r == top {
+            stk = stk[:len(stk) - 1]
+        } else {
+            stk = append(stk, r)
+        }
+    }
+    return string(stk)
+}
+```
