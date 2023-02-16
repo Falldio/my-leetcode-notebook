@@ -141,6 +141,36 @@ int evalRPN(vector<string>& tokens) {
 }
 ```
 
+```go
+func evalRPN(tokens []string) int {
+    stk := []int{}
+    for _, tok := range tokens {
+        switch tok {
+        case "+":
+            n1, n2 := stk[len(stk) - 2], stk[len(stk) - 1]    
+            stk = stk[:len(stk) - 2]
+            stk = append(stk, n1+n2)
+        case "-":
+            n1, n2 := stk[len(stk) - 2], stk[len(stk) - 1]    
+            stk = stk[:len(stk) - 2]
+            stk = append(stk, n1-n2)
+        case "*":
+            n1, n2 := stk[len(stk) - 2], stk[len(stk) - 1]    
+            stk = stk[:len(stk) - 2]
+            stk = append(stk, n1*n2)
+        case "/":
+            n1, n2 := stk[len(stk) - 2], stk[len(stk) - 1]    
+            stk = stk[:len(stk) - 2]
+            stk = append(stk, n1/n2)
+        default:
+            n, _ := strconv.Atoi(tok)
+            stk = append(stk, n)
+        }
+    }
+    return stk[0]
+}
+```
+
 ## [Daily Temperatures](https://leetcode.com/problems/daily-temperatures)
 
 A: Next Greater Element，从后往前遍历，用栈保存历史较大元素（通过每次遍历判断较大元素）。
