@@ -39,6 +39,37 @@ public:
 };
 ```
 
+```go
+func isValid(s string) bool {
+    stk := []rune{}
+    for _, r := range s {
+        switch r {
+        case '(', '[', '{':
+            stk = append(stk, r)
+        case ')':
+            if len(stk) == 0 || stk[len(stk) - 1] != '(' {
+                return false
+            } else {
+                stk = stk[:len(stk) - 1]
+            }
+        case ']':
+            if len(stk) == 0 || stk[len(stk) - 1] != '[' {
+                return false
+            } else {
+                stk = stk[:len(stk) - 1]
+            }
+        case '}':
+            if len(stk) == 0 ||stk[len(stk) - 1] != '{' {
+                return false
+            } else {
+                stk = stk[:len(stk) - 1]
+            }
+        }
+    }
+    return len(stk) == 0
+}
+```
+
 ## [Min Stack](https://leetcode.com/problems/min-stack)
 
 A: 用另一个栈存储每次push操作的最小值。
