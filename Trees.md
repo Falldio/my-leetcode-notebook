@@ -1392,3 +1392,42 @@ public:
     }
 };
 ```
+
+## [Minimum Distance Between BST Nodes](https://leetcode.com/problems/minimum-distance-between-bst-nodes)
+
+A: 中序遍历得到有序结点，遍历寻找最小差值。
+
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func minDiffInBST(root *TreeNode) int {
+    // declare the slice
+    order := make([]int, 0, 100)
+
+    // inorder traversal
+    inorder(root, &order)
+
+    // find the minimum difference
+    ans := math.MaxInt
+    for i := 1; i < len(order); i++ {
+        if order[i] - order[i - 1] < ans {
+            ans = order[i] - order[i - 1]
+        }
+    }
+    return ans
+}
+
+func inorder(node *TreeNode, order *[]int) {
+    if node != nil {
+        inorder(node.Left, order)
+        *order = append(*order, node.Val)
+        inorder(node.Right, order)
+    }
+}
+```
