@@ -1,8 +1,8 @@
 # Trees
 
-## [Binary Tree Inorder Traversal](https://leetcode.com/problems/binary-tree-inorder-traversal)
+## [Binary Tree Preorder Traversal](https://leetcode.com/problems/binary-tree-preorder-traversal)
 
-A: 使用循环时需要用栈记录历史信息，注意入栈的顺序。
+A: 用栈保存历史信息，注意入栈的顺序。
 
 ```go
 /**
@@ -13,19 +13,107 @@ A: 使用循环时需要用栈记录历史信息，注意入栈的顺序。
  *     Right *TreeNode
  * }
  */
-func preorderTraversal(root *TreeNode) []int {
-    ans := make([]int, 0, 100)
+func inorderTraversal(root *TreeNode) []int {
+    stk := []*TreeNode{root}
+    ans := []int{}
     if root == nil {
         return ans
     }
-    stk := []*TreeNode{root}
-    for len(stk) != 0 {
+    for len(stk) > 0 {
         cur := stk[len(stk) - 1]
         stk = stk[:len(stk) - 1]
         if cur != nil {
+            if cur.Right != nil {
+                stk = append(stk, cur.Right)
+            }
+            stk = append(stk, cur, nil)
+            if cur.Left != nil {
+                stk = append(stk, cur.Left)
+            }
+        } else {
+            cur = stk[len(stk) - 1]
+            stk = stk[:len(stk) - 1]
             ans = append(ans, cur.Val)
-            stk = append(stk, cur.Right)
-            stk = append(stk, cur.Left)
+        }
+    }
+    return ans
+}
+```
+
+## [Binary Tree Inorder Traversal](https://leetcode.com/problems/binary-tree-inorder-traversal)
+
+A: 使用循环时需要用栈记录历史信息，注意入栈的顺序，nil标记已经遍历但是没有加入结果的节点。
+
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func inorderTraversal(root *TreeNode) []int {
+    stk := []*TreeNode{root}
+    ans := []int{}
+    if root == nil {
+        return ans
+    }
+    for len(stk) > 0 {
+        cur := stk[len(stk) - 1]
+        stk = stk[:len(stk) - 1]
+        if cur != nil {
+            if cur.Right != nil {
+                stk = append(stk, cur.Right)
+            }
+            stk = append(stk, cur, nil)
+            if cur.Left != nil {
+                stk = append(stk, cur.Left)
+            }
+        } else {
+            cur = stk[len(stk) - 1]
+            stk = stk[:len(stk) - 1]
+            ans = append(ans, cur.Val)
+        }
+    }
+    return ans
+}
+```
+
+## [Binary Tree Postorder Traversal](https://leetcode.com/problems/binary-tree-postorder-traversal)
+
+A: 用栈保存历史信息，注意入栈的顺序。
+
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func postorderTraversal(root *TreeNode) []int {
+    ans := make([]int, 0, 100)
+    stk := []*TreeNode{root}
+    if root == nil {
+        return ans
+    }
+    for len(stk) > 0 {
+        cur := stk[len(stk) - 1]
+        stk = stk[:len(stk) - 1]
+        if cur != nil {
+            stk = append(stk, cur, nil)
+            if cur.Right != nil {
+                stk = append(stk, cur.Right)
+            }
+            if cur.Left != nil {
+                stk = append(stk, cur.Left)
+            }
+        } else {
+            cur = stk[len(stk) - 1]
+            stk = stk[:len(stk) - 1]
+            ans = append(ans, cur.Val)
         }
     }
     return ans
