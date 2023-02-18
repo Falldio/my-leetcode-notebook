@@ -1066,6 +1066,45 @@ func connect(root *Node) *Node {
 }
 ```
 
+## [Populating Next Right Pointers In Each Node II](https://leetcode.com/problems/populating-next-right-pointers-in-each-node-ii)
+
+A: BFS。
+
+```go
+/**
+ * Definition for a Node.
+ * type Node struct {
+ *     Val int
+ *     Left *Node
+ *     Right *Node
+ *     Next *Node
+ * }
+ */
+
+func connect(root *Node) *Node {
+    if root == nil {
+        return nil
+    }
+    q := []*Node{root}
+    for len(q) > 0 {
+        var next *Node
+        for i := len(q); i > 0; i-- {
+            cur := q[0]
+            q = q[1:]
+            cur.Next = next
+            next = cur
+            if cur.Right != nil {
+                q = append(q, cur.Right)
+            }
+            if cur.Left != nil {
+                q = append(q, cur.Left)
+            }
+        }
+    }
+    return root
+}
+```
+
 ## [Unique Binary Search Trees](https://leetcode.com/problems/unique-binary-search-trees)
 
 [详解](https://leetcode.com/problems/unique-binary-search-trees/solutions/1565543/c-python-5-easy-solutions-w-explanation-optimization-from-brute-force-to-dp-to-catalan-o-n/?orderBy=most_votes)
