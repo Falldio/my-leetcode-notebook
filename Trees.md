@@ -1743,3 +1743,43 @@ func levelOrder(root *Node) [][]int {
     return ans
 }
 ```
+
+## [Find Largest Value in Each Tree Row](https://leetcode.com/problems/find-largest-value-in-each-tree-row)
+
+A: BFS。
+
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func largestValues(root *TreeNode) []int {
+    ans := []int{}
+    q := []*TreeNode{root}
+    if root == nil {
+        return ans
+    }
+    for len(q) > 0 {
+        m := q[0].Val
+        for i := len(q); i > 0; i-- {
+            cur := q[0]
+            if cur.Val > m {
+                m = cur.Val
+            }
+            q = q[1:]
+            if cur.Left != nil {
+                q = append(q, cur.Left)
+            }
+            if cur.Right != nil {
+                q = append(q, cur.Right)
+            }
+        }
+        ans = append(ans, m)
+    }
+    return ans
+}
+```
