@@ -1669,3 +1669,42 @@ func inorder(node *TreeNode, order *[]int) {
     }
 }
 ```
+
+## [Average of Levels in Binary Tree](https://leetcode.com/problems/average-of-levels-in-binary-tree)
+
+A: BFS。
+
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func averageOfLevels(root *TreeNode) []float64 {
+    ans := []float64{}
+    q := []*TreeNode{root}
+    if root == nil {
+        return ans
+    }
+    for len(q) > 0 {
+        var sum float64
+        size := len(q)
+        for i := size; i > 0; i-- {
+            cur := q[0]
+            sum += float64(cur.Val)
+            q = q[1:]
+            if cur.Left != nil {
+                q = append(q, cur.Left)
+            }
+            if cur.Right != nil {
+                q = append(q, cur.Right)
+            }
+        }
+        ans = append(ans, sum / float64(size))
+    }
+    return ans
+}
+```
