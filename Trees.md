@@ -1862,3 +1862,40 @@ func minDepth(root *TreeNode) int {
     return ans
 }
 ```
+
+## [Symmetric Tree](https://leetcode.com/problems/symmetric-tree)
+
+A: 同时遍历两棵树（内侧和外侧），判断是否相等。
+
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func isSymmetric(root *TreeNode) bool {
+    if root == nil {
+        return true
+    }
+    if root.Left != nil && root.Right != nil {
+        return isValid(root.Left, root.Right)
+    } else if root.Left == nil && root.Right == nil {
+        return true
+    } else {
+        return false
+    }
+}
+
+func isValid(n1, n2 *TreeNode) bool {
+    if n1 == nil && n2 == nil {
+        return true
+    }
+    if n1 != nil && n2 != nil && n1.Val == n2.Val {
+        return isValid(n1.Right, n2.Left) && isValid(n1.Left, n2.Right)
+    }
+    return false
+}
+```
