@@ -1708,3 +1708,38 @@ func averageOfLevels(root *TreeNode) []float64 {
     return ans
 }
 ```
+
+## [N-ary Tree Level Order Traversal](https://leetcode.com/problems/n-ary-tree-level-order-traversal)
+
+A: BFS。
+
+```go
+/**
+ * Definition for a Node.
+ * type Node struct {
+ *     Val int
+ *     Children []*Node
+ * }
+ */
+
+func levelOrder(root *Node) [][]int {
+    ans := [][]int{}
+    q := []*Node{root}
+    if root == nil {
+        return ans
+    }
+    for len(q) > 0 {
+        level := []int{}
+        for i := len(q); i > 0; i-- {
+            cur := q[0]
+            q = q[1:]
+            level = append(level, cur.Val)
+            for _, c := range cur.Children {
+                q = append(q, c)
+            }
+        }
+        ans = append(ans, level)
+    }
+    return ans
+}
+```
