@@ -381,6 +381,80 @@ public:
 };
 ```
 
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func levelOrder(root *TreeNode) [][]int {
+    ans := [][]int{}
+    q := []*TreeNode{root}
+    if root == nil {
+        return ans
+    }
+    for len(q) > 0 {
+        level := []int{}
+        for i := len(q); i > 0; i-- {
+            cur := q[0]
+            q = q[1:]
+            level = append(level, cur.Val)
+            if cur.Left != nil {
+                q = append(q, cur.Left)
+            }
+            if cur.Right != nil {
+                q = append(q, cur.Right)
+            }
+        }
+        ans = append(ans, level)
+    }
+    return ans
+}
+```
+
+## [Binary Tree Level Order Traversal II](https://leetcode.com/problems/binary-tree-level-order-traversal-ii)
+
+A: BFS，用队列记录遍历层次历史。每次插入到结果数组的头部。
+
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func levelOrderBottom(root *TreeNode) [][]int {
+    ans := [][]int{}
+    q := []*TreeNode{root}
+    if root == nil {
+        return ans
+    }
+    for len(q) > 0 {
+        level := []int{}
+        for i := len(q); i > 0; i-- {
+            cur := q[0]
+            q = q[1:]
+            level = append(level, cur.Val)
+            if cur.Left != nil {
+                q = append(q, cur.Left)
+            }
+            if cur.Right != nil {
+                q = append(q, cur.Right)
+            }
+        }
+        ans = append(ans, []int{})
+        copy(ans[1:], ans)
+        ans[0] = level
+    }
+    return ans
+}
+```
+
 ## [Validate Binary Search Tree](https://leetcode.com/problems/validate-binary-search-tree)
 
 A: BST的中序遍历序列具有递增特性。
@@ -643,6 +717,40 @@ public:
         recursion(root->left, level+1, res);
     }
 };
+```
+
+A: BFS。
+
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func rightSideView(root *TreeNode) []int {
+    ans := []int{}
+    q := []*TreeNode{root}
+    if root == nil {
+        return ans
+    }
+    for len(q) > 0 {
+        ans = append(ans, q[len(q) - 1].Val)
+        for i := len(q); i > 0; i-- {
+            cur := q[0]
+            q = q[1:]
+            if cur.Left != nil {
+                q = append(q, cur.Left)
+            }
+            if cur.Right != nil {
+                q = append(q, cur.Right)
+            }
+        }
+    }
+    return ans
+}
 ```
 
 ## [Count Good Nodes In Binary Tree](https://leetcode.com/problems/count-good-nodes-in-binary-tree)
