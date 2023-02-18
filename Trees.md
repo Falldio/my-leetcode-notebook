@@ -1,5 +1,37 @@
 # Trees
 
+## [Binary Tree Inorder Traversal](https://leetcode.com/problems/binary-tree-inorder-traversal)
+
+A: 使用循环时需要用栈记录历史信息，注意入栈的顺序。
+
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func preorderTraversal(root *TreeNode) []int {
+    ans := make([]int, 0, 100)
+    if root == nil {
+        return ans
+    }
+    stk := []*TreeNode{root}
+    for len(stk) != 0 {
+        cur := stk[len(stk) - 1]
+        stk = stk[:len(stk) - 1]
+        if cur != nil {
+            ans = append(ans, cur.Val)
+            stk = append(stk, cur.Right)
+            stk = append(stk, cur.Left)
+        }
+    }
+    return ans
+}
+```
+
 ## [Invert Binary Tree](https://leetcode.com/problems/invert-binary-tree)
 
 A: 递归交换。
@@ -12,6 +44,16 @@ TreeNode* invertTree(TreeNode* root) {
         std::swap(root->left, root->right);
     }
     return root;
+}
+```
+
+```go
+func invertTree(root *TreeNode) *TreeNode {
+    if root == nil {
+        return nil
+    }
+    root.Left, root.Right = invertTree(root.Right), invertTree(root.Left)
+    return root
 }
 ```
 
