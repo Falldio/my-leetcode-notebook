@@ -540,9 +540,36 @@ private:
 };
 ```
 
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func buildTree(preorder []int, inorder []int) *TreeNode {
+    if len(preorder) == 0 {
+        return nil
+    }
+    root := &TreeNode{Val: preorder[0]}
+    mid := 0
+    for k, v := range inorder {
+        if v == root.Val {
+            mid = k
+            break
+        }
+    }
+    root.Left = buildTree(preorder[1:mid+1], inorder[:mid])
+    root.Right = buildTree(preorder[mid+1:], inorder[mid+1:])
+    return root
+}
+```
+
 ## [Construct Binary Tree from Inorder and Postorder Traversal](https://leetcode.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal)
 
-A: 后序遍历的最后一个元素是根节点，该元素在中序遍历中切分了左右子树。
+A: 后序遍历的最后一个元素是根节点，该元素在中序遍历中切分了左右子树，以此确定左右子树节点数目。
 
 ```go
 /**
