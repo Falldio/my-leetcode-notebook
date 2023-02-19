@@ -1695,6 +1695,44 @@ public:
 };
 ```
 
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func insertIntoBST(root *TreeNode, val int) *TreeNode {
+    if root == nil {
+        return &TreeNode{Val: val}
+    }
+    if root.Val > val {
+        dfs(root.Left, root, val)
+    } else {
+        dfs(root.Right, root, val)
+    }
+    return root
+}
+
+func dfs(node, pre *TreeNode, val int) {
+    if node == nil {
+        if pre.Val > val {
+            pre.Left = &TreeNode{Val: val}
+        } else {
+            pre.Right = &TreeNode{Val: val}
+        }
+        return
+    }
+    if node.Val > val {
+        dfs(node.Left, node, val)
+    } else {
+        dfs(node.Right, node, val)
+    }
+}
+```
+
 ## [Delete Node in a BST](https://leetcode.com/problems/delete-node-in-a-bst)
 
 A: 当删除的结点有两个子树时，需要用左子树的右下角或右子树的左下角替换。
