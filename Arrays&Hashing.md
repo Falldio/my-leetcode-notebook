@@ -1902,3 +1902,40 @@ func addToArrayForm(A []int, K int) []int {
     return ans
 }
 ```
+
+## [Range Sum Query - Immutable](https://leetcode.com/problems/range-sum-query-immutable)
+
+A: 前缀和。
+
+```go
+type NumArray struct {
+    prefix []int
+}
+
+
+func Constructor(nums []int) NumArray {
+    prefix := make([]int, 0, len(nums))
+    sum := 0
+    for _, v := range nums {
+        sum += v
+        prefix = append(prefix, sum)
+    }
+    return NumArray{prefix: prefix}
+}
+
+
+func (this *NumArray) SumRange(left int, right int) int {
+    if left == 0 {
+        return this.prefix[right]
+    } else {
+        return this.prefix[right] - this.prefix[left - 1]
+    }
+}
+
+
+/**
+ * Your NumArray object will be instantiated and called as such:
+ * obj := Constructor(nums);
+ * param_1 := obj.SumRange(left,right);
+ */
+ ```
