@@ -531,3 +531,37 @@ public:
     }
 };
 ```
+
+## [Unique Paths II](https://leetcode.com/problems/unique-paths-ii)
+
+A: [i, j]处的结果只取决于左侧和上方的结果，因此不妨使用两个一维数组分别存储当前行和上一行的信息。
+
+```go
+func uniquePathsWithObstacles(obstacleGrid [][]int) int {
+    m, n := len(obstacleGrid), len(obstacleGrid[0])
+    pre, cur := make([]int, n), make([]int, n)
+    for i := 0; i < n; i++ {
+        if obstacleGrid[0][i] == 1 {
+            break
+        }
+        pre[i] = 1
+    }
+    for r := 1; r < m; r++ {
+        if obstacleGrid[r][0] != 1 {
+            cur[0] = pre[0]
+        } else {
+            cur[0] = 0
+        }
+        for c := 1; c < n; c++ {
+            if obstacleGrid[r][c] != 1 {
+                cur[c] = cur[c - 1] + pre[c]
+            } else {
+                cur[c] = 0
+            }
+        }
+        pre = cur
+        cur = make([]int, n)
+    }
+    return pre[n - 1]
+}
+```
