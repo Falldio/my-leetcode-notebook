@@ -1706,6 +1706,25 @@ public:
 };
 ```
 
+```go
+var pre int
+func convertBST(root *TreeNode) *TreeNode {
+    pre = 0
+    traversal(root)
+    return root
+}
+
+func traversal(cur *TreeNode) {
+    if cur == nil {
+        return
+    }
+    traversal(cur.Right)
+    cur.Val += pre
+    pre = cur.Val
+    traversal(cur.Left)
+}
+```
+
 ## [Insert into a Binary Search Tree](https://leetcode.com/problems/insert-into-a-binary-search-tree)
 
 A: 递归。
