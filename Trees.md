@@ -2041,3 +2041,36 @@ func binaryTreePaths(root *TreeNode) []string {
     return res
 }
 ```
+
+## [Sum of Left Leaves](https://leetcode.com/problems/sum-of-left-leaves)
+
+A: 通过父节点、当前节点来判断是否为左叶子。
+
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func sumOfLeftLeaves(root *TreeNode) int {
+    ans := 0
+    dfs(root, &TreeNode{}, &ans)
+    return ans
+}
+
+func dfs(root, pre *TreeNode, ans *int) {
+    if root.Left == nil && root.Right == nil && pre.Left == root {
+        *ans += root.Val
+        return
+    }
+    if root.Left != nil {
+        dfs(root.Left, root, ans)
+    }
+    if root.Right != nil {
+        dfs(root.Right, root, ans)
+    }
+}
+```
