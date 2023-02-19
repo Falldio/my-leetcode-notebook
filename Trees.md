@@ -1437,6 +1437,35 @@ public:
 };
 ```
 
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func findBottomLeftValue(root *TreeNode) int {
+    q := []*TreeNode{root}
+    var ans int
+    for len(q) > 0 {
+        ans = q[0].Val
+        for i := len(q); i > 0; i-- {
+            cur := q[0]
+            q = q[1:]
+            if cur.Left != nil {
+                q = append(q, cur.Left)
+            }
+            if cur.Right != nil {
+                q = append(q, cur.Right)
+            }
+        }
+    }
+    return ans
+}
+```
+
 ## [Trim a Binary Search Tree](https://leetcode.com/problems/trim-a-binary-search-tree)
 
 A: DFS，dummy root。
