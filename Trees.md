@@ -476,6 +476,36 @@ public:
 };
 ```
 
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func isValidBST(root *TreeNode) bool {
+    order := []int{}
+    inorder(root, &order)
+    for i := 1; i < len(order); i++ {
+        if order[i] <= order[i - 1] {
+            return false
+        }
+    }
+    return true
+}
+
+func inorder(root *TreeNode, order *[]int) {
+    if root == nil {
+        return
+    }
+    inorder(root.Left, order)
+    *order = append(*order, root.Val)
+    inorder(root.Right, order)
+}
+```
+
 ## [Kth Smallest Element in a BST](https://leetcode.com/problems/kth-smallest-element-in-a-bst)
 
 A: 中序遍历，找到第k个元素。
