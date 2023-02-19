@@ -1881,6 +1881,21 @@ public:
 };
 ```
 
+```go
+func sortedArrayToBST(nums []int) *TreeNode {
+    if len(nums) == 0 {    //终止条件，最后数组为空则可以返回
+        return nil
+    }
+    idx := len(nums)/2
+    root := &TreeNode{Val: nums[idx]} 
+     
+    root.Left = sortedArrayToBST(nums[:idx])
+    root.Right = sortedArrayToBST(nums[idx+1:])
+
+    return root
+}
+```
+
 ## [Merge Two Binary Trees](https://leetcode.com/problems/merge-two-binary-trees)
 
 A: DFS，两棵树都非空则返回两数之和，反之返回非空节点。
