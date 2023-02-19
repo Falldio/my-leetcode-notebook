@@ -1735,7 +1735,7 @@ func dfs(node, pre *TreeNode, val int) {
 
 ## [Delete Node in a BST](https://leetcode.com/problems/delete-node-in-a-bst)
 
-A: 当删除的结点有两个子树时，需要用左子树的右下角或右子树的左下角替换。
+A: 分多种情况讨论，当删除的结点有两个子树时，需要用左子树的右下角或右子树的左下角替换，注意这种情况下的while循环。
 
 ```cpp
 class Solution {
@@ -1757,6 +1757,44 @@ public:
         return root;
     }   
 };
+```
+
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func deleteNode(root *TreeNode, key int) *TreeNode {
+    if root == nil {
+        return nil
+    }
+    if root.Val == key {
+        if root.Left == nil && root.Right == nil {
+            return nil
+        } else if root.Left == nil {
+            return root.Right
+        } else if root.Right == nil {
+            return root.Left
+        } else {
+            cur := root.Left
+            for cur.Right != nil {
+                cur = cur.Right
+            }
+            cur.Right = root.Right
+            return root.Left
+        }
+    } else if root.Val > key {
+        root.Left = deleteNode(root.Left, key)
+        return root
+    } else {
+        root.Right = deleteNode(root.Right, key)
+        return root
+    }
+}
 ```
 
 ## [Binary Tree Inorder Traversal](https://leetcode.com/problems/binary-tree-inorder-traversal)
