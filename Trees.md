@@ -2377,3 +2377,36 @@ func findMode(root *TreeNode) []int {
     return res
 }
 ```
+
+## [Lowest Common Ancestor of a Binary Tree](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree)
+
+A: 在左右子树中分别查找p、q，如果左右子树都不为空，则当前节点为最近公共祖先，否则返回左右子树中不为空的节点。
+
+```go
+func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
+    // check
+    if root == nil {
+        return root
+    }
+    // 相等 直接返回root节点即可
+    if root == p || root == q {
+        return root
+    }
+    // Divide
+    left := lowestCommonAncestor(root.Left, p, q)
+    right := lowestCommonAncestor(root.Right, p, q)
+
+    // Conquer
+    // 左右两边都不为空，则根节点为祖先
+    if left != nil && right != nil {
+        return root
+    }
+    if left != nil {
+        return left
+    }
+    if right != nil {
+        return right
+    }
+    return nil
+}
+```
