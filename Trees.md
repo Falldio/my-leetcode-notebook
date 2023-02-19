@@ -2193,3 +2193,34 @@ func dfs(root, pre *TreeNode, ans *int) {
     }
 }
 ```
+
+## [Maximum Binary Tree](https://leetcode.com/problems/maximum-binary-tree)
+
+A: 寻找最大元素，确定前缀后缀，递归构造结点。
+
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func constructMaximumBinaryTree(nums []int) *TreeNode {
+    if len(nums) == 0 {
+        return nil
+    }
+    maxIdx, maxNum := 0, 0
+    for k, v := range nums {
+        if v > maxNum {
+            maxNum = v
+            maxIdx = k
+        }
+    }
+    root := &TreeNode{Val: maxNum}
+    root.Left = constructMaximumBinaryTree(nums[:maxIdx])
+    root.Right = constructMaximumBinaryTree(nums[maxIdx+1:])
+    return root
+}
+```
