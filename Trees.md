@@ -1624,6 +1624,33 @@ private:
 };
 ```
 
+A: DFS，注意子树也需要trim。
+
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func trimBST(root *TreeNode, low int, high int) *TreeNode {
+    if root == nil {
+        return nil
+    }
+    if root.Val < low  {
+        return trimBST(root.Right, low, high)
+    }
+    if root.Val > high {
+        return trimBST(root.Left, low, high)
+    }
+    root.Left = trimBST(root.Left, low, high)
+    root.Right = trimBST(root.Right, low, high)
+    return root
+}
+```
+
 ## [Binary Search Tree Iterator](https://leetcode.com/problems/binary-search-tree-iterator)
 
 A: 用栈存放左子节点，每当出现移动，则将栈顶右节点入栈。
