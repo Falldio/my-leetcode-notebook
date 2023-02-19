@@ -2340,3 +2340,40 @@ func inorder(root *TreeNode, order *[]int) {
     inorder(root.Right, order)
 }
 ```
+
+## [Find Mode in Binary Search Tree](https://leetcode.com/problems/find-mode-in-binary-search-tree)
+
+A: 中序遍历时保留前一个节点，判断是否相等，更新计数器。
+
+```go
+func findMode(root *TreeNode) []int {
+    res := make([]int, 0)
+    count := 1
+    max := 1
+    var prev *TreeNode
+    var travel func(node *TreeNode) 
+    travel = func(node *TreeNode) {
+        if node == nil {
+            return
+        }
+        travel(node.Left)
+        if prev != nil && prev.Val == node.Val {
+            count++
+        } else {
+            count = 1
+        }
+        if count >= max {
+            if count > max && len(res) > 0 {
+                res = []int{node.Val}
+            } else {
+                res = append(res, node.Val)
+            }
+            max = count
+        }
+        prev = node
+        travel(node.Right)
+    }
+    travel(root)
+    return res
+}
+```
