@@ -2248,3 +2248,30 @@ func constructMaximumBinaryTree(nums []int) *TreeNode {
     return root
 }
 ```
+
+## [Search in a Binary Search Tree](https://leetcode.com/problems/search-in-a-binary-search-tree)
+
+A: 类似二分查找。
+
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func searchBST(root *TreeNode, val int) *TreeNode {
+    if root == nil {
+        return nil
+    }
+    if root.Val == val {
+        return root
+    } else if root.Val > val {
+        return searchBST(root.Left, val)
+    } else {
+        return searchBST(root.Right, val)
+    }
+}
+```
