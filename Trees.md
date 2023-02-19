@@ -1899,3 +1899,51 @@ func isValid(n1, n2 *TreeNode) bool {
     return false
 }
 ```
+
+## [Binary Tree Zigzag Level Order Traversal](https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal)
+
+A: BFS，每层反转。
+
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func zigzagLevelOrder(root *TreeNode) [][]int {
+    ans := [][]int{}
+    if root == nil {
+        return nil
+    }
+    q := []*TreeNode{root}
+    cnt := 1
+    for len(q) > 0 {
+        level := []int{}
+        for i := len(q); i > 0; i-- {
+            cur := q[0]
+            q = q[1:]
+            if cur.Left != nil {
+                q = append(q, cur.Left)
+            }
+            if cur.Right != nil {
+                q = append(q, cur.Right)
+            }
+            if cnt % 2 != 0 {
+                // from left to right
+                level = append(level, cur.Val)
+            } else {
+                // from right to left
+                level = append(level, 0)
+                copy(level[1:], level)
+                level[0] = cur.Val
+            }
+        }
+        ans = append(ans, level)
+        cnt++
+    }
+    return ans
+}
+```
