@@ -462,3 +462,34 @@ func totalFruit(tree []int) int {
     return res
 }
 ```
+
+## [Contains Duplicate II](https://leetcode.com/problems/contains-duplicate-ii)
+
+A: 滑动窗口，哈希表存储窗口元素。
+
+```go
+func containsNearbyDuplicate(nums []int, k int) bool {
+    m := map[int]struct{}{}
+    for i := 0; i < len(nums) && i < k + 1; i++ {
+        if _, ok := m[nums[i]]; ok {
+            return true
+        } else {
+            m[nums[i]] = struct{}{}
+        }
+    }
+    i, j := 0, k
+    for j < len(nums) {
+        delete(m, nums[i])
+        i++
+        j++
+        if j < len(nums) {
+            if _, ok := m[nums[j]]; ok {
+                return true
+            } else {
+                m[nums[j]] = struct{}{}
+            }
+        }
+    }
+    return false
+}
+```
