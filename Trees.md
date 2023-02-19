@@ -1947,3 +1947,40 @@ func zigzagLevelOrder(root *TreeNode) [][]int {
     return ans
 }
 ```
+
+## [Count Complete Tree Nodes](https://leetcode.com/problems/count-complete-tree-nodes)
+
+A: 简单做法可以直接遍历，计算节点个数，时间复杂度为O(n)。
+
+效率更高可以使用分治思想，先计算左右子树的高度，如果相等，说明是满二叉树，节点个数为2^h-1。如果不相等，则利用相同方法，**分别计算左右子树中满二叉树的节点个数**，再加上根节点，即为总节点个数。
+
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+
+func countNodes(root *TreeNode) int {
+    if root == nil {
+        return 0
+    }
+    leftDepth, rightDepth := 0, 0
+    left, right := root.Left, root.Right
+    for left != nil {
+        left = left.Left
+        leftDepth++
+    }
+    for right != nil {
+        right = right.Right
+        rightDepth++
+    }
+    if leftDepth == rightDepth {
+        return (2 << leftDepth) - 1
+    }
+    return countNodes(root.Left) + countNodes(root.Right) + 1
+}
+```
