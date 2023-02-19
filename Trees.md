@@ -2305,3 +2305,38 @@ func searchBST(root *TreeNode, val int) *TreeNode {
     }
 }
 ```
+
+## [Minimum Absolute Difference in BST](https://leetcode.com/problems/minimum-absolute-difference-in-bst)
+
+A: 中序遍历后寻找最小差值。
+
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func getMinimumDifference(root *TreeNode) int {
+    order := []int{}
+    inorder(root, &order)
+    ans := math.MaxInt
+    for i := 1; i < len(order); i++ {
+        if order[i] - order[i - 1] < ans {
+            ans = order[i] - order[i - 1]
+        }
+    }
+    return ans
+}
+
+func inorder(root *TreeNode, order *[]int) {
+    if root == nil {
+        return
+    }
+    inorder(root.Left, order)
+    *order = append(*order, root.Val)
+    inorder(root.Right, order)
+}
+```
