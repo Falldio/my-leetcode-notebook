@@ -696,6 +696,36 @@ private:
 };
 ```
 
+```go
+func isBalanced(root *TreeNode) bool {
+    h := getHeight(root) 
+    if h == -1 {
+        return false
+    }
+    return true
+}
+// 返回以该节点为根节点的二叉树的高度，如果不是平衡二叉树了则返回-1
+func getHeight(root *TreeNode) int {
+    if root == nil {
+        return 0
+    }
+    l, r := getHeight(root.Left), getHeight(root.Right)
+    if l == -1 || r == -1 {
+        return -1
+    }
+    if l - r > 1 || r - l > 1 {
+        return -1
+    }
+    return max(l, r) + 1
+}
+func max(a, b int) int {
+    if a > b {
+        return a
+    }
+    return b
+}
+```
+
 ## [Binary Tree Right Side View](https://leetcode.com/problems/binary-tree-right-side-view)
 
 A: 先右后左dfs，用`level`控制条件判断。
@@ -1982,5 +2012,32 @@ func countNodes(root *TreeNode) int {
         return (2 << leftDepth) - 1
     }
     return countNodes(root.Left) + countNodes(root.Right) + 1
+}
+```
+
+## [Binary Tree Paths](https://leetcode.com/problems/binary-tree-paths)
+
+A: DFS + 回溯。
+
+```go
+func binaryTreePaths(root *TreeNode) []string {
+    res := make([]string, 0)
+    var travel func(node *TreeNode, s string)
+    travel = func(node *TreeNode, s string) {
+        if node.Left == nil && node.Right == nil {
+            v := s + strconv.Itoa(node.Val)
+            res = append(res, v)
+            return
+        }
+        s = s + strconv.Itoa(node.Val) + "->"
+        if node.Left != nil {
+            travel(node.Left, s)
+        }
+        if node.Right != nil {
+            travel(node.Right, s)
+        }
+    }
+    travel(root, "")
+    return res
 }
 ```
