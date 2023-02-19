@@ -1709,6 +1709,38 @@ public:
 };
 ```
 
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func hasPathSum(root *TreeNode, targetSum int) bool {
+    sum := 0
+    if root == nil {
+        return false
+    }
+    return dfs(root, sum, targetSum)
+}
+
+func dfs(root *TreeNode, sum, target int) bool {
+    if root.Left == nil && root.Right == nil {
+        return sum + root.Val == target
+    }
+    ans := false
+    if root.Left != nil {
+        ans = ans || dfs(root.Left, sum + root.Val, target)
+    }
+    if root.Right != nil {
+        ans = ans || dfs(root.Right, sum + root.Val, target)
+    }
+    return ans
+}
+```
+
 ## [Construct String from Binary Tree](https://leetcode.com/problems/construct-string-from-binary-tree)
 
 A: 前序遍历，如果左子树为空右子树非空则插入空括号。
