@@ -1273,3 +1273,29 @@ func detectCycle(head *ListNode) *ListNode {
     return nil
 }
 ```
+
+## [Middle of the Linked List](https://leetcode.com/problems/middle-of-the-linked-list)
+
+A: 快慢指针。
+
+```go
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+func middleNode(head *ListNode) *ListNode {
+    slow, fast := head, head
+    for fast.Next != nil && fast.Next.Next != nil {
+        slow = slow.Next
+        fast = fast.Next.Next
+    }
+    if fast.Next == nil {
+        return slow
+    } else {
+        return slow.Next
+    }
+}
+```
