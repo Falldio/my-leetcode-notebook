@@ -540,6 +540,37 @@ private:
 };
 ```
 
+## [Construct Binary Tree from Inorder and Postorder Traversal](https://leetcode.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal)
+
+A: 后序遍历的最后一个元素是根节点，该元素在中序遍历中切分了左右子树。
+
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func buildTree(inorder []int, postorder []int) *TreeNode {
+    if len(inorder) == 0 {
+        return nil
+    }
+    root := &TreeNode{Val: postorder[len(postorder) - 1]}
+    numLeft := 0
+    for k, v := range inorder {
+        if v == root.Val {
+            numLeft = k
+            break
+        }
+    }
+    root.Left = buildTree(inorder[:numLeft], postorder[:numLeft])
+    root.Right = buildTree(inorder[numLeft+1:], postorder[numLeft:len(postorder)-1])
+    return root
+}
+```
+
 ## [Binary Tree Maximum Path Sum](https://leetcode.com/problems/binary-tree-maximum-path-sum)
 
 A: DFS，遍历时计算当前节点子树的最大和。
