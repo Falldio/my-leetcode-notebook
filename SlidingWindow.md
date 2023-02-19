@@ -493,3 +493,24 @@ func containsNearbyDuplicate(nums []int, k int) bool {
     return false
 }
 ```
+
+## [Number of Sub-array of Size K and Average Greater than or Equal to Threshold](https://leetcode.com/problems/number-of-sub-arrays-of-size-k-and-average-greater-than-or-equal-to-threshold)
+
+A: 滑动窗口。
+
+```go
+func numOfSubarrays(arr []int, k int, threshold int) int {
+    left,sum,count := 0,0,0
+	for right :=0; right < len(arr); right++ {
+		sum += arr[right]
+		if( right - left + 1 == k) {
+			if  sum / k >= threshold {
+				count += 1
+			}
+			sum -= arr[left]
+			left +=1
+		}
+	}
+	return count
+}
+```
