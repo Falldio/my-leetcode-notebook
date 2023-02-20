@@ -207,6 +207,28 @@ private:
 };
 ```
 
+```go
+func subsets(nums []int) [][]int {
+    ans := [][]int{}
+    cur := []int{}
+    dfs(0, nums, &ans, &cur)
+    return ans
+}
+
+func dfs(idx int, nums []int, ans *[][]int, cur *[]int) {
+    if idx == len(nums) {
+        tmp := make([]int, len(*cur))
+        copy(tmp, *cur)
+        *ans = append(*ans, tmp)
+        return
+    }
+    dfs(idx + 1, nums, ans, cur)
+    *cur = append(*cur, nums[idx])
+    dfs(idx + 1, nums, ans, cur)
+    *cur = (*cur)[:len(*cur) - 1]
+}
+```
+
 ## [Permutations](https://leetcode.com/problems/permutations)
 
 A: 遍历并依次交换start和start+1处的元素。
