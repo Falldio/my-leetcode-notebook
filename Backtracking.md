@@ -287,6 +287,30 @@ private:
 };
 ```
 
+```go
+func subsetsWithDup(nums []int) [][]int {
+    ans := [][]int{}
+    cur := []int{}
+    sort.Ints(nums)
+    dfs(0, nums, &cur, &ans)
+    return ans
+}
+
+func dfs(idx int, nums []int, cur *[]int, ans *[][]int) {
+    tmp := make([]int, len(*cur))
+    copy(tmp, *cur)
+    *ans = append(*ans, tmp)
+    for i := idx; i < len(nums); i++ {
+        if i > idx && nums[i] == nums[i - 1] {
+            continue
+        }
+        *cur = append(*cur, nums[i])
+        dfs(i+1, nums, cur, ans)
+        *cur = (*cur)[:len(*cur) - 1]
+    }
+}
+```
+
 ## [Combination Sum II](https://leetcode.com/problems/combination-sum-ii)
 
 A: 排序后跳过重复元素（去重），相比于用map存储visited内存占用更小。
