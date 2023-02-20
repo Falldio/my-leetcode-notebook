@@ -405,6 +405,33 @@ public:
 };
 ```
 
+```go
+func searchInsert(nums []int, target int) int {
+    i, j := 0, len(nums) - 1
+    if target > nums[j] {
+        return len(nums)
+    }
+    if target < nums[i] {
+        return 0
+    }
+    for i <= j {
+        mid := i + (j - i) / 2
+        if nums[mid] == target {
+            return mid
+        } else if nums[mid] < target {
+            i = mid + 1
+        } else {
+            j = mid - 1
+        }
+    }
+    if nums[i] > target {
+        return i
+    } else {
+        return i + 1
+    }
+}
+```
+
 ## [Guess Number Higher or Lower](https://leetcode.com/problems/guess-number-higher-or-lower)
 
 A: 二分查找，每次都猜测中位数。
