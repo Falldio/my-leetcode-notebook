@@ -374,6 +374,45 @@ private:
 };
 ```
 
+```go
+func partition(s string) [][]string {
+    ans := [][]string{}
+    cur := []string{}
+    dfs(s, 0, &cur, &ans)
+    return ans
+}
+
+func dfs(s string, idx int, cur *[]string, ans *[][]string) {
+    if idx == len(s) {
+        tmp := make([]string, len(*cur))
+        copy(tmp, *cur)
+        *ans = append(*ans, tmp)
+        return
+    }
+    for i := idx + 1; i <= len(s); i++ {
+        sub := s[idx:i]
+        if !isValid(sub) {
+            continue
+        }
+        *cur = append(*cur, sub)
+        dfs(s, i, cur, ans)
+        *cur = (*cur)[:len(*cur) - 1]
+    }
+}
+
+func isValid(s string) bool {
+    i, j := 0, len(s) - 1
+    for i < j {
+        if s[i] != s[j] {
+            return false
+        }
+        i++
+        j--
+    }
+    return true
+}
+```
+
 ## [Letter Combinations of a Phone Number](https://leetcode.com/problems/letter-combinations-of-a-phone-number)
 
 A: 建立数字与字母映射关系。
