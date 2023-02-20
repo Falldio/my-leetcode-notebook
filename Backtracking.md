@@ -476,6 +476,37 @@ private:
 };
 ```
 
+```go
+func combine(n int, k int) [][]int {
+    ans := [][]int{}
+    cur := []int{}
+
+    for i := 1; i <= n; i++ {
+        cur = append(cur, i)
+        dfs(i + 1, n, k, &cur, &ans)
+        cur = cur[:len(cur) - 1]
+    }
+    return ans
+}
+
+func dfs(num, n, k int, cur *[]int, ans *[][]int) {
+    if len(*cur) == k {
+        tmp := make([]int, k)
+        copy(tmp, *cur)
+        *ans = append(*ans, tmp)
+        return
+    }
+    if num > n {
+        return
+    }
+    for i := num; i <= n; i++ {
+        *cur = append(*cur, i)
+        dfs(i + 1, n, k, cur, ans)
+        *cur = (*cur)[:len(*cur) - 1]
+    }
+}
+```
+
 ## [Permutations II](https://leetcode.com/problems/permutations-ii)
 
 A: DFS+回溯。
