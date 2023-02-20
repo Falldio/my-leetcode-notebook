@@ -267,7 +267,7 @@ private:
 
 ## [Combination Sum II](https://leetcode.com/problems/combination-sum-ii)
 
-A: 排序后跳过重复元素。
+A: 排序后跳过重复元素（去重），相比于用map存储visited内存占用更小。
 
 ```cpp
 class Solution {
@@ -295,6 +295,43 @@ private:
         }
     }
 };
+```
+
+```go
+func combinationSum2(candidates []int, target int) [][]int {
+    ans := [][]int{}
+    cur := []int{}
+    sort.Ints(candidates)
+    for i := 0; i < len(candidates); i++ {
+        if i > 0 && candidates[i] == candidates[i - 1] {
+            continue
+        }
+        cur = append(cur, candidates[i])
+        dfs(i+1, target - candidates[i], candidates, &cur, &ans)
+        cur = cur[:len(cur) - 1]
+    }
+    return ans
+}
+
+func dfs(idx, rest int, candidates []int, cur *[]int, ans *[][]int) {
+    if rest == 0 {
+        tmp := make([]int, len(*cur))
+        copy(tmp, *cur)
+        *ans = append(*ans, tmp)
+        return
+    }
+    if rest < 0 {
+        return
+    }
+    for i := idx; i < len(candidates); i++ {
+        if i > idx && candidates[i] == candidates[i - 1] {
+            continue
+        }
+        *cur = append(*cur, candidates[i])
+        dfs(i+1, rest - candidates[i], candidates, cur, ans)
+        *cur = (*cur)[:len(*cur) - 1]
+    }
+} 
 ```
 
 ## [Palindrome Partitioning](https://leetcode.com/problems/palindrome-partitioning)
