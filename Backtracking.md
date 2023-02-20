@@ -822,7 +822,7 @@ public:
 
 ## [Non-decreasing Subsequences](https://leetcode.com/problems/non-decreasing-subsequences)
 
-A: 用set避免元素重复。
+A: 题目条件中的数组不能排序，因此只能用set避免元素重复。
 
 ```cpp
 class Solution {
@@ -847,6 +847,34 @@ public:
         }
     }
 };
+```
+
+```go
+func findSubsequences(nums []int) [][]int {
+    ans := [][]int{}
+    cur := []int{}
+    dfs(0, nums, &ans, &cur)
+    return ans
+}
+
+func dfs(idx int, nums []int, ans *[][]int, cur *[]int) {
+    if len(*cur) >= 2 {
+        tmp := make([]int, len(*cur))
+        copy(tmp, *cur)
+        *ans = append(*ans, tmp)
+    }
+    m := map[int]struct{}{}
+    for i := idx; i < len(nums); i++ {
+        _, ok := m[nums[i]]
+        if (len(*cur) > 0 && nums[i] < (*cur)[len(*cur) - 1]) || ok {
+            continue
+        }
+        m[nums[i]] = struct{}{}
+        *cur = append(*cur, nums[i])
+        dfs(i + 1, nums, ans, cur)
+        *cur = (*cur)[:len(*cur) - 1]
+    }
+}
 ```
 
 ## [Splitting a String Into Descending Consecutive Values](https://leetcode.com/problems/splitting-a-string-into-descending-consecutive-values)
