@@ -32,6 +32,38 @@ private:
 };
 ```
 
+```go
+func combinationSum(candidates []int, target int) [][]int {
+    ans := [][]int{}
+    cur := []int{}
+    for i := 0; i < len(candidates); i++ {
+        cur = append(cur, candidates[i])
+        // 可以重复使用
+        dfs(i, target - candidates[i], candidates, &cur, &ans)
+        cur = cur[:len(cur) - 1]
+    }
+    return ans
+}
+
+func dfs(idx, rest int, candidates []int, cur *[]int, ans *[][]int) {
+    if rest == 0 {
+        tmp := make([]int, len(*cur))
+        copy(tmp, *cur)
+        *ans = append(*ans, tmp)
+        return
+    }
+    if rest < 0 {
+        return
+    }
+    // idx开始，因为需要去重
+    for i := idx; i < len(candidates); i++ {
+        *cur = append(*cur, candidates[i])
+        dfs(i, rest - candidates[i], candidates, cur, ans)
+        *cur = (*cur)[:len(*cur) - 1]
+    }
+}
+```
+
 ## [Word Search](https://leetcode.com/problems/word-search)
 
 A: 回溯，向四个方向查找，标记查找过的单元格。
