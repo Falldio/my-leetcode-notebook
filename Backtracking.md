@@ -231,7 +231,7 @@ func dfs(idx int, nums []int, ans *[][]int, cur *[]int) {
 
 ## [Permutations](https://leetcode.com/problems/permutations)
 
-A: 遍历并依次交换start和start+1处的元素。
+A: 遍历并依次交换start和i处的元素，start == i时相当于不交换。
 
 ```cpp
 class Solution {
@@ -254,6 +254,68 @@ private:
         }
     }
 };
+```
+
+```go
+var (
+    ans [][]int
+    cur []int
+)
+func permute(nums []int) [][]int {
+    ans = [][]int{}
+    cur = []int{}
+    dfs(0, nums)
+    return ans
+}
+
+func dfs(idx int, nums []int) {
+    if idx == len(nums) {
+        tmp := make([]int, len(nums))
+        copy(tmp, nums)
+        ans = append(ans, tmp)
+        return
+    }
+    for i := idx; i < len(nums); i++ {
+        nums[idx], nums[i] = nums[i], nums[idx]
+        dfs(idx + 1, nums)
+        nums[idx], nums[i] = nums[i], nums[idx]
+    }
+}
+```
+
+A: 每次取出一个元素，将其标记为visited，然后递归。
+
+```go
+var (
+    ans [][]int
+    cur []int
+    visited map[int]struct{}
+)
+func permute(nums []int) [][]int {
+    ans = [][]int{}
+    cur = []int{}
+    visited = map[int]struct{}{}
+    dfs(nums)
+    return ans
+}
+
+func dfs(nums []int) {
+    if len(cur) == len(nums) {
+        tmp := make([]int, len(nums))
+        copy(tmp, cur)
+        ans = append(ans, tmp)
+    }
+    for i := 0; i < len(nums); i++ {
+        if _, ok := visited[nums[i]]; ok {
+            continue
+        }
+        cur = append(cur, nums[i])
+        visited[nums[i]] = struct{}{}
+        dfs(nums)
+        cur = cur[:len(cur) - 1]
+        delete(visited, nums[i])
+    }
+}
 ```
 
 ## [Subsets II](https://leetcode.com/problems/subsets-ii)
