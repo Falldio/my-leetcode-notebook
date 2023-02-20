@@ -790,3 +790,38 @@ public:
     }
 };
 ```
+
+## [Combination Sum III](https://leetcode.com/problems/combination-sum-iii)
+
+A: 组合问题，回溯。
+
+```go
+func combinationSum3(k int, n int) [][]int {
+    ans := [][]int{}
+    cur := make([]int, 0, k)
+    for i := 1; i <= 9 - k + 1; i++ {
+        cur = append(cur, i)
+        dfs(i + 1, k, n - i, &ans, &cur)
+        cur = cur[:len(cur) - 1]
+    }
+    return ans
+}
+
+func dfs(num, k, rest int, ans *[][]int, cur *[]int) {
+    if len(*cur) == k && rest == 0 {
+        tmp := make([]int, k)
+        copy(tmp, *cur)
+        *ans = append(*ans, tmp)
+        return
+    }
+    if rest < 0 || len(*cur) > k {
+        return
+    }
+
+    for i := num; i <= 9; i++ {
+        *cur = append(*cur, i)
+        dfs(i + 1, k, rest - i, ans, cur)
+        *cur = (*cur)[:len(*cur) - 1]
+    }
+}
+```
