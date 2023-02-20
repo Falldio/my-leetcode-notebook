@@ -347,7 +347,40 @@ private:
         }
     }
 };
+```
 
+```go
+var (
+    m = map[byte][]rune {
+        '2': {'a', 'b', 'c'},
+        '3': {'d', 'e', 'f'},
+        '4': {'g', 'h', 'i'},
+        '5': {'j', 'k', 'l'},
+        '6': {'m', 'n', 'o'},
+        '7': {'p', 'q', 'r', 's'},
+        '8': {'t', 'u', 'v'},
+        '9': {'w', 'x', 'y', 'z'}}
+)
+
+func letterCombinations(digits string) []string {
+    ans := []string{}
+    cur := ""
+    if len(digits) == 0 {
+        return ans
+    }
+    dfs(0, digits, cur, &ans)
+    return ans
+}
+
+func dfs(idx int, digits, cur string, ans *[]string) {
+    if idx == len(digits) {
+        *ans = append(*ans, cur)
+        return
+    }
+    for _, r := range m[digits[idx]] {
+        dfs(idx + 1, digits, cur + string(r), ans)
+    }
+}
 ```
 
 ## [N Queens](https://leetcode.com/problems/n-queens)
