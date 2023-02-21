@@ -647,6 +647,62 @@ public:
 };
 ```
 
+```go
+func solveNQueens(n int) [][]string {
+    ans := [][]string{}
+    cur := make([][]byte, n)
+    for i := range cur {
+        for j := 0; j < n; j++ {
+            cur[i] = append(cur[i], '.')
+        }
+    }
+    dfs(0, n, &cur, &ans)
+    return ans
+}
+
+func dfs(idx, n int, cur *[][]byte, ans *[][]string) {
+    if idx == n {
+        tmp := make([]string, n)
+        for i := range *cur {
+            for j := range (*cur)[i] {
+                if (*cur)[i][j] == 'Q' {
+                    tmp[i] += "Q"
+                } else {
+                    tmp[i] += "."
+                }
+            }
+        }
+        *ans = append(*ans, tmp)
+        return
+    }
+    for i := 0; i < n; i++ {
+        if (*cur)[idx][i] != '.' {
+            continue
+        }
+        (*cur)[idx][i] = 'Q'
+        change(cur, idx, i, n, true)
+        dfs(idx + 1, n, cur, ans)
+        change(cur, idx, i, n, false)
+        (*cur)[idx][i] = '.'
+    }
+}
+
+func change(cur *[][]byte, r, c, n int, mark bool) {
+    for row := r + 1; row < n; row++ {
+        for col := 0; col < n; col++ {
+            if col == c || col == c - (row - r) || col == c + (row - r) {
+                // 由于题目中n相对有限，可以直接在byte上进行加减，表示有多少个preQueen占用了当前格子
+                if mark {
+                    (*cur)[row][col] += 1
+                } else {
+                    (*cur)[row][col] -= 1
+                }
+            }
+        }
+    }
+}
+```
+
 ## [N-Queens II](https://leetcode.com/problems/n-queens-ii)
 
 A: 逐行放皇后，区别在需要维护一个答案数字。
