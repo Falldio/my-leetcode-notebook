@@ -530,3 +530,28 @@ public:
     }
 };
 ```
+
+## [Single Element in a Sorted Array](https://leetcode.com/problems/single-element-in-a-sorted-array)
+
+A: 正常情况下同一个元素出现两次，占据一个奇数位置和一个偶数位置（数组从0开始，因此先偶后奇）。因此对于中间位置，对其奇偶性进行判断：如果是奇数，正常情况下左边元素应该和中间元素相等，如果不等，说明单独元素在左边；如果是偶数，正常情况下右边元素应该和中间元素相等，如果不等，说明单独元素在右边。
+
+```go
+func singleNonDuplicate(nums []int) int {
+    i, j := 0, len(nums) - 1
+    if len(nums) == 1 || nums[0] != nums[1] {
+        return nums[0]
+    }
+    if nums[j] != nums[j - 1] {
+        return nums[j]
+    }
+    for i < j {
+        mid := i + (j - i) / 2
+        if (mid % 2 == 0 && nums[mid + 1] == nums[mid]) || (mid % 2 != 0 && nums[mid - 1] == nums[mid]) {
+            i = mid + 1
+        } else {
+            j = mid
+        }
+    }
+    return nums[i]
+}
+```
