@@ -1195,3 +1195,60 @@ func dfs(num, k, rest int, ans *[][]int, cur *[]int) {
     }
 }
 ```
+
+## [Soduku Solver](https://leetcode.com/problems/sudoku-solver)
+
+A: 回溯，找到符合要求的解法直接返回，注意已填3*3方格的映射关系。
+
+```go
+type soduku [9][9]bool
+
+var (
+    rows, cols, grids soduku
+)
+
+func solveSudoku(board [][]byte)  {
+    rows, cols, grids = soduku{}, soduku{}, soduku{}
+    for i := 0; i < 9; i++ {
+        for j := 0; j < 9; j++ {
+            if board[i][j] != '.' {
+                pos := board[i][j] - '1'
+                rows[i][pos] = true
+                cols[j][pos] = true
+                grids[(i / 3) * 3 + j / 3][pos] = true
+            }
+        }
+    }
+    dfs(&board)
+}
+
+func dfs(board *[][]byte) bool {
+    for i := 0; i < 9; i++ {
+        for j := 0; j < 9; j++ {
+            if (*board)[i][j] != '.' {
+                continue
+            }
+            for num := '1'; num <= '9'; num++ {
+                pos := num - '1'
+                fmt.Println(pos)
+                if rows[i][pos] != false || cols[j][pos] != false || grids[(i / 3) * 3 + (j / 3)][pos] != false {
+                    continue
+                }
+                (*board)[i][j] = byte(num)
+                rows[i][pos] = true
+                cols[j][pos] = true
+                grids[(i / 3) * 3 + j / 3][pos] = true
+                if dfs(board) == true {
+                    return true
+                }
+                rows[i][pos] = false
+                cols[j][pos] = false
+                grids[(i / 3) * 3 + j / 3][pos] = false
+                (*board)[i][j] = '.'
+            }
+            return false
+        }
+    }
+    return true
+}
+```
