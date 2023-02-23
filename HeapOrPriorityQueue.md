@@ -643,3 +643,74 @@ public:
     }
 };
 ```
+
+## [IPO](https://leetcode.com/problems/ipo)
+
+A: 首先按照capital排序，每次将所有能支付的项目加入优先级队列（按照earn排序），每次从中选择earn最大的项目做。
+
+```go
+type project struct {
+    capital int
+    earn int
+}
+
+type Pq []project
+
+type List []project
+
+func (pq Pq) Len() int {return len(pq)}
+func (pq List) Len() int {return len(pq)}
+
+func (pq Pq) Swap(i, j int) {pq[i], pq[j] = pq[j],  pq[i]}
+func (pq List) Swap(i, j int) {pq[i], pq[j] = pq[j],  pq[i]}
+
+func (pq Pq) Less(i, j int) bool {return pq[i].earn > pq[j].earn}
+func (pq List) Less(i, j int) bool {return pq[i].capital < pq[j].capital}
+
+func (pq *Pq) Push(p interface{}) {
+    *pq = append(*pq, p.(project))
+}
+
+func (pq *Pq) Pop() interface{} {
+    old := *pq
+    ans := old[len(old) - 1]
+    *pq = (*pq)[:len(old) - 1]
+    return ans
+}
+
+func findMaximizedCapital(k int, w int, profits []int, capital []int) int {
+    ans := 0
+    pq := &Pq{}
+    list := &List{}
+    for k := range profits {
+        *list = append(*list, project{capital[k], profits[k]})
+    }
+    sort.Sort(*list)
+    heap.Init(pq)
+    dfs(k, w, pq, list, &ans)
+    return ans
+}
+
+func dfs(k, w int, pq *Pq, list *List, ans *int) bool {
+    if w < 0 {
+        return true
+    }
+    for len(*list) > 0 {
+        if (*list)[0].capital > w {
+            break
+        }
+        heap.Push(pq, (*list)[0])
+        *list = (*list)[1:]
+    }
+    if k == 0 || len(*pq) == 0 {
+        *ans = w
+        return true
+    }
+    cur := heap.Pop(pq).(project)
+    if dfs(k - 1, w + cur.earn, pq, list, ans) == true {
+        return true
+    } else {
+        return false
+    }
+}
+```
