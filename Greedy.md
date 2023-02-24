@@ -21,6 +21,33 @@ public:
 };
 ```
 
+A: 滑动窗口。
+
+```go
+func maxSubArray(nums []int) int {
+    i, j := 0, 1
+    ans := nums[i]
+    cur := nums[i]
+    for j < len(nums) {
+        if nums[i] < 0 {
+            i++
+            cur -= nums[i]
+        }
+        if cur + nums[j] < 0 {
+            i = j
+            cur = nums[j]
+        } else {
+            cur += nums[j]
+        }
+        if cur > ans {
+            ans = cur
+        }
+        j++
+    }
+    return ans
+}
+```
+
 ## [Jump Game](https://leetcode.com/problems/jump-game)
 
 A: DP，`nums[i]`是否可达取决于是否存在`nums[j]`可达`nums[i]`。
