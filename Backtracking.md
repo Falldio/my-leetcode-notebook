@@ -1252,3 +1252,61 @@ func dfs(board *[][]byte) bool {
     return true
 }
 ```
+
+## [Minimize Deviation in Array](https://leetcode.com/problems/minimize-deviation-in-array)
+
+A: 首先将nums元素尽可能扩大，并存取最小值，之后将所有元素放入最大堆，将最大值不断缩小，并更新最小差值。
+
+```go
+type maxH []int
+
+func (h maxH) Len() int { return len(h) }
+
+func (h maxH) Swap(i, j int) { h[i], h[j] = h[j], h[i] }
+
+func (h maxH) Less(i, j int) bool { return h[i] > h[j] }
+
+func (h *maxH) Push(x interface{}) {
+    *h = append(*h, x.(int))
+}
+
+func (h *maxH) Pop() interface{} {
+    old := *h
+    x := old[len(old) - 1]
+    *h = old[:len(old) - 1]
+    return x
+}
+
+func minimumDeviation(nums []int) int {
+    maxHeap := &maxH{}
+    heap.Init(maxHeap)
+    ans := math.MaxInt
+    min := math.MaxInt
+    for k := range nums {
+        if nums[k] % 2 != 0 {
+            nums[k] *= 2
+        }
+        heap.Push(maxHeap, nums[k])
+        if min > nums[k] {
+            min = nums[k]
+        }
+    }
+    curMax := heap.Pop(maxHeap).(int)
+    for curMax % 2 == 0 {
+        deviation := curMax - min
+        if deviation < ans {
+            ans = deviation
+        }
+        curMax /= 2
+        if min > curMax {
+            min = curMax
+        }
+        heap.Push(maxHeap, curMax)
+        curMax = heap.Pop(maxHeap).(int)
+    }
+    if ans > curMax - min {
+        return curMax - min
+    }
+    return ans
+}
+```
