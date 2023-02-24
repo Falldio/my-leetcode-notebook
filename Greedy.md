@@ -477,3 +477,26 @@ public:
     }
 };
 ```
+
+## [Assign Cookies](https://leetcode.com/problems/assign-cookies)
+
+A: 优先满足食量小的孩子。
+
+```go
+func findContentChildren(g []int, s []int) int {
+    sort.Ints(g)
+    sort.Ints(s)
+    ans := 0
+    i, j := 0, 0
+    for i < len(s) && j < len(g) {
+        if s[i] >= g[j] {
+            ans++
+            i++
+            j++
+        } else  {
+            i++
+        }
+    }
+    return ans
+}
+```
