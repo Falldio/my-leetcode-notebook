@@ -500,3 +500,29 @@ func findContentChildren(g []int, s []int) int {
     return ans
 }
 ```
+
+## [Wiggle Subsequence](https://leetcode.com/problems/wiggle-subsequence)
+
+A: 忽略所有单调坡和平坡，只计算峰和谷。
+
+```go
+func wiggleMaxLength(nums []int) int {
+	n := len(nums)
+	if n < 2 {
+		return n
+	}
+	ans := 1
+	prevDiff := nums[1] - nums[0]
+	if prevDiff != 0 {
+		ans = 2
+	}
+	for i := 2; i < n; i++ {
+		diff := nums[i] - nums[i-1]
+		if diff > 0 && prevDiff <= 0 || diff < 0 && prevDiff >= 0 {
+			ans++
+			prevDiff = diff
+		}
+	}
+	return ans
+}
+```
