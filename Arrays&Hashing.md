@@ -654,6 +654,50 @@ public:
 };
 ```
 
+A: 单调队列。
+
+```go
+func maxProfit(prices []int) int {
+    q := []int{}
+    ans := 0
+    for _, p := range prices {
+        if len(q) == 0 {
+            q = append(q, p)
+        } else {
+            cur := q[len(q) - 1]
+            if p < cur {
+                // keep increasing order
+                ans += cur - q[0]
+                q = []int{}
+            }
+            q = append(q, p)
+        }
+    }
+    if len(q) > 0 {
+        ans += q[len(q) - 1] - q[0]
+    }
+    return ans
+}
+```
+
+A: 贪心算法，计算前一天买今天卖的利润，收集所有的正利润。
+
+```go
+func maxProfit(prices []int) int {
+    ans := 0
+    profits := []int{}
+    for i := 1; i < len(prices); i++ {
+        profits = append(profits, prices[i] - prices[i - 1])
+    }
+    for _, v := range profits {
+        if v > 0 {
+            ans += v
+        }
+    }
+    return ans
+}
+```
+
 ## [Subarray Sum Equals K](https://leetcode.com/problems/subarray-sum-equals-k)
 
 A: 前缀和，用map记录前缀和，这样一旦有满足情况的，可以直接加入ans。
