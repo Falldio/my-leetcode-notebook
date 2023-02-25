@@ -89,6 +89,24 @@ bool canJump(vector<int>& nums) {
 }
 ```
 
+```go
+func canJump(nums []int) bool {
+    if len(nums) == 1 {
+        return true
+    }
+    cover := 0
+    for i := 0; i <= cover; i++ {
+        if nums[i] + i > cover {
+            cover = nums[i] + i
+        }
+        if cover >= len(nums) - 1 {
+            return true
+        }
+    }
+    return false
+}
+```
+
 ## [Maximum Bags With Full Capacity of Rocks](https://leetcode.com/problems/maximum-bags-with-full-capacity-of-rocks)
 
 A: 每次选择余量最少的袋子装石头。
