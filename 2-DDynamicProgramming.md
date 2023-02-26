@@ -285,6 +285,40 @@ public:
 };
 ```
 
+```go
+func minDistance(word1 string, word2 string) int {
+    pre := make([]int, len(word2) + 1)
+    cur := make([]int, len(word2) + 1)
+    for i := 0; i < len(pre); i++ {
+        pre[i] = i
+    }
+    for i := 1; i <= len(word1); i++ {
+        cur[0] = i
+        for j := 1; j < len(pre); j++ {
+            if word1[i - 1] != word2[j - 1] {
+                cur[j] = min(cur[j - 1], pre[j - 1], pre[j]) + 1
+            } else {
+                cur[j] = pre[j - 1]
+            }
+        }
+        tmp := make([]int, len(cur))
+        copy(tmp, cur)
+        pre = tmp
+    }
+    return pre[len(word2)]
+}
+
+func min(nums ...int) int {
+    ans := nums[0]
+    for _, v := range nums {
+        if v < ans {
+            ans = v
+        }
+    }
+    return ans
+}
+```
+
 ## [Burst Balloons](https://leetcode.com/problems/burst-balloons)
 
 A: 左右分别加上1便于计算，每次在[L, R]中选择一个元素作为**最后**一个元素pop，memo记录。
