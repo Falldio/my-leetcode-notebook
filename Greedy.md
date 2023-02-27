@@ -689,3 +689,37 @@ func findMax(num1 int, num2 int) int {
     return num2
 }
 ```
+
+## [Lemonade Change](https://leetcode.com/problems/lemonade-change)
+
+A: 优先消耗面额大的零钱，因为面额小的更万能，可以组成大的数额。
+
+```go
+func lemonadeChange(bills []int) bool {
+    m := map[int]int{}
+
+    for _, v := range bills {
+        m[v]++
+        switch v {
+            case 10:
+                m[5]--
+                if m[5] < 0 {
+                    return false
+                }
+            case 20:
+                if m[10] > 0 && m[5] > 0 {
+                    m[10]--
+                    m[5]--
+                } else if m[5] > 0 {
+                    m[5] -= 3
+                } else {
+                    return false
+                }
+                if m[10] < 0 || m[5] < 0 {
+                    return false
+                }
+        }
+    }
+    return true
+}
+```
