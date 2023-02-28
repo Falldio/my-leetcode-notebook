@@ -2631,3 +2631,30 @@ func dfs(grid [][]int) *Node {
     return head
 }
 ```
+
+## [Find Duplicate Subtrees](https://leetcode.com/problems/find-duplicate-subtrees)
+
+A: 通过中序遍历构造字符串，使用map记录每个字符串出现的次数，出现两次则为重复子树。
+
+```go
+func findDuplicateSubtrees(root *TreeNode) []*TreeNode {
+	hashAll := map[string]int{}
+	duplicate := []*TreeNode{}
+	dfs(root, hashAll, &duplicate)
+	return duplicate
+}
+
+func dfs(node *TreeNode, hashAll map[string]int, duplicate *[]*TreeNode) string {
+	if node == nil {
+		return "nil"
+	}
+    lString := dfs(node.Left, hashAll, duplicate)
+    rString := dfs(node.Right, hashAll, duplicate)
+    buildString := fmt.Sprintf("(%s)(%v)(%s)", lString, node.Val, rString)
+	hashAll[buildString]++
+	if hashAll[buildString] == 2 {
+		*duplicate = append(*duplicate, node)
+	}
+    return buildString
+}
+```
