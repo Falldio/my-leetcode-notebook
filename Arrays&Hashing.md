@@ -2094,3 +2094,44 @@ func (this *MyHashMap) Remove(key int)  {
  * obj.Remove(key);
  */
  ```
+
+ ## [Sort an Array](https://leetcode.com/problems/sort-an-array)
+
+ A: 归并排序。
+
+```go
+func sortArray(nums []int) []int {
+    l, r := 0, len(nums)-1
+    return mergesort(nums, l, r) 
+}
+
+func mergesort(nums []int, l, r int) []int {
+    if l == r {
+        return []int{nums[l]}
+    }
+    mid := l + (r-l)/2
+    return merge(mergesort(nums, l, mid), mergesort(nums, mid+1, r))
+}
+
+func merge(left, right []int) []int {
+    m, n := len(left), len(right)
+    res := make([]int, m+n, m+n)
+    i, j := 0, 0
+    for k:=0; k<m+n; k++ {
+        if i == m {
+            res[k] = right[j]
+            j += 1
+        } else if j == n {
+            res[k] = left[i]
+            i += 1
+        } else if left[i] < right[j] {
+            res[k] = left[i]
+            i += 1
+        } else {
+            res[k] = right[j]
+            j += 1
+        }
+    }
+    return res
+}
+```
