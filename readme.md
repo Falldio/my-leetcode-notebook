@@ -1,6 +1,6 @@
 # My LeetCode Notebook📚
 
-一个个人([LeetCode](https://leetcode.com/))刷题笔记,后续会根据文档内容自己再做总结，希望能找到工作~🙏
+一个[个人LeetCode](https://leetcode.com/YoloKokura/)刷题笔记,后续会根据文档内容自己再做总结，希望能找到工作~🙏
 
 > 部分题目答案来自于各类题解网页，并不完全是原创，仅作个人记录使用。
 
