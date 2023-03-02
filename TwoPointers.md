@@ -768,3 +768,31 @@ func repeatedSubstringPattern(s string) bool {
     return nxt[n-1] > 0 && n % (n-nxt[n-1]) == 0
 }
 ```
+
+## [String Compression](https://leetcode.com/problems/string-compression)
+
+A: 游程编码。
+
+```go
+func compress(chars []byte) int {
+	slow := 0
+	for i := 0; i < len(chars); {
+		cnt := 1
+		for i+1 < len(chars) && chars[i] == chars[i+1] {
+			cnt++
+			i++
+		}
+
+		chars[slow] = chars[i]
+		slow++
+		if cnt > 1 {
+			for _, c := range strconv.Itoa(cnt) {
+				chars[slow] = byte(c)
+				slow++
+			}
+		}
+		i++
+	}
+	return slow
+}
+```
