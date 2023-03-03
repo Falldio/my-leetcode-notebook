@@ -184,6 +184,37 @@ public:
 };
 ```
 
+A: 排序，取范围最大的curStart, curEnd作为合并后的区间。
+
+```go
+func merge(intervals [][]int) [][]int {
+    sort.Slice(intervals, func(i, j int) bool {
+        if intervals[i][0] < intervals[j][0] {
+            return true
+        } else if intervals[i][0] == intervals[j][0] {
+            return intervals[i][1] == intervals[j][1]
+        } else {
+            return false
+        }
+    })
+    curStart, curEnd := intervals[0][0], intervals[0][1]
+    ans := [][]int{}
+    for i := 1; i < len(intervals); i++ {
+        if intervals[i][0] <= curEnd {
+            if curEnd < intervals[i][1] {
+                curEnd = intervals[i][1]
+            }
+        } else {
+            ans = append(ans, []int{curStart, curEnd})
+            curStart = intervals[i][0]
+            curEnd = intervals[i][1]
+        }
+    }
+    ans = append(ans, []int{curStart, curEnd})
+    return ans
+}
+```
+
 ## [Non-overlapping Intervals](https://leetcode.com/problems/non-overlapping-intervals)
 
 A: 贪心，出现重叠情况，则舍去end最大的interval。
