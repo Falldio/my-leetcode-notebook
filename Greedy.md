@@ -424,6 +424,28 @@ public:
 };
 ```
 
+```go
+func partitionLabels(s string) []int {
+    m := map[rune]int{}
+    for i, ch := range s {
+        m[ch] = i
+    }
+    start, curMax := -1, 0
+    ans := []int{}
+    for i := 0; i < len(s); i++ {
+        if i > curMax {
+            ans = append(ans, curMax - start)
+            start = curMax
+        }
+        if m[rune(s[i])] > curMax {
+            curMax = m[rune(s[i])]
+        }
+    }
+    ans = append(ans, curMax - start)
+    return ans
+}
+```
+
 ## [Valid Parenthesis String](https://leetcode.com/problems/valid-parenthesis-string)
 
 A: 将*看作(，得到所需)的最大数目，保持该数始终为正。
