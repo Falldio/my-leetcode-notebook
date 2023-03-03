@@ -233,6 +233,33 @@ public:
 };
 ```
 
+```go
+func findMinArrowShots(points [][]int) int {
+    sort.Slice(points, func(i, j int) bool {
+        if points[i][0] < points[j][0] {
+            return true
+        } else if points[i][0] == points[j][0] {
+            return points[i][1] < points[j][1]
+        } else {
+            return false
+        }
+    })
+    ans := 1
+    curStart, curEnd := points[0][0], points[0][1]
+    for i := 1; i < len(points); i++ {
+        curStart = points[i][0]
+        if points[i][1] < curEnd {
+            curEnd = points[i][1]
+        }
+        if curStart > curEnd {
+            ans++
+            curEnd = points[i][1]
+        }
+    }
+    return ans
+}
+```
+
 ## [Minimum Interval to Include Each Query](Minimum Interval to Include Each Query)
 
 A: 用优先队列存储{size， right}，对两个参数排序，将满足要求的interval加入最小堆，但不pop，以供后续更大query使用。
