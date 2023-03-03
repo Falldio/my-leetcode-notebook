@@ -211,6 +211,33 @@ public:
 };
 ```
 
+```go
+func eraseOverlapIntervals(intervals [][]int) int {
+    sort.Slice(intervals, func(i, j int) bool {
+        if intervals[i][0] < intervals[j][0] {
+            return true
+        } else if intervals[i][0] == intervals[j][0] {
+            return intervals[i][1] < intervals[j][1]
+        } else {
+            return false
+        }
+    })
+    ans := 0
+    curEnd := intervals[0][1]
+    for i := 1; i < len(intervals); i++ {
+        if intervals[i][0] < curEnd {
+            ans++
+            if curEnd > intervals[i][1] {
+                curEnd = intervals[i][1]
+            }
+        } else {
+            curEnd = intervals[i][1]
+        }
+    }
+    return ans
+}
+```
+
 ## [Minimum Number of Arrows to Burst Balloons](https://leetcode.com/problems/minimum-number-of-arrows-to-burst-balloons)
 
 A: 比较intervals的end，以此判断是否有重叠部分。
