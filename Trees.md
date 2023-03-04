@@ -2658,3 +2658,41 @@ func dfs(node *TreeNode, hashAll map[string]int, duplicate *[]*TreeNode) string 
     return buildString
 }
 ```
+
+## [Binary Tree Cameras](https://leetcode.com/problems/binary-tree-cameras)
+
+A: 贪心，优先安装在叶子节点的父节点上，这意味着需要**后序遍历**，对于每个节点，有三种状态：
+
+- a: 该节点安装了摄像头
+- b: 该节点的父节点安装了摄像头
+- c: 该节点的子节点安装了摄像头
+
+```go
+const inf = math.MaxInt64 / 2
+
+func minCameraCover(root *TreeNode) int {
+    var dfs func(*TreeNode) (a, b, c int)
+    dfs = func(node *TreeNode) (a, b, c int) {
+        if node == nil {
+            // 空节点，不需要安装摄像头
+            return inf, 0, 0
+        }
+        lefta, leftb, leftc := dfs(node.Left)
+        righta, rightb, rightc := dfs(node.Right)
+        // a, b, c分别表示当前节点安装摄像头、父节点安装摄像头、子节点安装摄像头的最小值
+        a = leftc + rightc + 1 // 当前节点安装摄像头，则左右子节点不需要安装摄像头
+        b = min(a, min(lefta+rightb, righta+leftb)) // 父节点安装摄像头，则左右子节点可以安装也可以不安装
+        c = min(a, leftb+rightb) // 子节点安装摄像头，则左右子节点必须安装摄像头
+        return
+    }
+    _, ans, _ := dfs(root)
+    return ans
+}
+
+func min(a, b int) int {
+    if a <= b {
+        return a
+    }
+    return b
+}
+```
