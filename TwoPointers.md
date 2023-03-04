@@ -796,3 +796,43 @@ func compress(chars []byte) int {
 	return slow
 }
 ```
+
+## [Count Subarrays With Fixed Bounds](https://leetcode.com/problems/count-subarrays-with-fixed-bounds)
+
+A: 双指针法，维护三个指针，分别指向当前元素之前的第一个不满足条件的元素，最小值，最大值。两个最值的最小元素（最靠近左边的元素）和当前位置之间的元素，如果都不是out of range的元素，那么就是一个满足条件的子数组。
+
+```go
+func min(a, b int) int {
+    if a > b {
+        return b
+    }
+    return a
+}
+
+func countSubarrays(nums []int, minK int, maxK int) int64 {
+    // out of range idx, minK idx, maxK idx
+    outCur, minCur, maxCur := -1, -1, -1
+    res := int64(0)
+    for i, v := range(nums) {
+        // find valid subarrays end at i
+        if v > maxK || v < minK {
+            outCur = i
+            // out of range, not valid
+            continue
+        }
+        if v == minK {
+            minCur = i
+        }
+        if v == maxK {
+            maxCur = i
+        }
+        // the smaller idx between minCur and maxCur
+        tmp := min(minCur, maxCur)
+        if outCur < tmp {
+            // subarray start from outCur+1 to i
+            res += int64(tmp - outCur)
+        }
+    }
+    return res
+}
+```
