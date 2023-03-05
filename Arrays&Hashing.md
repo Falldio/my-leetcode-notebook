@@ -2160,6 +2160,8 @@ int findValidSplit(vector<int>& nums) {
             ++right[f];
     for (int i  = 0, common = 0; i < nums.size() - 1; ++i) {
         for (int f : factorize(nums[i]))
+            // left[f]++ == 0 means f is not in left
+            // left[f] == right[f] means f is in both left and right
             common += (left[f]++ == 0) - (left[f] == right[f]);
         if (common == 0)
             return i;        
