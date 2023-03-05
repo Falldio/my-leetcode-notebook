@@ -526,3 +526,20 @@ public:
     }
 };
 ```
+
+## [Count Total Number of Colored Cells](https://leetcode.com/problems/count-total-number-of-colored-cells)
+
+A: 想象成坐标系，先计算x，y，在计算四个象限的网格数目。
+
+```go
+func coloredCells(n int) int64 {
+    var ans int64
+    // First we compute two cross lines in the middle
+    ans += (2 * (int64(n) - 1) + 1) * 2 - 1
+    if n >= 3 {
+    // Then we add the nums in the 4 quadrants
+        ans += 2 * (int64(n) - 1) * (int64(n) - 2)
+    }
+    return ans
+}
+```
