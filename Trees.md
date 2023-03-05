@@ -2721,3 +2721,44 @@ public:
     }
 };
 ```
+
+## [Kth Largest Sum in A Binary Tree](https://leetcode.com/problems/kth-largest-sum-in-a-binary-tree)
+
+A: BFS，排序得到答案。
+
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func kthLargestLevelSum(root *TreeNode, k int) int64 {
+    levels := []int64{}
+    q := []*TreeNode{root}
+    for len(q) != 0 {
+        var curSum int64 = 0
+        for i := len(q) - 1; i >= 0; i-- {
+            cur := q[0]
+            q = q[1:]
+            curSum += int64(cur.Val)
+            if cur.Left != nil {
+                q = append(q, cur.Left)
+            }
+            if cur.Right != nil {
+                q = append(q, cur.Right)
+            }
+        }
+        levels = append(levels, curSum)
+    }
+    if len(levels) < k {
+        return -1
+    }
+    sort.Slice(levels, func(i, j int) bool {
+        return levels[i] < levels[j]
+    })
+    return levels[len(levels) - k]
+}
+```
