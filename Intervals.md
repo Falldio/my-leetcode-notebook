@@ -461,3 +461,44 @@ public:
     map<int, int> _map;
 };
 ```
+
+## [Count Ways to Group Overlapping Ranges](https://leetcode.com/discuss/interview-question/1021576/Count-Ways-to-Group-Overlapping-Ranges)
+
+A: 排序，合并区间，计算合并后区间个数，再转化为组合问题。
+
+```go
+func countWays(ranges [][]int) int {
+    // sort the ranges to help merge ranges into subgroups
+    sort.Slice(ranges, func(i, j int) bool {
+        if ranges[i][0] < ranges[j][0] {
+            return true
+        } else if ranges[i][0] == ranges[j][0] {
+            return ranges[i][1] <= ranges[j][1]
+        } else {
+            return false
+        }
+    })
+    
+    cnt := 1
+    curEnd := ranges[0][1]
+    // we count the numbers of subgroups
+    for i := 1; i < len(ranges); i++ {
+        if ranges[i][0] <= curEnd {
+            if curEnd < ranges[i][1] {
+                curEnd = ranges[i][1]
+            }
+        } else {
+            cnt++
+            curEnd = ranges[i][1]
+        }
+    }
+    ans := 1
+
+    // simple math to compute the answer: ans = 2 ^ cnt
+    for cnt != 0 {
+        ans = (ans * 2) % (1e9 + 7)
+        cnt--
+    }
+    return ans
+}
+```
