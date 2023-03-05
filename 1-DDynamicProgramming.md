@@ -735,3 +735,33 @@ private:
     }
 };
 ```
+
+## [Number of Ways to Earn Points](https://leetcode.com/problems/number-of-ways-to-earn-points)
+
+A: DP，背包问题。
+
+```go
+func waysToReachTarget(target int, types [][]int) int {
+    ways := make([]int, target + 1)
+    mod := 1000000007
+
+    ways[0] = 1
+
+    for _, t := range types {
+        count, marks := t[0], t[1]
+
+        for val := target; val > 0; val-- {
+            total := 0
+
+            for i := 0; i < count; i++ {
+                total += marks
+                if total > val { break }
+                ways[val] += ways[val - total]
+                ways[val] %= mod
+            }
+        }
+    }
+
+    return ways[target]
+}
+```
