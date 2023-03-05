@@ -2762,3 +2762,80 @@ func kthLargestLevelSum(root *TreeNode, k int) int64 {
     return levels[len(levels) - k]
 }
 ```
+
+## [Count Number of Possible Root Nodes](https://leetcode.com/problems/count-number-of-possible-root-nodes)
+
+A: re-rooting，将每个节点作为根节点，统计每个节点的子树中有多少个节点满足条件。
+
+[详解](https://leetcode.com/problems/count-number-of-possible-root-nodes/solutions/3256065/re-rooting-o-n-explained/)
+
+```cpp
+class Solution {
+public:
+    unordered_map<int,vector<int>> adj;
+    map<vector<int>,int> g;
+    int ans=0;
+    int k;
+    void setpar(int node,int parent,vector<int> &par){
+        par[node]=parent;
+        for(auto child : adj[node]){
+            if(child!=parent){
+                setpar(child,node,par);
+            }
+        }
+    }
+
+    void dfs(int node,int par,int guess){
+        if(g[{node,par}]){
+            guess++;
+        }
+        if(g[{par,node}]){
+            guess--;
+        }
+        for(auto child : adj[node]){
+            if(child!=par){
+                dfs(child,node,guess);
+            }
+        }
+        if(guess>=k){
+            ans++;
+        }
+    }
+
+    int rootCount(vector<vector<int>>& edges, vector<vector<int>>& guesses, int k) {
+        this->k=k;
+        int n=edges.size()+1;
+
+        for(int i=0 ; i<edges.size() ; i++){             // filling adjacent of each node
+            adj[edges[i][0]].push_back(edges[i][1]);
+            adj[edges[i][1]].push_back(edges[i][0]);
+        }
+
+        for(int i=0 ; i<guesses.size() ; i++){          //mapping guesses 
+            g[guesses[i]]=1;
+        }
+
+        vector<int> par(edges.size()+1,0);
+
+        setpar(0,-1,par);                                  // first dfs - 0 node as root
+        int guess=0;
+        for(int i=1;i<n ; i++){
+            if(g[{par[i],i}]==1){
+                guess++;
+            }
+        }
+
+        
+        if(guess>=k){
+            ans++;
+        }
+
+        for(auto child : adj[0]){                        // second dfs - taking nodes except 0 as root
+            dfs(child,0,guess);
+        }
+
+        return ans;
+
+    }
+};
+```
