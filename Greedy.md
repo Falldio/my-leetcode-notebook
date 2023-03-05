@@ -793,3 +793,24 @@ func monotoneIncreasingDigits(N int) int {
     return res 
 }
 ```
+
+## [Split With Minimum Sum](https://leetcode.com/problems/split-with-minimum-sum)
+
+A: 将数字分解，然后排序，从小到大依次相加。
+
+```go
+func splitNum(num int) int {
+    num1, num2 := 0, 0
+    nums := []int{}
+    for num != 0 {
+        nums = append(nums, num % 10)
+        num /= 10
+    }
+    sort.Ints(nums)
+    for i := 0; i < len(nums); i++ {
+        num1 = num1 * 10 + nums[i]
+        num1, num2 = num2, num1
+    }
+    return num1 + num2
+}
+```
