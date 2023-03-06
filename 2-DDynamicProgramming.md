@@ -29,6 +29,31 @@ public:
 };
 ```
 
+A: 可以省略二维数组，只用一维数组存储当前行的数据。
+
+```go
+func uniquePaths(m int, n int) int {
+    if m == 1 || n == 1 {
+        return 1
+    }
+    pre := make([]int, n)
+    cur := make([]int, n)
+    for i := 1; i < n; i++ {
+        pre[i] = 1
+    }
+    for i := 1; i < m; i++ {
+        cur[0] = 1
+        for j := 1; j < n; j++ {
+            cur[j] = pre[j] + cur[j - 1]
+        }
+        tmp := make([]int, n)
+        copy(tmp, cur)
+        pre = tmp
+    }
+    return pre[n - 1]
+}
+```
+
 ## [Longest Common Subsequence](https://leetcode.com/problems/longest-common-subsequence)
 
 A: 两个字符串组成grid，`grid[i][j]`按当前字母是否匹配，分别取对角线，或者上方和左方网格最大值。
