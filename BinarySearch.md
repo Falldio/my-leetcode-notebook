@@ -555,3 +555,23 @@ func singleNonDuplicate(nums []int) int {
     return nums[i]
 }
 ```
+
+## [Kth Missing Positive Number](https://leetcode.com/problems/kth-missing-positive-number)
+
+A: 二分查找。设想如果没有缺失的数字，则数组下标等于数组元素减一，即`arr[i] = i + 1`。因此，如果`arr[i] - i - 1 < k`，说明缺失的数字在右区间内，否则在左区间内。
+
+```go
+func findKthPositive(arr []int, k int) int {
+    l, r := 0, len(arr)
+    m := 0
+    for l < r {
+        m = l + (r - l) / 2
+        if arr[m] - m - 1 < k {
+            l = m + 1
+        } else {
+            r = m
+        }
+    }
+    return l + k
+}
+```
