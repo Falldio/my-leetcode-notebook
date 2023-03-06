@@ -24,6 +24,24 @@ public:
 };
 ```
 
+```go
+func climbStairs(n int) int {
+    if n == 1 {
+        return 1
+    }
+    if n == 2 {
+        return 2
+    }
+    dp := make([]int, n + 1)
+    dp[1] = 1
+    dp[2] = 2
+    for i := 3; i <= n; i++ {
+        dp[i] = dp[i - 1] + dp[i - 2]
+    }
+    return dp[n]
+}
+```
+
 ## [House Robber](https://leetcode.com/problems/house-robber)
 
 A: 当前house的最大值取决于前两个house的最大值，只用两个局部变量存储该值。
@@ -763,5 +781,28 @@ func waysToReachTarget(target int, types [][]int) int {
     }
 
     return ways[target]
+}
+```
+
+## [Fibonacci Number](https://leetcode.com/problems/fibonacci-number)
+
+A: DP，记录前两个数。
+
+```go
+func fib(n int) int {
+    if n == 0 {
+        return 0
+    }
+    if n == 1 {
+        return 1
+    }
+    first, second, cur := 0, 1, 1
+    for n > 2 {
+        first = second
+        second = cur
+        cur = first + second
+        n--
+    }
+    return cur
 }
 ```
