@@ -307,6 +307,26 @@ public:
 };
 ```
 
+```go
+func minCostClimbingStairs(cost []int) int {
+    first, second := 0, 0
+    for i := 2; i < len(cost) + 1; i++ {
+        tmp := first
+        first = min(first + cost[i - 1], second + cost[i - 2])
+        second = tmp
+    }
+    return first
+}
+
+func min(i, j int) int {
+    if i < j {
+        return i
+    } else {
+        return j
+    }
+}
+```
+
 ## [Partition Equal Subset Sum](https://leetcode.com/problems/partition-equal-subset-sum)
 
 A: 用set存放所有中间结果。
