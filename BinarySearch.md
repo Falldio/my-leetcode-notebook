@@ -575,3 +575,34 @@ func findKthPositive(arr []int, k int) int {
     return l + k
 }
 ```
+
+## [Minimum Time to Complete Trips](https://leetcode.com/discuss/interview-question/1246586/Amazon-or-OA-2021-or-Minimum-Time-to-Complete-Trips)
+
+A: 答案在一个**有序的时间序列**中，\[可能的最小用时为1， 可能的最大用时为`time\[0] * totalTrips`]，因此可以在该范围内二分查找。
+
+```go
+func minimumTime(time []int, totalTrips int) int64 {
+    sort.Ints(time)
+    var left int64 = 1
+    var right int64 = int64(totalTrips * time[0])
+    for left <= right {
+        mid := left + (right - left) / 2
+        fmt.Println(left, right, mid)
+        done := computeTrips(time, mid)
+        if done < totalTrips {
+            left = mid + 1
+        } else if done >= totalTrips {
+            right = mid - 1
+        }
+    }
+    return left
+}
+
+func computeTrips(time []int, cost int64) int {
+    ans := 0
+    for _, v := range time {
+        ans += int(cost) / v
+    }
+    return ans
+}
+```
