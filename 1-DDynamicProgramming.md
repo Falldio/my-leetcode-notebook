@@ -366,6 +366,47 @@ public:
 };
 ```
 
+A: 0-1背包。
+
+|       |   0   |   1   |   2   |   3   |   4   |   5   |   6   |   7   |   8   |   9   |  10   | **11** |
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :----: |
+|   0   |   0   |   0   |   0   |   0   |   0   |   0   |   0   |   0   |   0   |   0   |   0   |   0    |
+|   1   |   0   |   1   |   1   |   1   |   1   |   1   |   1   |   1   |   1   |   1   |   1   |   1    |
+|   5   |   0   |   1   |   1   |   1   |   1   |   5   |   6   |   6   |   6   |   6   |   6   |   6    |
+|  11   |   0   |   1   |   1   |   1   |   1   |   5   |   6   |   6   |   6   |   6   |   6   | **11** |
+|   5   |   0   |   1   |   1   |   1   |   1   |   5   |   6   |   6   |   6   |   6   |   6   | **11** |
+
+```go
+func canPartition(nums []int) bool {
+    target := 0
+    for _, v := range nums {
+        target += v
+    }
+    if target % 2 != 0 {
+        return false
+    } else {
+        target /= 2
+    }
+    dp := make([]int, 10001)
+    for i := 0; i < len(nums); i++ {
+        for j := target; j >= nums[i]; j-- {
+            // 可画一张二维DP表（target列索引行），每行从后往前遍历，避免该元素重复放入背包
+            // 以row[1]为例，如果从前往后遍历，那么col[j] = max(col[j], col[j - 1] + 1)，元素1必然多次放入背包
+            dp[j] = max(dp[j], dp[j - nums[i]] + nums[i])
+        }
+    }
+    return dp[target] == target
+}
+
+func max(i, j int) int {
+    if i < j {
+        return j
+    } else {
+        return i
+    }
+}
+```
+
 ## [Triangle](https://leetcode.com/problems/triangle)
 
 A: 每一层的最小路径为本层元素加上子层最小路径。
