@@ -158,6 +158,34 @@ public:
 };
 ```
 
+```go
+func minEatingSpeed(piles []int, h int) int {
+    minNum, maxNum := 1, 0
+    for _, v := range piles {
+        if v > maxNum {
+            maxNum = v
+        }
+    }
+    for minNum <= maxNum {
+        mid := minNum + (maxNum - minNum) / 2
+        time := 0
+        for _, v := range piles {
+            time += v / mid
+            v %= mid
+            if v != 0 {
+                time += 1
+            }
+        }
+        if time > h {
+            minNum = mid + 1
+        } else {
+            maxNum = mid - 1
+        }
+    }
+    return minNum
+}
+```
+
 ## [Time Based Key Value Store](https://leetcode.com/problems/time-based-key-value-store)
 
 A: 使用`upper_bound`查找上界。
