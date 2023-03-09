@@ -169,6 +169,41 @@ private:
 };
 ```
 
+A: 01背包问题。
+
+```go
+func findTargetSumWays(nums []int, target int) int {
+	sum := 0
+	for _, v := range nums {
+		sum += v
+	}
+	if abs(target) > sum {
+		return 0
+	}
+	if (sum+target)%2 == 1 {
+		return 0
+	}
+	// 计算背包大小：需要满足bag + (sum - bag) = target
+	bag := (sum + target) / 2
+	// 定义dp数组
+	dp := make([]int, bag+1)
+	// 初始化
+	dp[0] = 1
+	// 遍历顺序
+	for i := 0; i < len(nums); i++ {
+		for j := bag; j >= nums[i]; j-- {
+			//推导公式：组合问题，dp[j]代表组合为j有几种方法。
+			dp[j] += dp[j-nums[i]]
+		}
+	}
+	return dp[bag]
+}
+
+func abs(x int) int {
+	return int(math.Abs(float64(x)))
+}
+```
+
 ## [Interleaving String](https://leetcode.com/problems/interleaving-string)
 
 A: cache行列分别为s1、s2。
