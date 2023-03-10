@@ -821,3 +821,58 @@ func removeDuplicates(s string) string {
     return string(stk)
 }
 ```
+
+## [包含min函数的栈](https://leetcode.cn/problems/bao-han-minhan-shu-de-zhan-lcof)
+
+A: 维护两个栈，一个栈作为正常栈，另一个存放当前正常栈操作对应的最小值，类似于单调栈。
+
+```go
+type MinStack struct {
+    stk1 []int
+    stk2 []int
+}
+
+
+/** initialize your data structure here. */
+func Constructor() MinStack {
+    return MinStack{[]int{},[]int{}}
+}
+
+
+func (this *MinStack) Push(x int)  {
+    this.stk1 = append(this.stk1, x)
+    if len(this.stk2) != 0 {
+        if this.stk2[len(this.stk2)-1] < x {
+            this.stk2 = append(this.stk2, this.stk2[len(this.stk2)-1])
+            return
+        }
+    }
+    this.stk2 = append(this.stk2, x)
+}
+
+
+func (this *MinStack) Pop()  {
+    this.stk1 = this.stk1[:len(this.stk1) - 1]
+    this.stk2 = this.stk2[:len(this.stk2) - 1]
+}
+
+
+func (this *MinStack) Top() int {
+    return this.stk1[len(this.stk1) - 1]
+}
+
+
+func (this *MinStack) Min() int {
+    return this.stk2[len(this.stk2) - 1]
+}
+
+
+/**
+ * Your MinStack object will be instantiated and called as such:
+ * obj := Constructor();
+ * obj.Push(x);
+ * obj.Pop();
+ * param_3 := obj.Top();
+ * param_4 := obj.Min();
+ */
+```
