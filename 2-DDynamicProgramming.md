@@ -659,3 +659,40 @@ func uniquePathsWithObstacles(obstacleGrid [][]int) int {
     return pre[n - 1]
 }
 ```
+
+## [Ones and Zeros](https://leetcode.com/problems/ones-and-zeroes)
+
+A: 01背包问题，区别是背包现在有两个维度。
+
+```go
+func findMaxForm(strs []string, m int, n int) int {
+    dp := make([][]int, m + 1)
+    for i := 0; i <= m; i++ {
+        dp[i] = make([]int, n + 1)
+    }
+    for i := 0; i < len(strs); i++ {
+        ones, zeros := 0, 0
+        for _, c := range strs[i] {
+            if c == rune('1') {
+                ones++
+            } else {
+                zeros++
+            }
+        }
+        for j := n; j - ones >= 0; j-- {
+            for k := m; k - zeros >= 0; k-- {
+                dp[k][j] = max(dp[k][j], dp[k - zeros][j - ones] + 1)
+            }
+        }
+    }
+    return dp[m][n]
+}
+
+func max(i, j int) int {
+    if i < j {
+        return j
+    } else {
+        return i
+    }
+}
+```
