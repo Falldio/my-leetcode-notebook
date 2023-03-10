@@ -543,3 +543,79 @@ func coloredCells(n int) int64 {
     return ans
 }
 ```
+
+## [Linked List Random Node](https://leetcode.com/problems/linked-list-random-node)
+
+A: 暴力得到长度，然后取随机idx。
+
+```go
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+type Solution struct {
+    head *ListNode
+    cnt int
+}
+
+
+func Constructor(head *ListNode) Solution {
+    cur := head
+    cnt := 0
+    for cur != nil {
+        cnt++
+        cur = cur.Next
+    }
+    return Solution{head, cnt}
+}
+
+
+func (this *Solution) GetRandom() int {
+    idx := rand.Intn(this.cnt)
+    cur := this.head
+    for idx != 0 {
+        cur = cur.Next
+        idx--
+    }
+    return cur.Val
+}
+
+
+/**
+ * Your Solution object will be instantiated and called as such:
+ * obj := Constructor(head);
+ * param_1 := obj.GetRandom();
+ */
+ ```
+
+ A: Reservoir Sampling。
+
+[详解](https://leetcode.com/problems/linked-list-random-node/solutions/85659/brief-explanation-for-reservoir-sampling/)
+
+```go
+type Solution struct {
+	head *ListNode
+}
+
+func Constructor(head *ListNode) Solution {
+	return Solution{head: head}
+}
+
+func (this *Solution) GetRandom() int {
+	cnt, node, candidate := 0, this.head, this.head
+
+	for node != nil {
+		cnt++
+        // 1/k的概率替换
+		if rand.Intn(cnt) == 0 {
+			candidate = node
+		}
+		node = node.Next
+	}
+
+	return candidate.Val
+}
+```
