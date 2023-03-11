@@ -2853,3 +2853,44 @@ public:
     }
 };
 ```
+
+## [Convert Sorted Array to Binary Search Tree](https://leetcode.com/problems/convert-sorted-array-to-binary-search-tree)
+
+A: 快慢指针找中间结点，然后分段构造左右子树。
+
+```go
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func sortedListToBST(head *ListNode) *TreeNode {
+    return buildTree(head, nil)
+}
+
+func buildTree(begin, end *ListNode) *TreeNode {
+    fmt.Println(begin, end)
+    if begin == end {
+        return nil
+    }
+    fast, slow := begin, begin
+    for fast != end && fast.Next != end {
+        slow = slow.Next
+        fast = fast.Next.Next
+    }
+    root := &TreeNode{Val: slow.Val}
+    root.Left = buildTree(begin, slow)
+    root.Right = buildTree(slow.Next, end)
+    return root
+}
+```
