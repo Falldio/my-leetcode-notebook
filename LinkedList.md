@@ -314,6 +314,61 @@ private:
 };
 ```
 
+```go
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+func mergeKLists(lists []*ListNode) *ListNode {
+    if len(lists) == 0 {
+        return nil
+    }
+    for sz := 1; sz < len(lists); sz *= 2 {
+        for i := 0; i < len(lists) - sz; i += 2 * sz {
+            lists[i] = mergeLists(lists[i], lists[i+sz])
+        }
+    }
+    return lists[0]
+}
+
+func mergeLists(list1, list2 *ListNode) *ListNode {
+    if list1 == nil {
+        return list2
+    } else if list2 == nil {
+        return list1
+    }
+    var head *ListNode
+    if list1.Val < list2.Val {
+        head = list1
+        list1 = list1.Next
+    } else {
+        head = list2
+        list2 = list2.Next
+    }
+    cur := head
+    for list1 != nil && list2 != nil {
+        if list1.Val < list2.Val {
+            cur.Next = list1
+            list1 = list1.Next
+        } else {
+            cur.Next = list2
+            list2 = list2.Next
+        }
+        cur = cur.Next
+    }
+    if list1 != nil {
+        cur.Next = list1
+    }
+    if list2 != nil {
+        cur.Next = list2
+    }
+    return head
+}
+```
+
 ## [Copy List with Random Pointer](https://leetcode.com/problems/copy-list-with-random-pointer)
 
 A: 用`map`存储结点的对应关系。
