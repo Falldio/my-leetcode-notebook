@@ -814,3 +814,24 @@ func splitNum(num int) int {
     return num1 + num2
 }
 ```
+
+## [Rearrange Array to Maximize Prefix Score](https://leetcode.com/problems/rearrange-array-to-maximize-prefix-score)
+
+A: 降序排列。
+
+```go
+func maxScore(nums []int) int {
+    sort.Slice(nums, func(i, j int) bool {
+        return nums[i] > nums[j]
+    })
+    prefix := 0
+    ans := 0
+    for _, v := range nums {
+        prefix += v
+        if prefix > 0 {
+            ans++
+        }
+    }
+    return ans
+}
+```
