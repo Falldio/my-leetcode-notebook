@@ -2169,3 +2169,20 @@ int findValidSplit(vector<int>& nums) {
     return -1;
 }
 ```
+
+## [Count the Number of Vowel Strings in Range](https://leetcode.com/problems/count-the-number-of-vowel-strings-in-range)
+
+A: 在给定范围内判断元素首尾字母。
+
+```go
+func vowelStrings(words []string, left int, right int) int {
+    set := map[byte]bool{'a': true,'e': true,'i': true,'o': true,'u': true}
+    ans := 0
+    for i := left; i <= right; i++ {
+        if set[words[i][0]] == true && set[words[i][len(words[i])-1]] == true {
+            ans++
+        }
+    }
+    return ans
+}
+```
