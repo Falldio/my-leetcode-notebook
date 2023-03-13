@@ -198,3 +198,22 @@ func addBinary(a string, b string) string {
     return ans
 }
 ```
+
+## [Count the Number of Beautiful Subarrays](https://leetcode.com/problems/count-the-number-of-beautiful-subarrays)
+
+A: 题目条件实为异或操作，统计`xor = 0`的数组个数。前缀和+异或，当`xor == pre`时，即说明存在有效数组。
+
+```go
+func beautifulSubarrays(nums []int) int64 {
+    counter := make(map[int]int)
+    counter[0] = 1
+    answer := 0
+    xor := 0
+    for _,num := range(nums){
+        xor^=num
+        answer+=counter[xor]
+        counter[xor]+=1
+    }
+    return int64(answer)
+}
+```
