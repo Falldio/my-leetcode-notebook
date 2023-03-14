@@ -1334,6 +1334,44 @@ private:
 };
 ```
 
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+var (
+    ans int
+)
+
+func sumNumbers(root *TreeNode) int {
+    ans = 0
+    if root == nil {
+        return 0
+    }
+    dfs(root, 0)
+    return ans
+}
+
+func dfs(root *TreeNode, cur int) {
+    cur = cur * 10 + root.Val
+    if root.Left == nil && root.Right == nil {
+        fmt.Println(ans, cur)
+        ans += cur
+        return
+    }
+    if root.Left != nil {
+        dfs(root.Left, cur)
+    }
+    if root.Right != nil {
+        dfs(root.Right, cur)
+    }
+}
+```
+
 ## [House Robber III](https://leetcode.com/problems/house-robber-iii)
 
 A: pair<int, int>保存是否rob当前节点。
