@@ -1354,3 +1354,40 @@ func middleNode(head *ListNode) *ListNode {
     }
 }
 ```
+
+## [Maximum Twin Sum of a Linked List](https://leetcode.com/problems/maximum-twin-sum-of-a-linked-list)
+
+A: 用栈将后半段链表反转，**应该存在其他反转部分链表的方法**。
+
+```go
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+func pairSum(head *ListNode) int {
+    ans := 0
+    stk := []int{}
+    slow, fast := head, head
+    for fast != nil && fast.Next != nil {
+        fast = fast.Next.Next
+        slow = slow.Next
+    }
+    for slow != nil {
+        stk = append(stk, slow.Val)
+        slow = slow.Next
+    }
+    fast = head
+    for len(stk) != 0 {
+        sum := fast.Val + stk[len(stk) - 1]
+        stk = stk[:len(stk) - 1]
+        if sum > ans {
+            ans = sum
+        }
+        fast = fast.Next
+    }
+    return ans
+}
+```
