@@ -514,3 +514,36 @@ func numOfSubarrays(arr []int, k int, threshold int) int {
 	return count
 }
 ```
+
+## [Longest Turbulent Subarray](https://leetcode.com/problems/longest-turbulent-subarray)
+
+A: 滑动窗口，注意等号时R的移动。
+
+```go
+func maxTurbulenceSize(arr []int) int {
+    if len(arr) <= 1 {
+        return len(arr)
+    }
+    res, left, right, lastNum, flag := 0, 0, 0, arr[0], arr[1]-arr[0]
+    for left < len(arr) {
+        if right < len(arr)-1 && ((arr[right+1] > lastNum && flag > 0) || (arr[right+1] < lastNum && flag < 0) || (right == left)) {
+            right++
+            flag = lastNum-arr[right]
+            lastNum = arr[right]
+        } else {
+            if left != right && flag != 0 {
+                res = max(res, right-left+1)
+            }
+            left++
+        }
+    }
+    return max(res, 1)
+}
+
+func max(a, b int) int {
+    if a > b {
+        return a
+    }
+    return b
+}
+```
