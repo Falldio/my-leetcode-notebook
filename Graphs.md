@@ -1384,3 +1384,50 @@ func minJumps(arr []int) int {
 	return -1
 }
 ```
+
+## [Course Schedule IV](https://leetcode.com/problems/course-schedule-iv)
+
+A: 建立邻接表，然后用 DFS 检查是否存在路径。
+
+```go
+func checkIfPrerequisite(n int, prerequisites [][]int, queries [][]int) []bool {
+	adjList := make([][]int, n)
+
+	for i := 0; i < len(adjList); i++ {
+		adjList[i] = []int{}
+	}
+
+	for _, v := range prerequisites {
+		x, y := v[0], v[1]
+		adjList[x] = append(adjList[x], y)
+	}
+
+	results := []bool{}
+
+	for _, v := range queries {
+		x, y := v[0], v[1]
+	    seen := make([]int, n)
+        results = append(results, checkCourse(x, y, &adjList, &seen))
+	}
+
+	return results
+}
+
+func checkCourse(x int, y int, adjList *[][]int, seen *[]int) bool {
+	(*seen)[x] = 1
+	
+	if x == y {
+		return true
+	}
+
+	for _, v := range (*adjList)[x] {
+        if (*seen)[v] == 0 {
+            if checkCourse(v, y, adjList, seen) {
+                return true
+            }
+        }
+	}
+
+	return false
+}
+```
