@@ -836,3 +836,29 @@ func countSubarrays(nums []int, minK int, maxK int) int64 {
     return res
 }
 ```
+
+## [Remove Duplicates from Sorted Array II](https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii)
+
+A: 双指针法，j每次移动到下一个不同的元素，同时记录当前元素的个数，用i记录当前元素应该放置的位置，如果当前元素个数大于2，那么只需要放置两个即可。
+
+```go
+func removeDuplicates(nums []int) int {
+    i, j := 0, 0
+    for j < len(nums) {
+        cnt := 1
+        for j + 1 < len(nums) && nums[j] == nums[j + 1] {
+            j++
+            cnt++
+        }
+        if cnt > 2 {
+            cnt = 2
+        }
+        for k := 0; k < cnt; k++ {
+            nums[i] = nums[j]
+            i++
+        }
+        j++
+    }
+    return i
+}
+```
