@@ -2932,3 +2932,38 @@ func buildTree(begin, end *ListNode) *TreeNode {
     return root
 }
 ```
+
+## [Check Completeness of a Binary Tree](https://leetcode.com/problems/check-completeness-of-a-binary-tree)
+
+A: BFS，当处理了空节点后，就不应该再有非空节点。
+
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func isCompleteTree(root *TreeNode) bool {
+    q := []*TreeNode{root}
+    flag := false
+    for len(q) != 0 {
+        for i := len(q); i > 0; i-- {
+            cur := q[0]
+            q = q[1:]
+            if cur != nil {
+                if flag {
+                    return false
+                }
+                q = append(q, cur.Left)
+                q = append(q, cur.Right)
+            } else {
+                flag = true
+            }
+        }
+    }
+    return true
+}
+```
