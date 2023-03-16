@@ -525,7 +525,7 @@ public:
 
 ## [Combination Sum IV](https://leetcode.com/problems/combination-sum-iv)
 
-A: 组合背包问题。
+A: 组合背包问题，同时也是bottom-up DP，考虑fill lower target一直到target。
 
 ```cpp
 class Solution {
@@ -544,6 +544,21 @@ public:
         return dp[target];
     }
 };
+```
+
+```go
+func combinationSum4(nums []int, target int) int {
+    dp := make([]int, target + 1)
+    dp[0] = 1
+    for i := 1; i <= target; i++ {
+        for j := 0; j < len(nums); j++ {
+            if nums[j] <= i {
+                dp[i] += dp[i - nums[j]]
+            }
+        }
+    }
+    return dp[target]
+}
 ```
 
 ## [Perfect Squares](https://leetcode.com/problems/perfect-squares)
