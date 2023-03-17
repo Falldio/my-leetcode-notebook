@@ -623,6 +623,29 @@ public:
 };
 ```
 
+```go
+func numSquares(n int) int {
+    dp := make([]int, n + 1)
+    for k := range dp {
+        dp[k] = math.MaxInt
+    }
+    for i := 1; i <= n; i++ {
+        for j := 1; j <= n / 2 + 1; j++ {
+            num := j * j
+            if i == num {
+                dp[i] = 1
+            }
+            if num < i {
+                if dp[i] > dp[i - num] + 1 {
+                    dp[i] = dp[i - num] + 1
+                }
+            }
+        }
+    }
+    return dp[n]
+}
+```
+
 ## [Maximum Subarray Min-Product](https://leetcode.com/problems/maximum-subarray-min-product)
 
 A: 前缀和记录数组前n个元素之和，monostack（升序堆）用于得到当前最小元素及subarray区间。
