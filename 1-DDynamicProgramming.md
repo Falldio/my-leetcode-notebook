@@ -223,6 +223,33 @@ public:
 };
 ```
 
+```go
+func coinChange(coins []int, amount int) int {
+    sort.Ints(coins)
+    if amount == 0 {
+        return 0
+    }
+    dp := make([]int, amount + 1)
+    for i := coins[0]; i <= amount; i++ {
+        for j := 0; j < len(coins); j++ {
+            if i == coins[j] {
+                dp[i] = 1
+            }
+            if coins[j] <= i && dp[i - coins[j]] > 0 {
+                if dp[i] == 0 || dp[i] > dp[i - coins[j]] + 1 {
+                    dp[i] = dp[i - coins[j]] + 1
+                }
+            }
+        }
+    }
+    if dp[amount] == 0 {
+        return -1
+    } else {
+        return dp[amount]
+    }
+}
+```
+
 ## [Word Break](https://leetcode.com/problems/word-break)
 
 A: 逐字母向后处理，逐字母向前回溯。
