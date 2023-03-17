@@ -79,6 +79,71 @@ private:
  */
 ```
 
+```go
+type Node struct {
+    isWord bool
+    nodes []*Node
+}
+
+type Trie struct {
+    root *Node
+}
+
+
+func Constructor() Trie {
+    return Trie{root: &Node{}}
+}
+
+
+func (this *Trie) Insert(word string)  {
+    cur := this.root
+    for _, ch := range word {
+        if cur.nodes == nil {
+            cur.nodes = make([]*Node, 26)
+        }
+        if cur.nodes[ch - 'a'] == nil {
+            next := &Node{}
+            cur.nodes[ch - 'a'] = next
+        }
+        cur = cur.nodes[ch - 'a']
+    }
+    cur.isWord = true
+}
+
+
+func (this *Trie) Search(word string) bool {
+    cur := this.root
+    for _, ch := range word {
+        if cur.nodes == nil || cur.nodes[ch - 'a'] == nil {
+            return false
+        }
+        cur = cur.nodes[ch - 'a']
+    }
+    return cur.isWord
+}
+
+
+func (this *Trie) StartsWith(prefix string) bool {
+    cur := this.root
+    for _, ch := range prefix {
+        if cur.nodes == nil || cur.nodes[ch - 'a'] == nil {
+            return false
+        }
+        cur = cur.nodes[ch - 'a']
+    }
+    return true
+}
+
+
+/**
+ * Your Trie object will be instantiated and called as such:
+ * obj := Constructor();
+ * obj.Insert(word);
+ * param_2 := obj.Search(word);
+ * param_3 := obj.StartsWith(prefix);
+ */
+ ```
+
 ## [Design Add And Search Words Data Structure](https://leetcode.com/problems/design-add-and-search-words-data-structure)
 
 A: 用int标识当前处理位置。
