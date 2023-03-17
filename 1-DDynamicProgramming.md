@@ -283,6 +283,23 @@ public:
 };
 ```
 
+```go
+func wordBreak(s string, wordDict []string) bool {
+    dp := make([]bool, len(s) + 1)
+    dp[0] = true
+    for i := 1; i <= len(s); i++ {
+        for _, w := range wordDict {
+            if i - len(w) >= 0 {
+                if dp[i - len(w)] && s[i - len(w):i] == w{
+                    dp[i] = true
+                }
+            }
+        }
+    }
+    return dp[len(s)]
+}
+```
+
 ## [Longest Increasing Subsequence](https://leetcode.com/problems/longest-increasing-subsequence)
 
 A: 遍历的同时存储当前位置的LIS，以供后续遍历回溯。
