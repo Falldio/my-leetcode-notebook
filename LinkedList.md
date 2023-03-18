@@ -978,6 +978,56 @@ public:
  */
 ```
 
+```go
+type BrowserHistory struct {
+    back []string
+    next []string
+}
+
+
+func Constructor(homepage string) BrowserHistory {
+    ans := BrowserHistory{ back: []string{homepage}, next: []string{}}
+    return ans
+}
+
+
+func (this *BrowserHistory) Visit(url string)  {
+    this.next = []string{}
+    this.back = append(this.back, url)
+}
+
+
+func (this *BrowserHistory) Back(steps int) string {
+    for steps > 0 && len(this.back) > 1 {
+        cur := this.back[len(this.back) - 1]
+        this.back = this.back[:len(this.back) - 1]
+        this.next = append(this.next, cur)
+        steps--
+    }
+    return this.back[len(this.back) - 1]
+}
+
+
+func (this *BrowserHistory) Forward(steps int) string {
+    for steps > 0 && len(this.next) > 0 {
+        cur := this.next[len(this.next) - 1]
+        this.next = this.next[:len(this.next) - 1]
+        this.back = append(this.back, cur)
+        steps--
+    }
+    return this.back[len(this.back) - 1]
+}
+
+
+/**
+ * Your BrowserHistory object will be instantiated and called as such:
+ * obj := Constructor(homepage);
+ * obj.Visit(url);
+ * param_2 := obj.Back(steps);
+ * param_3 := obj.Forward(steps);
+ */
+```
+
 ## [Rotate List](https://leetcode.com/problems/rotate-list)
 
 A: 将链表连成环，新链表的尾指针在len-k处。
