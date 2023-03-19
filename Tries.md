@@ -218,6 +218,70 @@ private:
  */
  ```
 
+ ```go
+ type Node struct {
+    isWord bool
+    next []*Node
+}
+
+type WordDictionary struct {
+    isWord bool
+    next []*WordDictionary
+}
+
+
+func Constructor() WordDictionary {
+    return WordDictionary{next: make([]*WordDictionary, 26)}
+}
+
+
+func (this *WordDictionary) AddWord(word string)  {
+    cur := this
+    for i := 0; i < len(word); i++ {
+        if cur.next == nil {
+            cur.next = make([]*WordDictionary, 26)
+        }
+        if cur.next[word[i] - 'a'] == nil {
+            cur.next[word[i] - 'a'] = &WordDictionary{next: make([]*WordDictionary, 26)}
+        }
+        cur = cur.next[word[i] - 'a']
+    }
+    cur.isWord = true
+}
+
+
+func (this *WordDictionary) Search(word string) bool {
+    cur := this
+    if len(word) == 0 {
+        return cur.isWord
+    }
+    if word[0] == '.' {
+        for _, node := range cur.next {
+            if node != nil {
+                if node.Search(word[1:]) {
+                    return true
+                }
+            }
+        }
+    } else {
+        if cur.next[word[0] - 'a'] == nil {
+            return false
+        } else {
+            return cur.next[word[0] - 'a'].Search(word[1:])
+        }
+    }
+    return false
+}
+
+
+/**
+ * Your WordDictionary object will be instantiated and called as such:
+ * obj := Constructor();
+ * obj.AddWord(word);
+ * param_2 := obj.Search(word);
+ */
+```
+
 ## [Word Search II](https://leetcode.com/problems/word-search-ii)
 
 A: Trie，DFS，回溯。
