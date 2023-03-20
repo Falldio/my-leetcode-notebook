@@ -1610,6 +1610,35 @@ public:
 };
 ```
 
+A: 贪心，前后两次遍历，第一次种花第二次拔花。
+
+```go
+func canPlaceFlowers(flowerbed []int, n int) bool {
+    i := 0
+    for i < len(flowerbed) {
+        if flowerbed[i] == 1 {
+            i += 2
+        } else {
+            if flowerbed[i] == 0 && (i == 0 || flowerbed[i-1] != 1) {
+                n--
+                flowerbed[i] = 1
+                i += 2
+            } else {
+                i++
+            }
+        }
+    }
+    i = len(flowerbed) - 1
+    for i >= 0 {
+        if flowerbed[i] == 1 && i != len(flowerbed) - 1 && flowerbed[i + 1] == 1 {
+            n++
+        }
+        i--
+    }
+    return n <= 0
+}
+```
+
 ## [Majority Element](https://leetcode.com/problems/majority-element)
 
 A: Boyer-Moore 投票算法，如果count为0，则将当前元素赋值给candidate，否则count加1或减1。即，遇到不同数字则count减1，遇到相同数字则count加1，最后剩下的数字就是出现次数最多的数字。
