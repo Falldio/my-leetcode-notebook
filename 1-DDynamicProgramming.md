@@ -65,6 +65,26 @@ public:
 };
 ```
 
+```go
+func rob(nums []int) int {
+    pre, cur, nxt := 0, nums[0], 0
+    for i := 1; i < len(nums); i++ {
+        nxt = max(cur, pre + nums[i])
+        pre = cur
+        cur = nxt
+    }
+    return cur
+}
+
+func max(i, j int) int {
+    if i > j {
+        return i
+    } else {
+        return j
+    }
+}
+```
+
 ## [House Robber II](https://leetcode.com/problems/house-robber-ii)
 
 A: 分解为两个House Robber，[0, n-2]和[1, n-1]。
