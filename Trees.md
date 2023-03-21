@@ -1395,6 +1395,41 @@ public:
 };
 ```
 
+A: DFS的多返回值包含是否计算当前节点。
+
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func rob(root *TreeNode) int {
+    return max(dfs(root))
+}
+
+func dfs(root *TreeNode) (int, int) {
+    if root == nil {
+        return 0, 0
+    }
+    left0, left1 := dfs(root.Left)
+    right0, right1 := dfs(root.Right)
+    return root.Val + left1 + right1, max(left1 + right1, left0 + right0, left1 + right0, left0 + right1)
+}
+
+func max(nums ...int) int {
+    cur := -1
+    for _, n := range nums {
+        if n > cur {
+            cur = n
+        }
+    }
+    return cur
+}
+```
+
 ## [Flip Equivalent Binary Trees](https://leetcode.com/problems/flip-equivalent-binary-trees)
 
 A: 按照情况递归比较。
