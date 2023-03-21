@@ -110,6 +110,34 @@ private:
 };
 ```
 
+```go
+func rob(nums []int) int {
+    if len(nums) == 1 {
+        return nums[0]
+    }
+    return max(helper(nums[1:]), helper(nums[:len(nums) - 1]))
+}
+
+func helper(nums []int) int {
+    pre, cur, nxt := 0, nums[0], 0
+    for i := 1; i < len(nums); i++ {
+        nxt = max(cur, pre + nums[i])
+        pre = cur
+        cur = nxt
+    }
+    return cur
+}
+
+func max(i, j int) int {
+    if i > j {
+        return i
+    } else {
+        return j
+    }
+}
+```
+
+
 ## [Longest Palindromic Substring](https://leetcode.com/problems/longest-palindromic-substring)
 
 A: 对每一个字符，左右滑动指针，进行奇数偶数两种情况判断，子串为回文是外串为回文的必要条件。
