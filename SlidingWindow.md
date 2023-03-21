@@ -547,3 +547,27 @@ func max(a, b int) int {
     return b
 }
 ```
+
+## [Number of Zero-Filled Subarrays](https://leetcode.com/problems/number-of-zero-filled-subarrays)
+
+A: 滑动窗口，连续0的数组个数存在数学关系。
+
+```go
+func zeroFilledSubarray(nums []int) int64 {
+    var ans int64
+    i, j := 0, 0
+    for j < len(nums) {
+        if nums[j] == 0 {
+            ans += int64(j - i + 1)
+            j++
+        } else {
+            i = j
+            for i < len(nums) && nums[i] != 0 {
+                i++
+            }
+            j = i
+        }
+    }
+    return ans
+}
+```
