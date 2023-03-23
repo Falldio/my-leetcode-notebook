@@ -101,6 +101,27 @@ int maxProfit(vector<int> &prices) {
 }
 ```
 
+```go
+func maxProfit(prices []int) int {
+    prevSell, prevBuy, sell, buy := 0, 0, 0, math.MinInt
+    for _, p := range prices {
+        prevBuy = buy
+        buy = max(prevSell - p, buy)
+        prevSell = sell
+        sell = max(prevBuy + p, sell)
+    }
+    return sell
+}
+
+func max(i, j int) int {
+    if i > j {
+        return i
+    } else {
+        return j
+    }
+}
+```
+
 ## [Coin Change II](https://leetcode.com/problems/coin-change-ii)
 
 A: 填表，每个方格`dp[coin][amount]`为使用从当前coin到列尾所有coin时，集齐amount的方法数。
