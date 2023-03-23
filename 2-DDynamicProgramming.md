@@ -803,3 +803,28 @@ func max(a, b int) int {
     return b
 }
 ```
+
+## [Best Time to Buy And Sell Stock with Transaction Fee](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee)
+
+A: 状态机，同上。
+
+```go
+func maxProfit(prices []int, fee int) int {
+    prevBuy, prevSell, buy, sell := 0, 0, -50001, 0
+    for _, p := range prices {
+        prevBuy = buy
+        prevSell = sell
+        buy = max(prevSell - p, buy)
+        sell = max(prevBuy + p - fee, sell)
+    }
+    return sell
+}
+
+func max(i, j int) int {
+    if i > j {
+        return i
+    } else {
+        return j
+    }
+}
+```
