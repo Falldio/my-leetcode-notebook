@@ -350,7 +350,7 @@ func wordBreak(s string, wordDict []string) bool {
 
 ## [Longest Increasing Subsequence](https://leetcode.com/problems/longest-increasing-subsequence)
 
-A: 遍历的同时存储当前位置的LIS，以供后续遍历回溯。
+A: 二重遍历，第一重遍历到当前位置，第二重遍历到当前位置之前的所有位置，如果当前位置的值大于之前位置的值，那么当前位置的最长递增子序列长度为之前位置的最长递增子序列长度加一。
 
 ```cpp
 class Solution {
@@ -375,6 +375,33 @@ public:
         return ans;
     }
 };
+```
+
+```go
+func lengthOfLIS(nums []int) int {
+    dp := make([]int, len(nums))
+    for i := range dp {
+        dp[i] = 1
+    }
+    ans := 0
+    for i := 0; i < len(dp); i++ {
+        for j := 0; j < i; j++ {
+            if nums[j] < nums[i] {
+                dp[i] = max(dp[j] + 1, dp[i])
+            }
+        }
+        ans = max(dp[i], ans)
+    }
+    return ans
+}
+
+func max(i, j int) int {
+    if i > j {
+        return i
+    } else {
+        return j
+    }
+}
 ```
 
 ## [Min Cost Climbing Stairs](https://leetcode.com/problems/min-cost-climbing-stairs)
