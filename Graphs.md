@@ -702,7 +702,7 @@ public:
 
 ## [Reorder Routes to Make All Paths Lead to The City Zero](https://leetcode.com/problems/reorder-routes-to-make-all-paths-lead-to-the-city-zero)
 
-A: 将边视作双向，dfs，实际上无法到达则ans++。
+A: 将边视作双向（用负数指代实际不存在的边），dfs，实际上无法到达则ans++。
 
 ```cpp
 class Solution {
@@ -724,6 +724,47 @@ public:
         return dfs(al, vector<bool>(n) = {}, 0);
     }
 };
+```
+
+```go
+var (
+    adj map[int][]int
+)
+
+func minReorder(n int, connections [][]int) int {
+    adj = map[int][]int{}
+    for _, c := range connections {
+        if adj[c[0]] == nil {
+            adj[c[0]] = []int{}
+        }
+        if adj[c[1]] == nil {
+            adj[c[1]] = []int{}
+        }
+        adj[c[0]] = append(adj[c[0]], c[1])
+        adj[c[1]] = append(adj[c[1]], -c[0])
+    }
+    visited := map[int]struct{}{}
+    return dfs(visited, 0)
+}
+
+func dfs(visited map[int]struct{}, from int) int {
+    if _, ok := visited[from]; ok {
+        return 0
+    }
+    visited[from] = struct{}{}
+    changes := 0
+    for _, e := range adj[from] {
+        if _, ok := visited[e]; !ok {
+            if e > 0 {
+                changes++
+                changes += dfs(visited, e)
+            } else {
+                changes += dfs(visited, -e)
+            }
+        }
+    }
+    return changes
+}
 ```
 
 ## [Snakes And Ladders](https://leetcode.com/problems/snakes-and-ladders)
