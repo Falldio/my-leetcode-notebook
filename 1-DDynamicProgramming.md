@@ -1077,3 +1077,25 @@ func max(a, b int) int {
 	return b
 }
 ```
+
+## [Longest Continuous Increasing Subsequence](https://leetcode.com/problems/longest-continuous-increasing-subsequence)
+
+A: 每次只需要比较前一个值即可。
+
+```go
+func findLengthOfLCIS(nums []int) int {
+    ans := 1
+    pre, cur := 1, 1
+    for i := 1; i < len(nums); i++ {
+        if nums[i] > nums[i - 1] {
+            cur = pre + 1
+        }
+        if cur > ans {
+            ans = cur
+        }
+        pre = cur
+        cur = 1
+    }
+    return ans
+}
+```
