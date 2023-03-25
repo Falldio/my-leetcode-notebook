@@ -1634,3 +1634,52 @@ func makeConnected(n int, connections [][]int) int {
 	return group - 1
 }
 ```
+
+## [Count Unreachable Pairs of Nodes in an Undirected Graph](https://leetcode.com/problems/count-unreachable-pairs-of-nodes-in-an-undirected-graph)
+
+A: DFS。
+
+```go
+func countPairs(n int, edges [][]int) int64 {
+    visited := make([]bool, n)
+    adj := map[int][]int{}
+    for _, e := range edges {
+        if adj[e[0]] == nil {
+            adj[e[0]] = []int{}
+        }
+        if adj[e[1]] == nil {
+            adj[e[1]] = []int{}
+        }
+        adj[e[0]] = append(adj[e[0]], e[1])
+        adj[e[1]] = append(adj[e[1]], e[0])
+    }
+    groups := []int64{}
+    for i := 0; i < n; i++ {
+        if !visited[i] {
+            num := dfs(i, visited, adj)
+            groups = append(groups, int64(num))
+        }
+    }
+    if len(groups) == 1 {
+        return 0
+    }
+    var ans int64
+    for i := 0; i < len(groups); i++ {
+        for j := i + 1; j < len(groups); j++ {
+            ans += groups[i] * groups[j]
+        }
+    }
+    return ans
+}
+
+func dfs(i int, visited []bool, adj map[int][]int) int {
+    nums := 1
+    visited[i] = true
+    for _, to := range adj[i] {
+        if !visited[to] {
+            nums += dfs(to, visited, adj)
+        }
+    }
+    return nums
+}
+```
