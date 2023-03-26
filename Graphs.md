@@ -1683,3 +1683,46 @@ func dfs(i int, visited []bool, adj map[int][]int) int {
     return nums
 }
 ```
+
+## [Longest Cycle in a Graph](https://leetcode.com/problems/longest-cycle-in-a-graph)
+
+A: DFS。
+
+```go
+func longestCycle(edges []int) int {
+	n := len(edges)
+	times := make([]int, n) // times[i] is the time when node i is visited
+	visited := func(i int) bool {
+		return times[i] > 0
+	}
+	t := 1
+	res := -1
+	for i := range edges {
+		t0 := t
+		if visited(i) {
+			continue
+		}
+		times[i] = t
+		t++
+		// Iterate until end or reaching a previously visited node
+		first, second := i, edges[i]
+		for second != -1 && !visited(second) {
+			times[second] = t
+			first = second
+			second = edges[second]
+			t++
+		}
+		if second != -1 && times[second] >= t0 {
+			res = max(res, times[first]-times[second]+1)
+		}
+	}
+	return res
+}
+
+func max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}
+```
