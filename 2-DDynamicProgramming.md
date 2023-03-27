@@ -554,6 +554,36 @@ public:
 };
 ```
 
+```go
+func minPathSum(grid [][]int) int {
+    m, n := len(grid), len(grid[0])
+    pre := grid[0]
+    for i := 1; i < n; i++ {
+        pre[i] += pre[i - 1]
+    }
+    cur := make([]int, n)
+    for i := 1; i < m; i++ {
+        cur[0] = pre[0] + grid[i][0]
+        for j := 1; j < n; j++ {
+            cur[j] = min(cur[j-1], pre[j]) + grid[i][j]
+        }
+        tmp := make([]int, n)
+        copy(tmp, cur)
+        pre = tmp
+        cur = make([]int, n)
+    }
+    return pre[n-1]
+}
+
+func min(i, j int) int {
+    if i < j {
+        return i
+    } else {
+        return j
+    }
+}
+```
+
 ## [Maximal Square](https://leetcode.com/problems/maximal-square)
 
 A: DP。
