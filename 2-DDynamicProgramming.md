@@ -858,3 +858,30 @@ func max(i, j int) int {
     }
 }
 ```
+
+## [Maximum Length of Repeated Subarray](https://leetcode.com/problems/maximum-length-of-repeated-subarray)
+
+A: dp表中的每个元素表示以A[i-1]和B[j-1]结尾的最长公共子数组的长度。最后答案是dp表中的最大值。
+
+```go
+func findLength(A []int, B []int) int {
+	m, n := len(A), len(B)
+	res := 0
+	dp := make([][]int, m+1)
+	for i := 0; i <= m; i++ { 
+		dp[i] = make([]int, n+1)
+	}
+
+	for i := 1; i <= m; i++ {
+		for j := 1; j <= n; j++ {
+			if A[i-1] == B[j-1] {
+				dp[i][j] = dp[i-1][j-1] + 1
+			}
+			if dp[i][j] > res {
+				res = dp[i][j]
+			}
+		}
+	}
+	return res
+}
+```
