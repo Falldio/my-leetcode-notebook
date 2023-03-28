@@ -830,6 +830,77 @@ int mincostTickets(vector<int>& days, vector<int>& costs, int cost = 0) {
 }
 ```
 
+```go
+// Golang doesn't have natural built in min/max function for integers
+// Programmer have to implement it manually
+func MinOf(vars ...int) int {
+    min := vars[0]
+
+    for _, i := range vars {
+        if min > i {
+            min = i
+        }
+    }
+
+    return min
+}
+
+
+func Max( x, y int) int {
+    
+    if x > y{
+        return x
+    }else{
+        return y
+    }
+    
+}
+
+
+type void struct{}
+var member void
+
+func mincostTickets(days []int, costs []int) int {
+    
+    // help reader to understand code, to avoid magic number
+    const _1day, _7day, _30day = 0, 1, 2
+    
+    // set of travel days
+    travelDays := make( map[int]void )
+    
+    for _, curTravelDay := range days{
+        travelDays[ curTravelDay ] = member
+    }
+    
+    // last travel day from input array
+    lastTraverlDay := days[ len(days) - 1 ]
+    
+    // dp table
+    dpCost := make([]int, lastTraverlDay+1)
+    
+    for day_i := 1 ; day_i <= lastTraverlDay ; day_i++ {
+        
+        if _, isTravelDay := travelDays[day_i] ; isTravelDay == false{
+            
+            // today is not traveling day
+            // no extra cost
+            dpCost[ day_i ] = dpCost[ day_i -1 ]
+        
+        }else{
+            
+                // today is traveling day
+                // compute optimal cost by DP
+                
+                dpCost[day_i] = MinOf( dpCost[ day_i - 1 ]  + costs[ _1day ],
+                                        dpCost[ Max(day_i - 7, 0) ]  + costs[ _7day ],
+                                        dpCost[ Max(day_i - 30, 0) ] + costs[ _30day ]     )
+        }
+    }
+    
+    return dpCost[ lastTraverlDay ]
+}
+```
+
 ## [Integer Break](https://leetcode.com/problems/integer-break)
 
 A: DP，数组存储第i个数字的最大product。
