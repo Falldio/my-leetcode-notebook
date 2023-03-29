@@ -835,3 +835,19 @@ func maxScore(nums []int) int {
     return ans
 }
 ```
+
+## [Reducing Dishes](https://leetcode.com/problems/reducing-dishes)
+
+A: 降序排列，然后从前往后累加。通过suffixSum的累加实现了较大数字的多次累加。
+
+```go
+func maxSatisfaction(satisfaction []int) int {
+    sort.Ints(satisfaction)
+    maxSatisfaction, suffixSum := 0, 0
+    for i := len(satisfaction)-1; i >= 0 && suffixSum + satisfaction[i] > 0; i-- {
+        suffixSum += satisfaction[i]
+        maxSatisfaction += suffixSum
+    }
+    return maxSatisfaction
+}
+```
