@@ -410,6 +410,41 @@ public:
 };
 ```
 
+```go
+func numDistinct(s string, t string) int {
+    if len(t) > len(s) {
+        return 0
+    }
+    pre := make([]int, len(s) + 1)
+    for i := range pre {
+        pre[i] = 1
+    }
+    cur := make([]int, len(s) + 1)
+    for i := 1; i <= len(t); i++ {
+        for j := i; j <= len(s); j++ {
+            if t[i - 1] == s[j - 1] {
+                cur[j] = cur[j - 1] + pre[j - 1]
+            } else {
+                cur[j] = cur[j - 1]
+            }
+        }
+        tmp := make([]int, len(s) + 1)
+        copy(tmp, cur)
+        pre = tmp
+        cur = make([]int, len(s) + 1)
+    }
+    return pre[len(s)]
+}
+
+func max(i, j int) int {
+    if i > j {
+        return i
+    } else {
+        return j
+    }
+}
+```
+
 ## [Edit Distance](https://leetcode.com/problems/edit-distance)
 
 A: DP表，编辑字符串的三种操作分别对应右侧、右下、下方表格值。
