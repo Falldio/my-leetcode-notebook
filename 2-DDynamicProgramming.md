@@ -111,6 +111,39 @@ func max(a,b int)int  {
 }
 ```
 
+## [Uncrossed Lines](https://leetcode.com/problems/uncrossed-lines)
+
+A: 同上一题，只是求的是最大匹配数。
+
+```go
+func maxUncrossedLines(nums1 []int, nums2 []int) int {
+    m, n := len(nums2) + 1, len(nums1) + 1
+    pre := make([]int, n)
+    cur := make([]int, n)
+    for i := 1; i < m; i++ {
+        for j := 1; j < n; j++ {
+            if nums2[i - 1] == nums1[j - 1] {
+                cur[j] = pre[j - 1] + 1
+            } else {
+                cur[j] = max(pre[j], cur[j - 1])
+            }
+        }
+        tmp := make([]int, n)
+        copy(tmp, cur)
+        pre = tmp
+    }
+    return pre[n - 1]
+}
+
+func max(i, j int) int {
+    if i < j {
+        return j
+    } else {
+        return i
+    }
+}
+```
+
 ## [Best Time to Buy And Sell Stock With Cooldown](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown)
 
 A: DP + 状态机（卖、持有、cd）。
