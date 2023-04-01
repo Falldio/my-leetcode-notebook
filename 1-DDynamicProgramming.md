@@ -207,6 +207,34 @@ private:
 };
 ```
 
+A: 二维DP，注意要从下往上遍历。
+
+```go
+func countSubstrings(s string) int {
+    dp := make([][]bool, len(s))
+    for i := range dp {
+        dp[i] = make([]bool, len(s))
+    }
+    ans := 0
+    for i := len(s) - 1; i >= 0; i-- {
+        for j := i; j < len(s); j++ {
+            if s[i] == s[j] {
+                if j - i <= 1 {
+                    ans++
+                    dp[i][j] = true
+                } else {
+                    if dp[i + 1][j - 1] {
+                        ans++
+                        dp[i][j] = true
+                    }
+                }
+            }
+        }
+    }
+    return ans
+}
+```
+
 ## [Decode Ways](https://leetcode.com/problems/decode-ways)
 
 A: 长度为n的字符串解码的子问题为长度为n-1和长度为n-2的子问题解码，具体看前面能否出现两位数。
