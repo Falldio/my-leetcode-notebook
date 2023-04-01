@@ -475,6 +475,39 @@ public:
 };
 ```
 
+A: DP。
+
+```go
+func isSubsequence(s string, t string) bool {
+    if len(s) > len(t) {
+        return false
+    }
+    pre := make([]int, len(t) + 1)
+    cur := make([]int, len(t) + 1)
+    for i := 1; i <= len(s); i++ {
+        for j := 1; j <= len(t); j++ {
+            if s[i - 1] == t[j - 1] {
+                cur[j] = 1 + pre[j - 1]
+            } else {
+                cur[j] = max(pre[j], cur[j - 1])
+            }
+        }
+        tmp := make([]int, len(t) + 1)
+        copy(tmp, cur)
+        pre = tmp
+    }
+    return pre[len(t)] == len(s)
+}
+
+func max(i, j int) int {
+    if i > j {
+        return i
+    } else {
+        return j
+    }
+}
+```
+
 ## [Lexicographically Smallest Equivalent String](https://leetcode.com/problems/lexicographically-smallest-equivalent-string)
 
 A: 并查集。
