@@ -1718,6 +1718,35 @@ public:
 };
 ```
 
+```go
+func nextGreaterElement(nums1 []int, nums2 []int) []int {
+    ans := make([]int, len(nums1))
+    for i := range ans {
+        ans[i] = -1
+    }
+    m := map[int]int{}
+    for i, n := range nums1 {
+        m[n] = i
+    }
+    stk := []int{}
+    for _, n := range nums2 {
+        if len(stk) == 0 {
+            stk = append(stk, n)
+        } else {
+            for len(stk) > 0 && stk[len(stk) - 1] < n {
+                back := stk[len(stk) - 1]
+                if _, ok := m[back]; ok {
+                    ans[m[back]] = n
+                }
+                stk = stk[:len(stk) - 1]
+            }
+            stk = append(stk, n)
+        }
+    }
+    return ans
+}
+```
+
 ## [Find Pivot Index](https://leetcode.com/problems/find-pivot-index)
 
 A: 遍历数组，同时比较左右两边的和是否相等。
