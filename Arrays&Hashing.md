@@ -1747,6 +1747,31 @@ func nextGreaterElement(nums1 []int, nums2 []int) []int {
 }
 ```
 
+## [Next Greater Element II](https://leetcode.com/problems/next-greater-element-ii)
+
+A: 遍历两边数组即可。
+
+```go
+func nextGreaterElements(nums []int) []int {
+    length := len(nums)
+    result := make([]int,length,length)
+    for i:=0;i<len(result);i++{
+        result[i] = -1
+    }
+    //单调递减，存储数组下标索引
+    stack := make([]int,0)
+    for i:=0;i<length*2;i++{
+        for len(stack)>0&&nums[i%length]>nums[stack[len(stack)-1]]{
+            index := stack[len(stack)-1]
+            stack = stack[:len(stack)-1] // pop
+            result[index] = nums[i%length]
+        }
+        stack = append(stack,i%length)
+    }
+    return result
+}
+```
+
 ## [Find Pivot Index](https://leetcode.com/problems/find-pivot-index)
 
 A: 遍历数组，同时比较左右两边的和是否相等。
