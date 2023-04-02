@@ -634,3 +634,33 @@ func computeTrips(time []int, cost int64) int {
     return ans
 }
 ```
+
+## [Successful Pairs of Spells and Potions](https://leetcode.com/problems/successful-pairs-of-spells-and-potions)
+
+A: 排序potions，然后二分查找。
+
+```go
+func successfulPairs(spells []int, potions []int, success int64) []int {
+	sort.Ints(potions)
+	var n, m int = len(spells), len(potions)
+	res := make([]int, n)
+
+	for i := 0; i < n; i++ {
+		var left int = 0
+		var right int = m
+
+		for left < right {
+			var mid int = left + (right-left)/2
+			var currValue int64 = int64(potions[mid] * spells[i])
+			if currValue >= success {
+				right = mid
+			} else {
+				left = mid + 1
+			}
+		}
+		res[i] = m - left
+	}
+
+	return res
+}
+```
