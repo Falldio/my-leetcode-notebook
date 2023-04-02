@@ -210,6 +210,30 @@ public:
 };
 ```
 
+```go
+type pair struct {
+    t int
+    idx int
+}
+
+func dailyTemperatures(temperatures []int) []int {
+    stk := []pair{}
+    ans := make([]int, len(temperatures))
+    for i, t := range temperatures {
+        if len(stk) == 0 {
+            stk = append(stk, pair{t, i})
+        } else {
+            for len(stk) > 0 && stk[len(stk) - 1].t < t {
+                ans[stk[len(stk) - 1].idx] = i - stk[len(stk) - 1].idx
+                stk = stk[:len(stk) - 1]
+            }
+            stk = append(stk, pair{t, i})
+        }
+    }
+    return ans
+}
+```
+
 ## [Car Fleet](https://leetcode.com/problems/car-fleet)
 
 A: 按照位置反向遍历，通过到达目的地时间合并车辆。
