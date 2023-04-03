@@ -2317,3 +2317,35 @@ func getConcatenation(nums []int) []int {
     return ans
 }
 ```
+
+## [How Many Numbers Are Smaller Than the Current Number](https://leetcode.com/problems/how-many-numbers-are-smaller-than-the-current-number)
+
+A: sort以得到小于该数的个数，map存储。
+
+```go
+func smallerNumbersThanCurrent(nums []int) []int {
+    // map，key[数组中出现的数] value[比这个数小的个数]
+    m := make(map[int]int)
+    // 拷贝一份原始数组
+    rawNums := make([]int,len(nums)) 
+    copy(rawNums,nums)
+    // 将数组排序
+    sort.Ints(nums)
+    // 循环遍历排序后的数组，值为map的key，索引为value
+    for i,v := range nums {
+        _,contains := m[v]
+        if !contains {
+          m[v] = i
+        } 
+          
+    }
+    // 返回值结果
+    result := make([]int,len(nums))
+    // 根据原始数组的位置，存放对应的比它小的数
+    for i,v := range rawNums {
+        result[i] = m[v]
+    }
+
+    return result
+}
+```
