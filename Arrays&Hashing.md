@@ -2375,3 +2375,25 @@ func validMountainArray(arr []int) bool {
 	return i == len(arr) && flagIncrease && flagDecrease;
 }
 ```
+
+## [Unique Number of Occurrences](https://leetcode.com/problems/unique-number-of-occurrences)
+
+A: 遍历，用map存储次数，用set判断是否重复。
+
+```go
+func uniqueOccurrences(arr []int) bool {
+    m := map[int]int{}
+    s := map[int]struct{}{}
+    for _, n := range arr {
+        m[n]++
+    }
+    for _, c := range m {
+        if _, ok := s[c]; ok {
+            return false
+        } else {
+            s[c] = struct{}{}
+        }
+    }
+    return true
+}
+```
