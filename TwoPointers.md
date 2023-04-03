@@ -419,6 +419,28 @@ public:
 };
 ```
 
+```go
+func numRescueBoats(people []int, limit int) int {
+    sort.Ints(people)
+    l, r := 0, len(people) - 1
+    ans := 0
+    for l <= r {
+        sum := people[l] + people[r]
+        if l == r {
+            sum = people[l]
+        }
+        if sum > limit {
+            r--
+        } else {
+            l++
+            r--
+        }
+        ans++
+    }
+    return ans
+}
+```
+
 ## [Valid Palindrome II](https://leetcode.com/problems/valid-palindrome-ii)
 
 A: 出现不符合情况，则分两种情况继续判断回文（递归的空间复杂度较高）。
