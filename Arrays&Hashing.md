@@ -2349,3 +2349,29 @@ func smallerNumbersThanCurrent(nums []int) []int {
     return result
 }
 ```
+
+## [Valid Mountain Array](https://leetcode.com/problems/valid-mountain-array)
+
+A: 遍历，判断上升和下降。
+
+```go
+func validMountainArray(arr []int) bool {
+	if len(arr) < 3 {
+		return false
+	}
+
+	i := 1
+	flagIncrease := false // 上升
+	flagDecrease := false // 下降
+
+	for ; i < len(arr) && arr[i-1] < arr[i]; i++ {
+		flagIncrease = true;
+	}
+
+	for ; i < len(arr) && arr[i-1] > arr[i]; i++ {
+		flagDecrease = true;
+	}
+
+	return i == len(arr) && flagIncrease && flagDecrease;
+}
+```
