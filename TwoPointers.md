@@ -580,6 +580,23 @@ public:
 };
 ```
 
+```go
+func moveZeroes(nums []int)  {
+    slow, fast := 0, 0
+    for fast < len(nums) {
+        if nums[fast] != 0 {
+            nums[slow] = nums[fast]
+            slow++
+        }
+        fast++
+    }
+    for slow < len(nums) {
+        nums[slow] = 0
+        slow++
+    }
+}
+```
+
 ## [Remove Duplicates from Sorted Array](https://leetcode.com/problems/remove-duplicates-from-sorted-array)
 
 A: 遍历找到不重复元素前置，得到元素个数。
