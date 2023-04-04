@@ -1799,6 +1799,26 @@ public:
 };
 ```
 
+```go
+func pivotIndex(nums []int) int {
+	sum := 0
+	for _, v := range nums {
+		sum += v;
+	}
+
+	leftSum := 0    // 中心索引左半和
+	rightSum := 0   // 中心索引右半和
+	for i := 0; i < len(nums); i++ {
+		leftSum += nums[i]
+		rightSum = sum - leftSum + nums[i]
+		if leftSum == rightSum{
+			return i
+		}
+	}
+	return -1
+}
+```
+
 ## [Find All Numbers Disappeared in an Array](https://leetcode.com/problems/find-all-numbers-disappeared-in-an-array)
 
 A: 类似于[Find All Duplicates in an Array](https://leetcode.com/problems/find-all-duplicates-in-an-array)，将数组中的元素作为下标，将对应下标的元素取反，最后遍历数组，如果元素大于0，则说明该下标没有出现过。
