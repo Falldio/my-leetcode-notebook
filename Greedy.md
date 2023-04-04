@@ -851,3 +851,25 @@ func maxSatisfaction(satisfaction []int) int {
     return maxSatisfaction
 }
 ```
+
+## [Optimal Partition of String](https://leetcode.com/problems/optimal-partition-of-string)
+
+A: 用map记录每个字符出现的次数，当遇到重复的字符时，将map清空，计数器加1。
+
+```go
+func partitionString(s string) int {
+    set := map[rune]struct{}{}
+    ans := 0
+    for _, ch := range s {
+        if _, ok := set[ch]; ok {
+            ans++
+            set = map[rune]struct{}{}
+        }
+        set[ch] = struct{}{}
+    }
+    if len(set) > 0 {
+        ans++
+    }
+    return ans
+}
+```
