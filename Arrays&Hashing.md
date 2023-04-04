@@ -2450,3 +2450,22 @@ func reverse(nums []int){
     }
 }
 ```
+
+## [Sort Array By Parity II](https://leetcode.com/problems/sort-array-by-parity-ii)
+
+A: 每次找到奇偶不匹配的元素，交换。
+
+```go
+func sortArrayByParityII(nums []int) []int {
+    odd := 1
+    for i := 0; i < len(nums); i += 2 {
+        if nums[i] % 2 != 0 {
+            for nums[odd] % 2 != 0 {
+                odd += 2
+            }
+            nums[i], nums[odd] = nums[odd], nums[i]
+        }
+    }
+    return nums
+}
+```
