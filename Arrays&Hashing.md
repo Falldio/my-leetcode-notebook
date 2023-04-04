@@ -2397,3 +2397,36 @@ func uniqueOccurrences(arr []int) bool {
     return true
 }
 ```
+
+## [Rotate Array](https://leetcode.com/problems/rotate-array)
+
+A: 使用类似于插入排序的方法，每次将最后一个元素放到第一个位置。
+
+```go
+func rotate(nums []int, k int)  {
+    for i := 0; i < k; i++ {
+        tmp := nums[len(nums) - 1]
+        copy(nums[1:], nums[:len(nums) - 1])
+        nums[0] = tmp
+    }
+}
+```
+
+A: 反转字符。
+
+```go
+func rotate(nums []int, k int)  {
+    l:=len(nums)
+    index:=l-k%l
+    reverse(nums)
+    reverse(nums[:l-index])
+    reverse(nums[l-index:])
+}
+
+func reverse(nums []int){
+    l:=len(nums)
+    for i:=0;i<l/2;i++{
+        nums[i],nums[l-1-i]=nums[l-1-i],nums[i]
+    }
+}
+```
