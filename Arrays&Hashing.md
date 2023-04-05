@@ -2469,3 +2469,26 @@ func sortArrayByParityII(nums []int) []int {
     return nums
 }
 ```
+
+## [Minimize Maximum of Array](https://leetcode.com/problems/minimize-maximum-of-array)
+
+A: [详解](https://leetcode.com/problems/minimize-maximum-of-array/solutions/2706521/java-c-python-prefix-sum-average-o-n/)
+
+```go
+func minimizeArrayValue(nums []int) int {
+    sum, ans := 0, 0
+    for i, n := range nums {
+        sum += n
+        ans = max(ans, (sum + i) / (i + 1))
+    }
+    return ans
+}
+
+func max(i, j int) int {
+    if i > j {
+        return i
+    } else {
+        return j
+    }
+}
+```
