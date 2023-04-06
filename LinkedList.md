@@ -584,6 +584,34 @@ public:
 };
 ```
 
+```go
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+func swapPairs(head *ListNode) *ListNode {
+    if head == nil {
+        return nil
+    }
+    dummy := &ListNode{Next: head}
+    pre, cur, next := dummy, head, head.Next
+    for cur != nil && next != nil {
+        pre.Next = next
+        cur.Next = next.Next
+        next.Next = cur
+        pre = cur
+        cur = pre.Next
+        if cur != nil {
+            next = cur.Next
+        }
+    }
+    return dummy.Next
+}
+```
+
 ## [Sort List](https://leetcode.com/problems/sort-list)
 
 A: 归并排序，快慢指针得到中间点，切分，保证两边序列有序，然后合并。
