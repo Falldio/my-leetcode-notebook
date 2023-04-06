@@ -1277,6 +1277,48 @@ public:
 };
 ```
 
+```go
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+func isPalindrome(head *ListNode) bool {
+    slow, fast := head, head
+    for fast != nil && fast.Next != nil {
+        slow = slow.Next
+        fast = fast.Next.Next
+    }
+    pre, cur := slow, slow.Next
+    pre.Next = nil
+    var next *ListNode
+    if cur != nil {
+        next = cur.Next
+    }
+    for cur != nil {
+        cur.Next = pre
+        pre = cur
+        cur = next
+        if next == nil {
+            break
+        }
+        next = next.Next
+    }
+    left, right := head, pre
+    for left != nil && right != nil && left != right {
+        if left.Val != right.Val {
+            return false
+        } else {
+            left = left.Next
+            right = right.Next
+        }
+    }
+    return true
+}
+```
+
 ## [Remove Duplicates from Sorted List](https://leetcode.com/problems/remove-duplicates-from-sorted-list)
 
 A: 检测到两个相同节点则delete。
