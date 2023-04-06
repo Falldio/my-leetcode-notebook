@@ -933,3 +933,29 @@ func (this *MinStack) Min() int {
  * param_4 := obj.Min();
  */
 ```
+
+## [Backspace String Compare](https://leetcode.com/problems/backspace-string-compare)
+
+A: 栈模拟。
+
+```go
+func backspaceCompare(s string, t string) bool {
+    str1 := getStr(s)
+    str2 := getStr(t)
+    return str1 == str2
+}
+
+func getStr(s string) string {
+    stk := []rune{}
+    for _, ch := range s {
+        if ch == '#' {
+            if len(stk) > 0 {
+                stk = stk[:len(stk) - 1]
+            }
+        } else {
+            stk = append(stk, ch)
+        }
+    }
+    return string(stk)
+}
+```
