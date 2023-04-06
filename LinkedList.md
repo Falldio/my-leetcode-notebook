@@ -186,6 +186,56 @@ private:
 };
 ```
 
+```go
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+func reorderList(head *ListNode)  {
+    slow, fast := head, head
+    for fast != nil && fast.Next != nil {
+        slow = slow.Next
+        fast = fast.Next.Next
+    }
+    pre, cur := slow, slow.Next
+    pre.Next = nil
+    var next *ListNode
+    if cur != nil {
+        next = cur.Next
+    }
+    for cur != nil {
+        cur.Next = pre
+        pre = cur
+        cur = next
+        if next == nil {
+            break
+        }
+        next = next.Next
+    }
+    left, right := head.Next, pre
+    cur = head
+    for left != nil || right != nil {
+        if cur.Next == cur {
+            cur.Next = nil
+            break
+        }
+        if right != nil {
+            cur.Next = right
+            right = right.Next
+            cur = cur.Next
+        }
+        if left != nil {
+            cur.Next = left
+            left = left.Next
+            cur = cur.Next
+        }
+    }
+}
+```
+
 ## [Remove Nth Node From End of List](https://leetcode.com/problems/remove-nth-node-from-end-of-list)
 
 A: 快慢指针，快指针比慢指针初始快n位；考虑删除头结点的边界情况。
