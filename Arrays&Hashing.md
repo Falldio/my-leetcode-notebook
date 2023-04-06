@@ -2553,3 +2553,30 @@ func min(a,b int)int{
     return a
 }
 ```
+
+## [Long Pressed Name](https://leetcode.com/problems/long-pressed-name)
+
+A: 同时遍历两个字符串，如果两个字符相等，那么继续遍历，如果不相等，那么判断typed的当前字符是否和上一个字符相等，如果相等，那么继续遍历，如果不相等，那么返回false。
+
+```go
+func isLongPressedName(name string, typed string) bool {
+	if(name[0] != typed[0] || len(name) > len(typed)) {
+		return false;
+	}
+
+	idx := 0 // name的索引
+	var last byte  // 上个匹配字符
+	for i := 0; i < len(typed); i++ { // typed的索引
+		if idx < len(name) && name[idx] == typed[i] {
+			last = name[idx]
+			idx++
+		} else if last == typed[i] {
+            // long pressed
+			continue
+		} else  {
+			return false
+		}
+	}
+	return idx == len(name)
+}
+```
