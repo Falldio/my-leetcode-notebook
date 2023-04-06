@@ -1726,3 +1726,40 @@ func max(a, b int) int {
 	return b
 }
 ```
+
+## [Number of Closed Islands](https://leetcode.com/problems/number-of-closed-islands)
+
+A: DFS，注意四个方向布尔值的判断，必须要确保计算每个方向上的dfs，即dfs在flag之前。
+
+```go
+func closedIsland(grid [][]int) int {
+    m, n := len(grid), len(grid[0])
+    ans := 0
+    for i := 0; i < m; i++ {
+        for j := 0; j < n; j++ {
+            if grid[i][j] == 0 {
+                if dfs(grid, i , j, m, n) {
+                    ans++
+                }
+            }
+        }
+    }
+    return ans
+}
+
+func dfs(grid [][]int, i, j, m, n int) bool {
+    if i < 0 || i >= m || j < 0 || j >= n {
+        return false
+    }
+    if grid[i][j] == -1 || grid[i][j] == 1 {
+        return true
+    }
+    grid[i][j] = -1
+    flag := true
+    flag = dfs(grid, i, j + 1, m, n) && flag
+    flag = dfs(grid, i, j - 1, m, n) && flag
+    flag = dfs(grid, i + 1, j, m, n) && flag
+    flag = dfs(grid, i - 1, j, m, n) && flag
+    return flag
+}
+```
