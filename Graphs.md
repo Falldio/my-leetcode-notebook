@@ -1763,3 +1763,49 @@ func dfs(grid [][]int, i, j, m, n int) bool {
     return flag
 }
 ```
+
+## [Number of Enclaves](https://leetcode.com/problems/number-of-enclaves)
+
+A: DFS。
+
+```go
+func numEnclaves(grid [][]int) int {
+    m, n := len(grid), len(grid[0])
+    ans := 0
+    for i := 0; i < m; i++ {
+        for j := 0; j < n; j++ {
+            if grid[i][j] != -1 {
+                if ok, area := dfs(grid, m, n, i, j); ok {
+                    ans += area
+                }
+            }
+        }
+    }
+    return ans
+}
+
+func dfs(grid [][]int, m, n, i, j int) (bool, int) {
+    if i < 0 || i >= m || j < 0 || j >= n {
+        return false, 0
+    }
+    if grid[i][j] == -1 || grid[i][j] == 0 {
+        return true, 0
+    }
+    grid[i][j] = -1
+    area := 1
+    flag := true
+    f, a := dfs(grid, m, n, i + 1, j)
+    flag = flag && f
+    area += a
+    f, a = dfs(grid, m, n, i - 1, j)
+    flag = flag && f
+    area += a
+    f, a = dfs(grid, m, n, i, j + 1)
+    flag = flag && f
+    area += a
+    f, a = dfs(grid, m, n, i, j - 1)
+    flag = flag && f
+    area += a
+    return flag, area
+}
+```
