@@ -1051,6 +1051,49 @@ public:
 };
 ```
 
+```go
+func findNumberOfLIS(nums []int) int {
+	size := len(nums)
+	if size <= 1  {
+		return size
+	}
+
+	dp := make([]int, size);
+	for i, _ := range dp {
+		dp[i] = 1
+	}
+	count := make([]int, size);
+	for i, _ := range count {
+		count[i] = 1
+	}
+
+	maxCount := 0
+	for i := 1; i < size; i++ {
+		for j := 0; j < i; j++ {
+			if nums[i] > nums[j] {
+				if dp[j] + 1 > dp[i] {
+					dp[i] = dp[j] + 1
+					count[i] = count[j]
+				} else if dp[j] + 1 == dp[i] {
+					count[i] += count[j]
+				}
+			}
+			if dp[i] > maxCount {
+				maxCount = dp[i]
+			}
+		}
+	}
+
+	result := 0
+	for i := 0; i < size; i++ {
+		if maxCount == dp[i] {
+			result += count[i]
+		}
+	}
+	return result
+}
+```
+
 ## [Best Team With No Conflicts](https://leetcode.com/problems/best-team-with-no-conflicts)
 
 A: 按照年龄降序排列，此时对每个player，只需加入比他年纪大且得分高的分数即可。
