@@ -267,6 +267,29 @@ public:
 };
 ```
 
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func isSameTree(p *TreeNode, q *TreeNode) bool {
+    if p == nil && q == nil {
+        return true
+    }
+    if p == nil || q == nil {
+        return false
+    }
+    if p.Val != q.Val {
+        return false
+    }
+    return isSameTree(p.Left, q.Left) && isSameTree(p.Right, q.Right)
+}
+```
+
 ## [Subtree of Another Tree](https://leetcode.com/problems/subtree-of-another-tree)
 
 A: 递归比较节点值。剪枝：只比较深度相等的子树。
