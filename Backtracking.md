@@ -521,6 +521,52 @@ func isValid(s string) bool {
 }
 ```
 
+## [Palindrome Partitioning II](https://leetcode.com/problems/palindrome-partitioning-ii)
+
+A: 首先求出所有回文子串，然后用动态规划计算0-i的最小切分次数。
+
+```go
+func minCut(s string) int {
+    isValid := make([][]bool, len(s))
+    for i := 0; i < len(isValid); i++ {
+        isValid[i] = make([]bool, len(s))
+        isValid[i][i] = true
+    }
+    for i := len(s) - 1; i >= 0; i-- {
+        for j := i + 1; j < len(s); j++ {
+            if s[i] == s[j] && (isValid[i + 1][j - 1] || j - i == 1) {
+                isValid[i][j] = true
+            }
+        }
+    }
+
+    dp := make([]int, len(s))
+    for i := 0; i < len(s); i++ {
+        dp[i] = math.MaxInt
+    }
+    for i := 0; i < len(s); i++ {
+        if isValid[0][i] {
+            dp[i] = 0
+            continue
+        }
+        for j := 0; j < i; j++ {
+            if isValid[j + 1][i] {
+                dp[i] = min(dp[i], dp[j] + 1)
+            }
+        }
+    }
+    return dp[len(s) - 1]
+}
+
+func min(i, j int) int {
+    if i < j {
+        return i
+    } else {
+        return j
+    }
+}
+```
+
 ## [Letter Combinations of a Phone Number](https://leetcode.com/problems/letter-combinations-of-a-phone-number)
 
 A: 建立数字与字母映射关系。
