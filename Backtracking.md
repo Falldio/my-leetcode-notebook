@@ -748,6 +748,59 @@ public:
 };
 ```
 
+```go
+var (
+    ans int
+)
+func totalNQueens(n int) int {
+    board := make([][]bool, n)
+    for i := 0; i < n; i++ {
+        board[i] = make([]bool, n)
+    }
+    ans = 0
+    dfs(0, n, board)
+    return ans
+}
+
+func dfs(cur, n int, board [][]bool) {
+    if cur == n {
+        ans++
+        return
+    }
+    for i := 0; i < n; i++ {
+        if isValid(cur, i, board) {
+            board[cur][i] = true
+            dfs(cur + 1, n, board)
+            board[cur][i] = false
+        }
+    }
+}
+
+func isValid(i, j int, board [][]bool) bool {
+    for row := 0; row < i; row++ {
+        if board[row][j] {
+            return false
+        }
+    }
+
+    for row := i - 1; row >= 0; row-- {
+        offset := i - row
+        if j - offset >= 0 && board[row][j - offset] {
+            return false
+        }
+    }
+
+    for row := i - 1; row >= 0; row-- {
+        offset := i - row
+        if j + offset < len(board) && board[row][j + offset] {
+            return false
+        }
+    }
+
+    return true
+}
+```
+
 ## [Combinations](https://leetcode.com/problems/combinations)
 
 A: backtracking + DFS。
