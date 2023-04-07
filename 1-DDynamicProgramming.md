@@ -170,6 +170,38 @@ private:
 };
 ```
 
+A: 动态规划，单字符为回文，两个相同字符为回文，三个字符为回文的情况，可以推出四个字符为回文的情况，以此类推。
+
+```go
+func longestPalindrome(s string) string {
+    dp := make([][]bool, len(s))
+    for i := 0; i < len(dp); i++ {
+        dp[i] = make([]bool, len(s))
+        dp[i][i] = true
+    }
+    ans := string(s[0])
+    for i := len(s) - 1; i >= 0; i-- {
+        for j := i + 1; j < len(s); j++ {
+            if s[i] == s[j] && (dp[i + 1][j - 1] || j - i == 1) {
+                dp[i][j] = true
+                if j - i + 1 > len(ans) {
+                    ans = s[i:j+1]
+                }
+            }
+        }
+    }
+    return ans
+}
+
+func max(i, j int) int {
+    if i < j {
+        return j
+    } else {
+        return i
+    }
+}
+```
+
 ## [Palindromic Substrings](https://leetcode.com/problems/palindromic-substrings)
 
 A: 对每一个字符，左右滑动指针，进行奇数偶数两种情况判断，子串为回文是外串为回文的必要条件。

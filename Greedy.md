@@ -873,3 +873,25 @@ func partitionString(s string) int {
     return ans
 }
 ```
+
+## [Split a String in Balanced Strings](https://leetcode.com/problems/split-a-string-in-balanced-strings)
+
+A: 贪心，满足条件则立即切分。
+
+```go
+func balancedStringSplit(s string) int {
+    diff := 0 // 右左差值
+    ans := 0
+    for _, c := range s {
+        if c == 'L' {
+            diff--
+        }else {
+            diff++
+        }
+        if diff == 0 {
+            ans++
+        }
+    }
+    return ans
+}
+```
