@@ -20,6 +20,35 @@ public:
 };
 ```
 
+## [Sort Integers by The Number of 1 Bits](https://leetcode.com/problems/sort-integers-by-the-number-of-1-bits)
+
+A: 重写sort，按照1的个数排序，如果相同则按照数字大小排序。
+
+```go
+func sortByBits(arr []int) []int {
+    sort.Slice(arr, func(i, j int) bool {
+        n1, n2 := cnt(arr[i]), cnt(arr[j])
+        if n1 != n2 {
+            return n1 < n2
+        } else {
+            return arr[i] < arr[j]
+        }
+    })
+    return arr
+}
+
+func cnt(i int) int {
+    ans := 0
+
+    for i != 0 {
+        i &= (i - 1)
+        ans++
+    }
+
+    return ans
+}
+```
+
 ## [Counting Bits](https://leetcode.com/problems/counting-bits)
 
 A: `n - 1`的操作实际上将`n`最右边的1消去了，因此`n &= (n - 1)`的运行次数等于`n`中1的个数。
