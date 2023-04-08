@@ -48,6 +48,6 @@
 
 - [x] 跟着([NeetCode](https://neetcode.io/))完成NeetCode All，用CPP
 
-- [ ] 跟随([代码随想录 (programmercarl.com)](https://www.programmercarl.com/))二刷（大部分题目都是重复的），用Golang
+- [x] 跟随([代码随想录 (programmercarl.com)](https://www.programmercarl.com/)二刷（大部分题目都是重复的），用Golang
 
 - [ ] 用([labuladong 的算法小抄 :: labuladong的算法小抄](https://labuladong.github.io/algo/))三刷
