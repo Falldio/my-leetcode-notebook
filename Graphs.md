@@ -651,6 +651,55 @@ private:
 };
 ```
 
+```go
+var (
+    parent []int
+    rank []int
+)
+func findRedundantConnection(edges [][]int) []int {
+    n := len(edges)
+    parent = make([]int, n + 1)
+    rank = make([]int, n + 1)
+    for i := 0; i <= n; i++ {
+        rank[i] = 1
+        parent[i] = i
+    }
+    for _, e := range edges {
+        if !union(e[0], e[1]) {
+            return e
+        }
+    }
+    return []int{-1, -1}
+}
+
+func union(n1, n2 int) bool {
+    p1 := find(n1)
+    p2 := find(n2)
+
+    if p1 == p2 {
+        return false
+    } else {
+        if rank[p1] > rank[p2] {
+            parent[p2] = p1
+            rank[p1] += rank[p2]
+        } else {
+            parent[p1] = p2
+            rank[p2] += rank[p1]
+        }
+    }
+    return true
+}
+
+func find(n int) int {
+    p := parent[n]
+    for p != parent[p] {
+        parent[n] = parent[parent[n]]
+        p = parent[n]
+    }
+    return p
+}
+```
+
 ## [Word Ladder](https://leetcode.com/problems/word-ladder)
 
 A: BFS寻找最短路径。
