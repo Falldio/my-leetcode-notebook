@@ -1361,6 +1361,28 @@ private:
 };
 ```
 
+A: 只有当当前格子为1时，才需要计算周长，因此只需要遍历所有的1，然后计算每个1的周长即可。
+
+```go
+func islandPerimeter(grid [][]int) int {
+    m, n := len(grid), len(grid[0])
+    res := 0
+    for i := 0; i < m; i++ {
+        for j := 0; j < n; j++ {
+            if grid[i][j] == 1 {
+                res += 4
+                // 上下左右四个方向
+                if i > 0 && grid[i-1][j] == 1 {res--} // 上边有岛屿
+                if i < m-1 && grid[i+1][j] == 1 {res--} // 下边有岛屿
+                if j > 0 && grid[i][j-1] == 1 {res--} // 左边有岛屿
+                if j < n-1 && grid[i][j+1] == 1 {res--} // 右边有岛屿
+            }
+        }
+    }
+    return res
+}
+```
+
 ## [Verifying an Alien Dictionary](https://leetcode.com/problems/verifying-an-alien-dictionary)
 
 A: 将新的顺序还原成我们常用的字母顺序，然后判断是否排序。
