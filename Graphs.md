@@ -1840,3 +1840,30 @@ func dfs(grid [][]int, m, n, i, j int) (bool, int) {
     return flag, area
 }
 ```
+
+## [Keys and Rooms](https://leetcode.com/problems/keys-and-rooms)
+
+A: DFS。
+
+```go
+func canVisitAllRooms(rooms [][]int) bool {
+    n := len(rooms)
+    visited := map[int]struct{}{}
+    return dfs(0, n, rooms, visited)
+}
+
+func dfs(cur, n int, rooms [][]int, visited map[int]struct{}) bool {
+    if _, ok := visited[cur]; ok {
+        return false
+    }
+    visited[cur] = struct{}{}
+    if n == len(visited) {
+        return true
+    }
+    ans := false
+    for _, r := range rooms[cur] {
+        ans = dfs(r, n, rooms, visited) || ans
+    }
+    return ans
+}
+```
