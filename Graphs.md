@@ -86,6 +86,37 @@ private:
 };
 ```
 
+```go
+/**
+ * Definition for a Node.
+ * type Node struct {
+ *     Val int
+ *     Neighbors []*Node
+ * }
+ */
+
+func cloneGraph(node *Node) *Node {
+    m := map[int]*Node{}
+    return dfs(node, m)
+}
+
+func dfs(node *Node, m map[int]*Node) *Node {
+    if node == nil {
+        return nil
+    }
+    if n, ok := m[node.Val]; ok {
+        return n
+    }
+    ans := &Node{Val: node.Val}
+    m[node.Val] = ans
+    for _, n := range node.Neighbors {
+        cn := dfs(n, m)
+        ans.Neighbors = append(ans.Neighbors, cn)
+    }
+    return ans
+}
+```
+
 ## [Pacific Atlantic Water Flow](https://leetcode.com/problems/pacific-atlantic-water-flow)
 
 A: 从边界（海洋）开始反向DFS，寻找能到达单一海洋的集合，取交集。
