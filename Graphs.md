@@ -702,6 +702,40 @@ public:
 };
 ```
 
+```go
+func ladderLength(beginWord string, endWord string, wordList []string) int {
+    m := map[string]struct{}{}
+    for _, w := range wordList {
+        m[w] = struct{}{}
+    }
+
+    q := []string{beginWord}
+    ans := 1
+    for len(q) > 0 {
+        for i := len(q); i > 0; i-- {
+            cur := q[0]
+            q = q[1:]
+            if cur == endWord {
+                return ans
+            }
+            for i := 0; i < len(cur); i++ {
+                for j := 0; j < 26; j++ {
+                    bts := []byte(cur)
+                    bts[i] = byte(int('a') + j)
+                    s := string(bts)
+                    if _, ok := m[s]; ok {
+                        q = append(q, s)
+                        delete(m, s)
+                    }
+                }
+            }
+        }
+        ans++
+    }
+    return 0
+}
+```
+
 ## [Count Sub Islands](https://leetcode.com/problems/count-sub-islands)
 
 A: DFS，用与运算标定两张格网中同时为1的元素。
