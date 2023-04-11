@@ -618,6 +618,21 @@ public:
 };
 ```
 
+```go
+func removeDuplicates(nums []int) int {
+    i := 0
+    pre := 101
+    for j := 0; j < len(nums); j++ {
+        if nums[j] != pre {
+            nums[i] = nums[j]
+            i++
+            pre = nums[j]
+        }
+    }
+    return i
+}
+```
+
 ## [Squares of a Sorted Array](https://leetcode.com/problems/squares-of-a-sorted-array)
 
 A: 双指针，指向数组两端，比较绝对值，从后往前填充答案。
