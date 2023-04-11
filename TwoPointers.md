@@ -162,6 +162,23 @@ public:
 };
 ```
 
+```go
+func twoSum(numbers []int, target int) []int {
+    l, r := 0, len(numbers) - 1
+    for l < r {
+        sum := numbers[l] + numbers[r]
+        if sum == target {
+            return []int{l + 1, r + 1}
+        } else if sum < target {
+            l++
+        } else {
+            r--
+        }
+    }
+    return []int{-1, -1}
+}
+```
+
 ## [Trapping Rain Water](https://leetcode.com/problems/trapping-rain-water)
 
 A: `i`处的储水量为`min(maxLeft, maxRight) - height[i]`，利用双指针维护`maxLeft`和`maxRight`，每次只更新两者中的较小值。
