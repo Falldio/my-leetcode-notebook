@@ -1451,6 +1451,30 @@ public:
 };
 ```
 
+```go
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+func deleteDuplicates(head *ListNode) *ListNode {
+    slow, fast := head, head
+    for fast != nil {
+        if slow.Val != fast.Val {
+            slow.Next = fast
+            slow = slow.Next
+        }
+        fast = fast.Next
+    }
+    if slow != nil {
+        slow.Next = nil
+    }
+    return head
+}
+```
+
 ## [Intersection of Two Linked Lists](https://leetcode.com/problems/intersection-of-two-linked-lists)
 
 A: 公共长度为C，单独部分长度分别记为A、B。两个链表会同时到达第二次交点（A+C+B或B+C+A）。
