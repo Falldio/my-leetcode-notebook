@@ -959,3 +959,51 @@ func getStr(s string) string {
     return string(stk)
 }
 ```
+
+## [Removing Stars From a String](https://leetcode.com/problems/removing-stars-from-a-string)
+
+A: 模拟栈。
+
+```go
+func removeStars(s string) string {
+    stk := []byte{s[0]}
+    for i := 1; i < len(s); i++ {
+        if s[i] == '*' && len(stk) > 0 {
+            stk = stk[:len(stk) - 1]
+        } else {
+            stk = append(stk, s[i])
+        }
+    }
+    return string(stk)
+}
+```
+
+A: 后向遍历。
+
+```go
+func removeStars(s string) string {
+    ans := []byte{}
+    cnt := 0
+    for i := len(s) - 1; i >= 0; {
+        for i >= 0 && s[i] == '*' {
+            cnt++
+            i--
+        }
+        for i >= 0 && cnt > 0 && s[i] != '*' {
+            cnt--
+            i--
+        }
+        if i >= 0 && s[i] != '*' {
+            ans = append(ans, s[i])
+            i--
+        }
+    }
+    i, j := 0, len(ans) - 1
+    for i < j {
+        ans[i], ans[j] = ans[j], ans[i]
+        i++
+        j--
+    }
+    return string(ans)
+}
+```
