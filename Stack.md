@@ -1007,3 +1007,39 @@ func removeStars(s string) string {
     return string(ans)
 }
 ```
+
+## [Validate Stack Sequences](https://leetcode.com/problems/validate-stack-sequences)
+
+A: 用栈进行模拟。
+
+```go
+func validateStackSequences(pushed []int, popped []int) bool {
+    stk := []int{}
+    j := 0
+    for _, e := range pushed {
+        stk = append(stk, e)
+        for len(stk) > 0 && stk[len(stk) - 1] == popped[j] {
+            stk = stk[:len(stk) - 1]
+            j++
+        }
+    }
+    return j == len(popped)
+}
+```
+
+A: 将`pushed`用作栈，以减小空间复杂度。
+
+```go
+func validateStackSequences(pushed []int, popped []int) bool {
+    stk := []int{}
+    j := 0
+    for _, e := range pushed {
+        stk = append(stk, e)
+        for len(stk) > 0 && stk[len(stk) - 1] == popped[j] {
+            stk = stk[:len(stk) - 1]
+            j++
+        }
+    }
+    return j == len(popped)
+}
+```
