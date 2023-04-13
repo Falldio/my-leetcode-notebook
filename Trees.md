@@ -768,7 +768,7 @@ private:
 
 ## [Diameter of Binary Tree](https://leetcode.com/problems/diameter-of-binary-tree)
 
-A: 计算左右子树最大深度之和。
+A: 后序遍历，计算左右子树最大深度之和。
 
 ```cpp
 /**
@@ -798,6 +798,45 @@ int diameterOfBinaryTree(TreeNode* root) {
         return max(ld, rd) + 1;
     }
 };
+```
+
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+var (
+    ans int
+)
+
+func diameterOfBinaryTree(root *TreeNode) int {
+    ans = 0
+    dfs(root)
+    return ans
+}
+
+func dfs(root *TreeNode) int {
+    if root == nil {
+        return 0
+    }
+    left := dfs(root.Left)
+    right := dfs(root.Right)
+    d := left + right
+    ans = max(ans, d)
+    return max(left, right) + 1
+}
+
+func max(i, j int) int {
+    if i < j {
+        return j
+    } else {
+        return i
+    }
+}
 ```
 
 ## [Balanced Binary Tree](https://leetcode.com/problems/balanced-binary-tree)
