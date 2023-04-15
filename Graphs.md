@@ -1097,6 +1097,66 @@ private:
 };
 ```
 
+```go
+func openLock(deadends []string, target string) int {
+    s := map[string]struct{}{}
+    for i := range deadends {
+        s[deadends[i]] = struct{}{}
+    }
+    q := []string{"0000"}
+    ans := 0
+    if target == "0000" {
+        return ans
+    }
+    for len(q) > 0 {
+        ans++
+        for i := len(q); i > 0; i-- {
+            cur := q[0]
+            q = q[1:]
+            if _, ok := s[cur]; ok {
+                continue
+            }
+            s[cur] = struct{}{}
+            for j := 0; j < 4; j++ {
+                s1 := increase(cur, j)
+                s2 := decrease(cur, j)
+
+                if _, ok := s[s1]; !ok {
+                    q = append(q, s1)
+                }
+                if _, ok := s[s2]; !ok {
+                    q = append(q, s2)
+                }
+                if s1 == target || s2 == target {
+                    return ans
+                }
+            }
+        }
+    }
+    return -1
+}
+
+func increase(s string, i int) string {
+    bt := []byte(s)
+    if bt[i] == '9' {
+        bt[i] = '0'
+    } else {
+        bt[i]++
+    }
+    return string(bt)
+}
+
+func decrease(s string, i int) string {
+    bt := []byte(s)
+    if bt[i] == '0' {
+        bt[i] = '9'
+    } else {
+        bt[i]--
+    }
+    return string(bt)
+}
+```
+
 ## [Find Eventual Safe States](https://leetcode.com/problems/find-eventual-safe-states)
 
 A: 不在环中的结点为目标节点。
