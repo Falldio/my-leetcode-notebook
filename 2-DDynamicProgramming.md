@@ -1084,3 +1084,95 @@ func longestPalindromeSubseq(s string) int {
 	return dp[0][size-1]
 }
 ```
+
+## [Maximum Value of K Coins From Piles](https://leetcode.com/problems/maximum-value-of-k-coins-from-piles)
+
+A: 自顶而下的DP，填表时每次只关注前i个pile和前k个数。
+
+```go
+var (
+    dp [][]int
+    sum [][]int
+)
+
+func maxValueOfCoins(piles [][]int, k int) int {
+    sum = make([][]int, len(piles) + 1)
+    for i := range sum {
+        sum[i] = make([]int, k + 1)
+    }
+    for i := range piles {
+        for j := 0; j < len(piles[i]) && j < k; j++ {
+            sum[i + 1][j + 1] = sum[i + 1][j] + piles[i][j]
+        }
+    }
+    dp = make([][]int, len(piles) + 1)
+    for i := range dp {
+        dp[i] = make([]int, k + 1)
+    }
+    return dfs(len(piles), k)
+}
+
+func dfs(cur, k int) int {
+    if cur == 0 || k == 0{
+        return 0
+    }
+    if dp[cur][k] != 0 {
+        return dp[cur][k]
+    }
+    ans := 0
+    for i := k; i >= 0; i-- {
+        ans = max(ans, dfs(cur - 1, k - i) + sum[cur][i])
+    }
+    dp[cur][k] = ans
+    return ans
+}
+
+func max(nums ...int) int {
+    ans := 0
+    for _, n := range nums {
+        if n > ans {
+            ans = n
+        }
+    }
+    return ans
+}
+```
+
+A: 自底而上的DP。
+
+```go
+func maxValueOfCoins(piles [][]int, k int) int {
+    pre := make([]int, k + 1)
+    cur := make([]int, k + 1)
+    for i := range piles {
+        for j := 1; j < len(piles[i]); j++ {
+            piles[i][j] += piles[i][j - 1]
+        }
+    }
+    for i := range piles {
+        for j := 1; j <= k; j++ {
+            for n := 1; n <= j; n++ {
+                if n <= len(piles[i]) {
+                    cur[j] = max(cur[j], pre[j], pre[j - n] + piles[i][n - 1])
+                } else {
+                    cur[j] = max(cur[j], pre[j], pre[j - len(piles[i])] + piles[i][len(piles[i]) - 1])
+                }
+            }
+        }
+        tmp := make([]int, k + 1)
+        copy(tmp, cur)
+        pre = tmp
+    }
+    return pre[k]
+}
+
+func max(nums ...int) int {
+    ans := 0
+    for _, n := range nums {
+        if n > ans {
+            ans = n
+        }
+    }
+    return ans
+}
+```
