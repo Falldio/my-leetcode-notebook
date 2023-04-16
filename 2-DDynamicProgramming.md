@@ -1176,3 +1176,61 @@ func max(nums ...int) int {
     return ans
 }
 ```
+
+## [Number of Ways to Form a Target String Given a Dictionary](https://leetcode.com/problems/number-of-ways-to-form-a-target-string-given-a-dictionary)
+
+A: 自顶而下的DP，详解见[我自己的post](https://leetcode.com/problems/number-of-ways-to-form-a-target-string-given-a-dictionary/solutions/3422688/golang-top-down-dp-with-detailed-explanation/)。
+
+```go
+var (
+    adj []map[byte]int
+    dp [][]int
+    t string
+)
+
+const MOD int = 1e9 + 7
+
+func numWays(words []string, target string) int {
+    t = target
+    if len(words[0]) < len(target) {
+        return 0
+    }
+    adj = make([]map[byte]int, len(words[0]))
+    for i := range words {
+        for j := range words[i] {
+            if adj[j] == nil {
+                adj[j] = map[byte]int{}
+            }
+            adj[j][words[i][j]]++
+        }
+    }
+    dp = make([][]int, len(words[0]) + 1)
+    for i := range dp {
+        dp[i] = make([]int, len(target) + 1)
+    }
+    return dfs(len(words[0]), len(target))
+}
+
+func dfs(i, j int) int {
+    if i < j {
+        return 0
+    }
+    if j == 0 {
+        return 1
+    }
+    if i == 0 {
+        return 0
+    }
+    if dp[i][j] != 0 {
+        return dp[i][j]
+    }
+    ans := dfs(i - 1, j)
+    cnt := adj[i - 1][t[j - 1]]
+    if cnt != 0 {
+        ans += dfs(i - 1, j - 1) * cnt
+    }
+    ans %= MOD
+    dp[i][j] = ans
+    return ans
+}
+```
