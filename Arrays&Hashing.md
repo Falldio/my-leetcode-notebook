@@ -1024,6 +1024,40 @@ public:
 };
 ```
 
+```go
+func findAnagrams(s string, p string) []int {
+    m1 := map[byte]int{}
+    m2 := map[byte]int{}
+    ans := []int{}
+    for i := range p {
+        m1[p[i]]++
+    }
+    l, r, valid := 0, 0, 0
+    for r < len(s) {
+        if _, ok := m1[s[r]]; ok {
+            m2[s[r]]++
+            if m1[s[r]] == m2[s[r]] {
+                valid++
+            }
+        }
+        r++
+        if r - l == len(p) {
+            if valid == len(m1) {
+                ans = append(ans, l)
+            }
+            if _, ok := m1[s[l]]; ok {
+                if m1[s[l]] == m2[s[l]] {
+                    valid--
+                }
+                m2[s[l]]--
+            }
+            l++
+        }
+    }
+    return ans
+}
+```
+
 ## [Find the Index of the First Occurrence in a String](https://leetcode.com/problems/find-the-index-of-the-first-occurrence-in-a-string)
 
 A: [KMP算法](http://jakeboxer.com/blog/2009/12/13/the-knuth-morris-pratt-algorithm-in-my-own-words/)。
