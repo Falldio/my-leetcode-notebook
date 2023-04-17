@@ -571,3 +571,92 @@ func zeroFilledSubarray(nums []int) int64 {
     return ans
 }
 ```
+
+## [Minimum Window Substring](https://leetcode.com/problems/minimum-window-substring)
+
+A: 滑动窗口，记录s和t中对应字符出现个数以及valid值，不满足valid则右移j，满足则左移i。
+
+```cpp
+class Solution {
+public:
+    string minWindow(string s, string t) {
+        // count of char in t
+        unordered_map<char, int> m;
+        for (auto c: t) m[c]++;
+        
+        int i = 0;
+        int j = 0;
+        
+        // # of chars in t that must be in s
+        int counter = t.size();
+        
+        int minStart = 0;
+        int minLength = INT_MAX;
+        
+        while (j < s.size()) {
+            // if char in s exists in t, decrease
+            if (m[s[j]] > 0) {
+                counter--;
+            }
+            // if char doesn't exist in t, will be -'ve
+            m[s[j]]--;
+            // move j to find valid window
+            j++;
+            
+            // when window found, move i to find smaller
+            while (counter == 0) {
+                if (j - i < minLength) {
+                    minStart = i;
+                    minLength = j - i;
+                }
+                
+                m[s[i]]++;
+                // when char exists in t, increase
+                if (m[s[i]] > 0) {
+                    counter++;
+                }
+                i++;
+            }
+        }
+        
+        if (minLength != INT_MAX) {
+            return s.substr(minStart, minLength);
+        }
+        return "";
+    }
+};
+```
+
+```go
+func minWindow(s string, t string) string {
+    l, r, valid := 0, 0, 0
+    m1 := map[byte]int{}
+    m2 := map[byte]int{}
+    ans := ""
+    for i := range t {
+        m1[t[i]]++
+    }
+    for r < len(s) {
+        if _, ok := m1[s[r]]; ok {
+            m2[s[r]]++
+            if m2[s[r]] == m1[s[r]] {
+                valid++
+            }
+        }
+        r++
+        for valid == len(m1) {
+            if ans == "" || len(ans) > r - l {
+                ans = s[l:r]
+            }
+            if _, ok := m1[s[l]]; ok {
+                m2[s[l]]--
+                if m2[s[l]] < m1[s[l]] {
+                    valid--
+                }
+            }
+            l++
+        }
+    }
+    return ans
+}
+```
