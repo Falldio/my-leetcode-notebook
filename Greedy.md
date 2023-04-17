@@ -895,3 +895,43 @@ func balancedStringSplit(s string) int {
     return ans
 }
 ```
+
+## [Kids With the Greatest Number of Candies](https://leetcode.com/problems/kids-with-the-greatest-number-of-candies)
+
+A: 找出最大值，遍历数组，判断是否满足条件。
+
+```cpp
+class Solution {
+public:
+    vector<bool> kidsWithCandies(vector<int>& candies, int extraCandies) {
+        vector<bool> ans(candies.size(), false);
+        int m = *max_element(candies.begin(), candies.end());
+        m -= extraCandies;
+        for (int i = 0; i < candies.size(); i++) {
+            if (candies[i] >= m) {
+                ans[i] = true;
+            }
+        }
+        return ans;
+    }
+};
+```
+
+```go
+func kidsWithCandies(candies []int, extraCandies int) []bool {
+    ans := make([]bool, len(candies))
+    min := -1
+    for _, c := range candies {
+        n := c - extraCandies
+        if n > min {
+            min = n
+        }
+    }
+    for i := range candies {
+        if candies[i] >= min {
+            ans[i] = true
+        }
+    }
+    return ans
+}
+```
