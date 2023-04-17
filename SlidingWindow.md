@@ -178,6 +178,39 @@ public:
 };
 ```
 
+```go
+func checkInclusion(s1 string, s2 string) bool {
+    m1 := map[byte]int{}
+    m2 := map[byte]int{}
+    for i := range s1 {
+        m1[s1[i]]++
+    }
+    l, r, valid := 0, 0, 0
+    for r < len(s2) {
+        if _, ok := m1[s2[r]]; ok {
+            m2[s2[r]]++
+            if m1[s2[r]] == m2[s2[r]] {
+                valid++
+            }
+        }
+        r++
+        for r - l >= len(s1) {
+            if valid == len(m1) {
+                return true
+            }
+            if _, ok := m1[s2[l]]; ok {
+                if m1[s2[l]] == m2[s2[l]] {
+                    valid--
+                }
+                m2[s2[l]]--
+            }
+            l++
+        }
+    }
+    return false
+}
+```
+
 ## [Sliding Window Maximum](https://leetcode.com/problems/sliding-window-maximum)
 
 A: **单调队列**，维持队列的降序，进入队列时剔除无需再比较的更小元素。
