@@ -75,6 +75,27 @@ public:
 };
 ```
 
+```go
+func lengthOfLongestSubstring(s string) int {
+    ans := 0
+    m := map[byte]bool{}
+    l, r := 0, 0
+    for r < len(s) {
+        if !m[s[r]] {
+            m[s[r]] = true
+            r++
+        } else {
+            m[s[l]] = false
+            l++
+        }
+        if ans < r - l {
+            ans = r - l
+        }
+    }
+    return ans
+}
+```
+
 ## [Longest Repeating Character Replacement](https://leetcode.com/problems/longest-repeating-character-replacement)
 
 A: 判断次小字符集之和与k的大小，以此滑动左指针。
