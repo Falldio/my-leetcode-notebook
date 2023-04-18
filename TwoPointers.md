@@ -933,3 +933,51 @@ func removeDuplicates(nums []int) int {
     return i
 }
 ```
+
+## [Merge Strings Alternately](https://leetcode.com/problems/merge-strings-alternately)
+
+A: 双指针法，同时遍历两个字符串，每次取一个字符。
+
+```cpp
+class Solution {
+public:
+    string mergeAlternately(string word1, string word2) {
+        int i, j;
+        string ans;
+        for (; i < word1.size() && j < word2.size(); i++, j++) {
+            ans.push_back(word1[i]);
+            ans.push_back(word2[j]);
+        }
+        while (i < word1.size()) {
+            ans.push_back(word1[i]);
+            i++;
+        }
+        while (j < word2.size()) {
+            ans.push_back(word2[j]);
+            j++;
+        }
+        return ans;
+    }
+};
+```
+
+```go
+func mergeAlternately(word1 string, word2 string) string {
+    i, j := 0, 0
+    ans := []byte{}
+    for i < len(word1) && j < len(word2) {
+        ans = append(ans, word1[i])
+        ans = append(ans, word2[j])
+        i++
+        j++
+    }
+
+    if i < len(word1) {
+        ans = append(ans, word1[i:]...)
+    }
+    if j < len(word2) {
+        ans = append(ans, word2[j:]...)
+    }
+    return string(ans)
+}
+```
