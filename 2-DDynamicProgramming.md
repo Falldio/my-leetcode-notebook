@@ -972,6 +972,21 @@ func max(a, b int) int {
 
 A: 状态机，同上。
 
+```cpp
+class Solution {
+public:
+    int maxProfit(vector<int>& prices, int fee) {
+        int sell = 0, buy = -50000;
+        for (auto &p : prices) {
+            int tmp = sell;
+            sell = max(buy + p - fee, sell);
+            buy = max(tmp - p, buy);
+        }
+        return sell;
+    }
+};
+```
+
 ```go
 func maxProfit(prices []int, fee int) int {
     prevBuy, prevSell, buy, sell := 0, 0, -50001, 0
