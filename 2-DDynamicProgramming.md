@@ -902,6 +902,24 @@ func max(i, j int) int {
 
 A: 状态机，五个状态组成网格的五列（不操作、第一次买入、第一次卖出、第二次买入和第二次卖出）。最后答案一定是两个卖出列的最大值。
 
+```cpp
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        int buy1 = -10000, buy2 = -100000, sell1 = 0, sell2 = 0;
+        for (auto &p : prices) {
+            buy1 = max(buy1, -p);
+            int tmp = sell1;
+            sell1 = max(buy1 + p, sell1);
+
+            buy2 = max(sell1 - p, buy2);
+            sell2 = max(buy2 + p, sell2);
+        }
+        return max(sell1, sell2);
+    }
+};
+```
+
 ```go
 func maxProfit(prices []int) int {
     dp := make([][]int, len(prices))
