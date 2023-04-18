@@ -953,6 +953,25 @@ func max(a, b int) int {
 
 A: 思想同上，区别在于DP表格的列数变为2 * k - 1。
 
+```cpp
+class Solution {
+public:
+    int maxProfit(int k, vector<int>& prices) {
+        vector<int> buy(k, INT_MIN);
+        vector<int> sell(k, 0);
+        for (auto &p : prices) {
+            buy[0] = max(buy[0], -p);
+            sell[0] = max(sell[0], buy[0] + p);
+            for (int i = 1; i < k; i++) {
+                buy[i] = max(buy[i], sell[i - 1] - p);
+                sell[i] = max(sell[i], buy[i] + p);
+            }
+        }
+        return *max_element(sell.begin(), sell.end());
+    }
+};
+```
+
 ```go
 func maxProfit(k int, prices []int) int {
     if k == 0 || len(prices) == 0 {
