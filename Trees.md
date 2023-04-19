@@ -3136,3 +3136,81 @@ func balanceBST(root *TreeNode) *TreeNode {
 	return buildTree(nums, 0, len(nums)-1)
 }
 ```
+
+## [Longest ZigZag Path in a Binary Tree](https://leetcode.com/problems/longest-zigzag-path-in-a-binary-tree)
+
+A: 递归，返回三个值，分别是以当前节点为根的最长ZigZag路径，以当前节点为根的左子树的最长ZigZag路径，以当前节点为根的右子树的最长ZigZag路径。注意空结点返回-1。
+
+```cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    int longestZigZag(TreeNode* root) {
+        return dfs(root)[0];
+    }
+
+    vector<int> dfs(TreeNode* root) {
+        // ans: ans, left, right
+        if (root == nullptr) {
+            return {-1, -1, -1};
+        }
+        auto left = dfs(root->left);
+        auto right = dfs(root->right);
+        return {
+            max({1 + max(left[2], right[1]), left[0], right[0]}),
+            left[2] + 1,
+            right[1] + 1
+        };
+    }
+};
+```
+
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func longestZigZag(root *TreeNode) int {
+    ans, l, r := dfs(root)
+    fmt.Println(ans, l, r)
+    return ans
+}
+
+func dfs(root *TreeNode) (ans, left, right int) {
+    if root == nil {
+        ans, left, right = -1, -1, -1
+        fmt.Println(root, ans, left, right)
+        return 
+    }
+    lans, _, lright := dfs(root.Left)
+    rans, rleft, _ := dfs(root.Right)
+    ans = max(max(lright, rleft) + 1, lans, rans)
+    left = lright + 1
+    right = rleft + 1
+    return 
+}
+
+func max(nums ...int) int {
+    ans := -1
+    for _, n := range nums {
+        if n > ans {
+            ans = n
+        }
+    }
+    return ans
+}
+```
