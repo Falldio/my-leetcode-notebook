@@ -2724,3 +2724,23 @@ func GetModifiedArray(length int, updates [][]int) []int {
     return diff
 }
 ```
+
+## [Corporate Flight Bookings](https://leetcode.com/problems/corporate-flight-bookings)
+
+A: 差分数组。
+
+```go
+func corpFlightBookings(bookings [][]int, n int) []int {
+    ans := make([]int, n)
+    for i := range bookings {
+        ans[bookings[i][0] - 1] += bookings[i][2]
+        if bookings[i][1] < n {
+            ans[bookings[i][1]] -= bookings[i][2]
+        }
+    }
+    for i := 1; i < n; i++ {
+        ans[i] += ans[i - 1]
+    }
+    return ans
+}
+```
