@@ -109,6 +109,41 @@ public:
 };
 ```
 
+```go
+func spiralOrder(matrix [][]int) []int {
+    m, n := len(matrix), len(matrix[0])
+    l, r, t, b := 0, n - 1, 0, m - 1
+    ans := make([]int, 0, m * n)
+    for len(ans) < m * n {
+        if t <= b {
+            for j := l; j <= r; j++ {
+                ans = append(ans, matrix[t][j])
+            }
+            t++
+        }
+        if l <= r {
+            for i := t; i <= b; i++ {
+                ans = append(ans, matrix[i][r])
+            }
+            r--
+        }
+        if t <= b {
+            for j := r; j >= l; j-- {
+                ans = append(ans, matrix[b][j])
+            }
+            b--
+        }
+        if l <= r {
+            for i := b; i >= t; i-- {
+                ans = append(ans, matrix[i][l])
+            }
+            l++
+        }
+    }
+    return ans
+}
+```
+
 ## [Set Matrix Zeroes](https://leetcode.com/problems/set-matrix-zeroes)
 
 A: 用第一行+第一列来标记对应的行列是否有0，最小的空间复杂度。
