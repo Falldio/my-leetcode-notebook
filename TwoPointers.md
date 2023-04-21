@@ -741,7 +741,6 @@ public:
             }
         }
         reverse(s.begin() + start, s.end());
-        cout << s << endl;
         int i = 0, j = 0;
         while (j < s.length() && s[j] == ' ') {
             j++;
