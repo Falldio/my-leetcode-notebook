@@ -1996,6 +1996,48 @@ public:
 
 A: 以拐点为每个方向填充的起始点，注意奇偶数两种情况和offset的更新。
 
+```cpp
+class Solution {
+public:
+    vector<vector<int>> generateMatrix(int n) {
+        int l = 0, t = 0, r = n - 1, b = n - 1;
+        vector<vector<int>> ans(n, vector<int>(n, 0));
+        int cur = 1;
+        while (cur <= n * n) {
+            if (t <= b) {
+                for (int i = l; i <= r; i++) {
+                    ans[t][i] = cur;
+                    cur++;
+                }
+                t++;
+            }
+            if (l <= r) {
+                for (int i = t; i <= b; i++) {
+                    ans[i][r] = cur;
+                    cur++;
+                }
+                r--;
+            }
+            if (t <= b) {
+                for (int i = r; i >= l; i--) {
+                    ans[b][i] = cur;
+                    cur++;
+                }
+                b--;
+            }
+            if (l <= r) {
+                for (int i = b; i >= t; i--) {
+                    ans[i][l] = cur;
+                    cur++;
+                }
+                l++;
+            }
+        }
+        return ans;
+    }
+};
+```
+
 ```go
 func generateMatrix(n int) [][]int {
     ans := make([][]int, n)
