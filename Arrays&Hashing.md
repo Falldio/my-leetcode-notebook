@@ -2699,3 +2699,28 @@ func reverse(a []int,begin,end int){
     }
 }
 ```
+
+## [Range Addition](https://www.lintcode.com/problem/903/)
+
+A: 差分数组。
+
+```go
+/**
+ * @param length: the length of the array
+ * @param updates: update operations
+ * @return: the modified array after all k operations were executed
+ */
+func GetModifiedArray(length int, updates [][]int) []int {
+    diff := make([]int, length)
+    for i := range updates {
+        diff[updates[i][0]] += updates[i][2]
+        if updates[i][1] + 1 < length {
+            diff[updates[i][1] + 1] -= updates[i][2]
+        }
+    }
+    for i := 1; i < length; i++ {
+        diff[i] += diff[i - 1]
+    }
+    return diff
+}
+```
