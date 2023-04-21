@@ -723,6 +723,43 @@ func replaceSpace(s string) string {
 
 A: 删除冗余空格，然后翻转整个字符串，最后翻转每个单词。
 
+```cpp
+class Solution {
+public:
+    string reverseWords(string s) {
+        reverse(s.begin(), s.end());
+        int start = 0;
+        for (int i = 0; i < s.size();) {
+            if (s[i] == ' ') {
+                reverse(s.begin() + start, s.begin() + i);
+                while (i < s.size() && s[i] == ' ') {
+                    i++;
+                }
+                start = i;
+            } else {
+                i++;
+            }
+        }
+        reverse(s.begin() + start, s.end());
+        cout << s << endl;
+        int i = 0, j = 0;
+        while (j < s.length() && s[j] == ' ') {
+            j++;
+        }
+        while (j < s.length()) {
+            if (j + 1 < s.length() && s[j] == ' ' && s[j + 1] == ' ') {
+                j++;
+            } else if (j == s.length() - 1 && s[j] == ' ') {
+                j++;
+            } else {
+                s[i++] = s[j++];
+            }
+        }
+        return s.substr(0, i);
+    }
+};
+```
+
 ```go
 func reverseWords(s string) string {
 	//1.使用双指针删除冗余的空格
