@@ -589,6 +589,28 @@ bool carPooling(vector<vector<int>>& trips, int capacity) {
 }
 ```
 
+A: 差分数组。
+
+```go
+func carPooling(trips [][]int, capacity int) bool {
+    diff := make([]int, 1001)
+    for _, t := range trips {
+        diff[t[1]] += t[0]
+        diff[t[2]] -= t[0]
+    }
+    if diff[0] > capacity {
+        return false
+    }
+    for i := 1; i < len(diff); i++ {
+        diff[i] += diff[i - 1]
+        if diff[i] > capacity {
+            return false
+        }
+    }
+    return true
+}
+```
+
 ## [Maximum Performance of a Team](https://leetcode.com/problems/maximum-performance-of-a-team)
 
 A: 排序efficiency，每当满足k时去掉speed最小的元素。
