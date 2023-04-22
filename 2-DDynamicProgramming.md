@@ -111,6 +111,26 @@ func max(a,b int)int  {
 }
 ```
 
+## [Minimum Insert Steps to Make a String Palindrome](https://leetcode.com/problems/minimum-insertion-steps-to-make-a-string-palindrome)
+
+A: 与上一题类似，只是求的是最小插入次数，即最长公共子序列的长度。dp[i][j]表示s1[0:i]和s2[0:j]的最长公共子序列长度。s1 = s, s2 = reverse(s)。
+
+[详解](https://leetcode.com/problems/minimum-insertion-steps-to-make-a-string-palindrome/solutions/470706/java-c-python-longest-common-sequence/?orderBy=most_votes)
+
+```cpp
+class Solution {
+public:
+    int minInsertions(string s) {
+        int n = s.length();
+        vector<vector<int>> dp(n + 1, vector<int>(n + 1));
+        for (int i = 0; i < n; ++i)
+            for (int j = 0; j < n; ++j)
+                dp[i + 1][j + 1] = s[i] == s[n - 1 - j] ? dp[i][j] + 1 : max(dp[i][j + 1], dp[i + 1][j]);
+        return n - dp[n][n];
+    }
+};
+```
+
 ## [Uncrossed Lines](https://leetcode.com/problems/uncrossed-lines)
 
 A: 同上一题，只是求的是最大匹配数。
