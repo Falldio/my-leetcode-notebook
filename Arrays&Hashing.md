@@ -2786,3 +2786,46 @@ func corpFlightBookings(bookings [][]int, n int) []int {
     return ans
 }
 ```
+
+## [Random Pick with Weight](https://leetcode.com/problems/random-pick-with-weight)
+
+A: 前缀和+二分查找。[详解](https://labuladong.github.io/algo/di-yi-zhan-da78c/shou-ba-sh-48c1d/dai-quan-z-585d6/)
+
+```go
+type Solution struct {
+    prefix []int
+}
+
+
+func Constructor(w []int) Solution {
+    for i := 1; i < len(w); i++ {
+        w[i] += w[i - 1]
+    }
+    return Solution{prefix: w}
+}
+
+
+func (this *Solution) PickIndex() int {
+    w := this.prefix
+    target := rand.Intn(w[len(w) - 1]) + 1
+    l, r := 0, len(w) - 1
+    for l <= r {
+        mid := l + (r - l) / 2
+        if w[mid] == target {
+            return mid
+        } else if w[mid] > target {
+            r--
+        } else {
+            l++
+        }
+    }
+    return l
+}
+
+
+/**
+ * Your Solution object will be instantiated and called as such:
+ * obj := Constructor(w);
+ * param_1 := obj.PickIndex();
+ */
+```
