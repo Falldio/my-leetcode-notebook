@@ -1365,7 +1365,7 @@ public:
 
 ## [Insert Delete GetRandom O(1)](https://leetcode.com/problems/insert-delete-getrandom-o1)
 
-A: map判断是否已出现该数字，vector用于随机获取元素。
+A: 数组存储元素，map存储元素-索引映射，如果要删除元素，则将其与最后一个元素交换，然后删除最后一个元素，同时更新map中最后一个元素的索引。这样可以保证用数组长度作为随机数的上界，不会越界。
 
 ```cpp
 class RandomizedSet {
@@ -1402,6 +1402,54 @@ private:
     vector<int> nums;
     unordered_map<int, int> m; // {val, index}
 };
+```
+
+```go
+type RandomizedSet struct {
+    nums []int
+    m map[int]int
+}
+
+
+func Constructor() RandomizedSet {
+    return RandomizedSet{nums: []int{}, m: map[int]int{}}
+}
+
+
+func (this *RandomizedSet) Insert(val int) bool {
+    if _, ok := this.m[val]; ok {
+        return false
+    }
+    this.nums = append(this.nums, val)
+    this.m[val] = len(this.nums) - 1
+    return true
+}
+
+
+func (this *RandomizedSet) Remove(val int) bool {
+    if idx, ok := this.m[val]; ok {
+        this.nums[idx], this.nums[len(this.nums) - 1] = this.nums[len(this.nums) - 1], this.nums[idx]
+        this.m[this.nums[idx]] = idx
+        this.nums = this.nums[:len(this.nums) - 1]
+        delete(this.m, val)
+        return true
+    }
+    return false
+}
+
+
+func (this *RandomizedSet) GetRandom() int {
+    return this.nums[rand.Intn(len(this.nums))]
+}
+
+
+/**
+ * Your RandomizedSet object will be instantiated and called as such:
+ * obj := Constructor();
+ * param_1 := obj.Insert(val);
+ * param_2 := obj.Remove(val);
+ * param_3 := obj.GetRandom();
+ */
 ```
 
 ## [Check If a String Contains All Binary Codes of Size K](https://leetcode.com/problems/check-if-a-string-contains-all-binary-codes-of-size-k)
