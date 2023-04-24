@@ -781,3 +781,56 @@ func dfs(k, w int, pq *Pq, list *List, ans *int) bool {
     }
 }
 ```
+
+## [Advantage Shuffle](https://leetcode.com/problems/advantage-shuffle)
+
+A: 田忌赛马，用堆从nums2中每次选择最大元素，和nums1中最大元素比较，如果nums1>nums2，则选择nums1中最大元素，否则选择nums1中最小元素保存实力。
+
+```go
+func advantageCount(nums1 []int, nums2 []int) []int {
+    h := &H{}
+    for i, n := range nums2 {
+        *h = append(*h, []int{i, n})
+    }
+    heap.Init(h)
+    sort.Ints(nums1)
+    l, r := 0, len(nums1) - 1
+    ans := make([]int, len(nums1))
+    for len(*h) > 0 {
+        max := heap.Pop(h).([]int)
+        idx, v := max[0], max[1]
+        if v < nums1[r] {
+            ans[idx] = nums1[r]
+            r--
+        } else {
+            ans[idx] = nums1[l]
+            l++
+        }
+    }
+    return ans
+}
+
+type H [][]int
+
+func (h H) Len() int {
+    return len(h)
+}
+
+func (h H) Swap(i, j int) {
+    h[i], h[j] = h[j], h[i]
+}
+
+func (h H) Less(i, j int) bool {
+    return h[i][1] > h[j][1]
+}
+
+func (h *H) Push(x interface{}) {
+    *h = append(*h, x.([]int))
+}
+
+func (h *H) Pop() interface{} {
+    x := (*h)[len(*h) - 1]
+    *h = (*h)[:len(*h) - 1]
+    return x
+}
+```
