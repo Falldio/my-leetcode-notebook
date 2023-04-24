@@ -1043,3 +1043,38 @@ func validateStackSequences(pushed []int, popped []int) bool {
     return j == len(popped)
 }
 ```
+
+## [Remove Duplicate Letters](https://leetcode.com/problems/remove-duplicate-letters) & [Smallest Subsequence of Distinct Characters](https://leetcode.com/problems/smallest-subsequence-of-distinct-characters)
+
+A: 使用单调栈保证字典顺序。
+
+```go
+func removeDuplicateLetters(s string) string {
+    m := map[byte]int{}
+    inStack := make([]bool, 256)
+    bs := []byte(s)
+    for _, b := range bs {
+        m[b]++
+    }
+    stk := []byte{}
+    for _, b := range bs {
+        m[b]--
+        if inStack[b] {
+            continue
+        }
+        for len(stk) > 0 && stk[len(stk) - 1] > b {
+            if m[stk[len(stk) - 1]] == 0 {
+                // 如果后续不会再出现该字母，则不应该出栈
+                break
+            } else {
+                // 出栈元素
+                inStack[stk[len(stk) - 1]] = false
+                stk = stk[:len(stk) - 1]
+            }
+        }
+        stk = append(stk, b)
+        inStack[b] = true
+    }
+    return string(stk)
+}
+```
