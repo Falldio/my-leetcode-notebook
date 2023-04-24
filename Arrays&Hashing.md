@@ -1452,6 +1452,56 @@ func (this *RandomizedSet) GetRandom() int {
  */
 ```
 
+## [Random Pick with Blacklist](https://leetcode.com/problems/random-pick-with-blacklist)
+
+A: 类似上一题，基本思路是用map存储黑名单元素到数组末尾白名单元素的映射。考虑两种边缘情况：1）黑名单元素的映射元素也是黑名单元素，即last也是黑名单元素，则last--；2）黑名单元素不在计算范围内，即b >= sz，则不需要处理。
+
+```go
+type Solution struct {
+    m map[int]int
+    sz int
+}
+
+
+func Constructor(n int, blacklist []int) Solution {
+    sz := n - len(blacklist)
+    m := map[int]int{}
+    last := n - 1
+    for _, b := range blacklist {
+        m[b] = -1
+    }
+    for _, b := range blacklist {
+        if b >= sz {
+            continue
+        }
+        _, ok := m[last]
+        for ok {
+            last--
+            _, ok = m[last]
+        }
+        m[b] = last
+        last--
+    }
+    return Solution{m: m, sz: sz}
+}
+
+
+func (this *Solution) Pick() int {
+    idx := rand.Intn(this.sz)
+    if v, ok := this.m[idx]; ok {
+        return v
+    }
+    return idx
+}
+
+
+/**
+ * Your Solution object will be instantiated and called as such:
+ * obj := Constructor(n, blacklist);
+ * param_1 := obj.Pick();
+ */
+```
+
 ## [Check If a String Contains All Binary Codes of Size K](https://leetcode.com/problems/check-if-a-string-contains-all-binary-codes-of-size-k)
 
 A: 收集所有的substr，其数量应该等于长度为k的二进制码总数。
