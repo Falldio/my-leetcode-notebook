@@ -156,6 +156,51 @@ public:
 };
 ```
 
+```go
+type H []int
+
+func (h H) Swap(i, j int) {
+    h[i], h[j] = h[j], h[i]
+}
+
+func (h H) Len() int {
+    return len(h)
+}
+
+func (h H) Less(i, j int) bool {
+    return h[i] > h[j]
+}
+
+func (h *H) Push(x interface{}) {
+    *h = append(*h, x.(int))
+}
+
+func (h *H) Pop() interface{} {
+    x := (*h)[len(*h) - 1]
+    *h = (*h)[:len(*h) - 1]
+    return x
+}
+
+func lastStoneWeight(stones []int) int {
+    h := H(stones)
+    heap.Init(&h)
+    for len(h) > 1 {
+        s1 := heap.Pop(&h).(int)
+        s2 := heap.Pop(&h).(int)
+        if s1 > s2 {
+            heap.Push(&h, s1 - s2)
+        } else if s1 < s2 {
+            heap.Push(&h, s2 - s1)
+        }
+    }
+    if len(h) == 0 {
+        return 0
+    } else {
+        return heap.Pop(&h).(int)
+    }
+}
+```
+
 ## [K Closest Points to Origin](https://leetcode.com/problems/k-closest-points-to-origin)
 
 A: `partial_sort`或者`nth_element`。
