@@ -2594,6 +2594,38 @@ func dfs(root, pre *TreeNode, ans *int) {
 
 A: 寻找最大元素，确定前缀后缀，递归构造结点。
 
+```cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* constructMaximumBinaryTree(vector<int>& nums) {
+        int i = 0, j = nums.size();
+        return build(nums, i, j);
+    }
+
+    TreeNode* build(vector<int>& nums, int i, int j) {
+        if (i >= j) {
+            return nullptr;
+        }
+        auto maxE = max_element(nums.begin() + i, nums.begin() + j);
+        TreeNode *ans = new TreeNode(*maxE);
+        ans->left = build(nums, i, maxE - nums.begin());
+        ans->right = build(nums, maxE - nums.begin() + 1, j);
+        return ans;
+    }
+};
+```
+
 ```go
 /**
  * Definition for a binary tree node.
