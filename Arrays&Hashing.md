@@ -2927,3 +2927,87 @@ func (this *Solution) PickIndex() int {
  * param_1 := obj.PickIndex();
  */
 ```
+
+## [Smallest Number in Infinite Set](https://www.leetcode.com/problems/smallest-number-in-infinite-set)
+
+A: 记录被pop的数字，如果pop的数字比当前最小值小，那么更新最小值。
+
+```cpp
+class SmallestInfiniteSet {
+private:
+    unordered_set<int> s;
+    int smallest = 1;
+public:
+    SmallestInfiniteSet() {
+    }
+    
+    int popSmallest() {
+        int ans = smallest;
+        s.insert(ans);
+        while (s.count(smallest)) {
+            smallest++;
+        }
+        return ans;
+    }
+    
+    void addBack(int num) {
+        if (s.count(num)) {
+            s.erase(num);
+            if (num < smallest) {
+                smallest = num;
+            }
+        }
+    }
+};
+
+/**
+ * Your SmallestInfiniteSet object will be instantiated and called as such:
+ * SmallestInfiniteSet* obj = new SmallestInfiniteSet();
+ * int param_1 = obj->popSmallest();
+ * obj->addBack(num);
+ */
+```
+
+```go
+type SmallestInfiniteSet struct {
+    m map[int]struct{}
+    smallest int
+}
+
+
+func Constructor() SmallestInfiniteSet {
+    return SmallestInfiniteSet{m: map[int]struct{}{}, smallest: 1}
+}
+
+
+func (this *SmallestInfiniteSet) PopSmallest() int {
+    this.m[this.smallest] = struct{}{}
+    ans := this.smallest
+    i := ans + 1
+    _, ok := this.m[i]
+    for ok {
+        i++
+        _, ok = this.m[i]
+    }
+    this.smallest = i
+    return ans
+}
+
+
+func (this *SmallestInfiniteSet) AddBack(num int)  {
+    if _, ok := this.m[num]; ok {
+        delete(this.m, num)
+        if num < this.smallest {
+            this.smallest = num
+        }
+    }
+}
+
+
+/**
+ * Your SmallestInfiniteSet object will be instantiated and called as such:
+ * obj := Constructor();
+ * param_1 := obj.PopSmallest();
+ * obj.AddBack(num);
+ */
+```
