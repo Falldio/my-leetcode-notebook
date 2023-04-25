@@ -3266,3 +3266,67 @@ public:
     }
 };
 ```
+
+## [Flatten Binary Tree to Linked List](https://leetcode.com/problems/flatten-binary-tree-to-linked-list)
+
+A: 后序遍历，先将左右子树拉平，然后将左子树接到右子树上，最后将右子树接到左子树的最右边。
+
+```cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    void flatten(TreeNode* root) {
+        if (!root) {
+            return;
+        }
+        flatten(root->left);
+        flatten(root->right);
+        auto left = root->left;
+        auto right = root->right;
+        root->right = left;
+        root->left = nullptr;
+        auto cur = root;
+        while (cur->right != nullptr) {
+            cur = cur->right;
+        }
+        cur->right = right;
+    }
+};
+```
+
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func flatten(root *TreeNode)  {
+    if root == nil {
+        return
+    }
+    flatten(root.Left)
+    flatten(root.Right)
+    l := root.Left
+    r := root.Right
+    root.Left = nil
+    root.Right = l
+    cur := root
+    for cur.Right != nil {
+        cur = cur.Right
+    }
+    cur.Right = r
+}
+```
