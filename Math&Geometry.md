@@ -730,3 +730,30 @@ func judgeCircle(moves string) bool {
     return x == 0 && y == 0
 }
 ```
+
+## [Minimum Number of Operations to Make All Array Elements Equal to 1](https://leetcode.com/problems/minimum-number-of-operations-to-make-all-array-elements-equal-to-1)
+
+A: **1和其它元素的gcd为1**，因此，如果数组中有c个1，则答案为n-c。否则，枚举每个元素，计算其与其后面元素的gcd，如果gcd为1，则答案为j-i+(n-1)。
+
+```cpp
+class Solution {
+public:
+    int minOperations(vector<int>& nums) {
+        int n=nums.size();
+        int c=count(nums.begin(),nums.end(),1);     // if there is at least 1. then it's easy!
+        if(c!=0)    return n-c;
+        int res=1e7;        // just a dummy value
+        for(int i=0;i<n;i++){
+            int g=nums[i];
+            for(int j=i+1;j<n;j++){
+                g=__gcd(g,nums[j]);
+                if(g==1){
+                    res=min(res,j-i+(n-1)); // number of operations to make this element 1+ number of non ones (i.e. n-1) .
+                    break;
+                } 
+            }
+        }
+        return res==1e7?-1:res;
+    }
+};
+```
