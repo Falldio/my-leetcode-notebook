@@ -766,6 +766,38 @@ private:
 };
 ```
 
+A: Golang json解码。
+
+```go
+type Codec struct {
+    
+}
+
+func Constructor() Codec {
+    codec := Codec{}
+    return codec
+}
+
+// Serializes a tree to a single string.
+func (this *Codec) serialize(root *TreeNode) string {
+    if nil == root {
+        return "[]"
+    }
+    b, _ := json.Marshal(root)
+    return string(b)
+}
+
+// Deserializes your encoded data to tree.
+func (this *Codec) deserialize(data string) *TreeNode {
+    if "[]" == data {
+        return nil
+    }
+    var root TreeNode
+    json.Unmarshal([]byte(data), &root)
+    return &root
+}
+```
+
 ## [Diameter of Binary Tree](https://leetcode.com/problems/diameter-of-binary-tree)
 
 A: 后序遍历，计算左右子树最大深度之和。
