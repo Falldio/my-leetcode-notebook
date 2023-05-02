@@ -3071,3 +3071,59 @@ func merge(nums []pair, l, mid, r int) {
     copy(nums[l:r], tmp[l:r])
 }
 ```
+
+## [Reverse Pairs](https://leetcode.com/problems/reverse-pairs)
+
+A: 归并排序，每次合并时计算满足条件的个数。
+
+```go
+var (
+    tmp []int
+    ans int
+)
+
+func reversePairs(nums []int) int {
+    tmp = make([]int, len(nums))
+    ans = 0
+    sort(nums, 0, len(nums))
+    return ans
+}
+
+func sort(nums []int, l, r int) {
+    if l == r - 1 {
+        return
+    }
+    mid := l + (r - l) / 2
+    sort(nums, l, mid)
+    sort(nums, mid, r)
+    merge(nums, l, mid, r)
+}
+
+func merge(nums []int, l, mid, r int) {
+    k := mid
+    for i := l; i < mid; i++ {
+        for k < r && nums[i] > nums[k] * 2 {
+            k++
+        }
+        ans += k - mid
+    }
+    i, j, cur := l, mid, l
+    for cur != r {
+        if i == mid {
+            tmp[cur] = nums[j]
+            j++
+        } else if j == r {
+            tmp[cur] = nums[i]
+            i++
+        } else if nums[i] <= nums[j] {
+            tmp[cur] = nums[i]
+            i++
+        } else {
+            tmp[cur] = nums[j]
+            j++
+        }
+        cur++
+    }
+    copy(nums[l:r], tmp[l:r])
+}
+```
