@@ -3127,3 +3127,69 @@ func merge(nums []int, l, mid, r int) {
     copy(nums[l:r], tmp[l:r])
 }
 ```
+
+## [Count of Range Sum](https://leetcode.com/problems/count-of-range-sum)
+
+A: 对**前缀和数组**归并排序，归并时计算满足条件的个数。
+
+```go
+var (
+    L, U int
+    tmp []int
+    ans int
+)
+
+func countRangeSum(nums []int, lower int, upper int) int {
+    tmp = make([]int, len(nums) + 1)
+    pre := make([]int, len(nums) + 1)
+    ans = 0
+    for i := 1; i < len(pre); i++ {
+        pre[i] += pre[i - 1] + nums[i - 1]
+    }
+    copy(tmp, pre)
+    L, U = lower, upper
+    sort(pre, 0, len(pre))
+    return ans
+}
+
+func sort(nums []int, l, r int) {
+    if l == r - 1 {
+        return
+    }
+    mid := l + (r - l) / 2
+    sort(nums, l, mid)
+    sort(nums, mid, r)
+    merge(nums, l, mid, r)
+}
+
+func merge(nums []int, l, mid, r int) {
+    start, end := mid, mid
+    for i := l; i < mid; i++ {
+        for start < r && nums[start] - nums[i] < L {
+            start++
+        }
+        for end < r && nums[end] - nums[i] <= U {
+            end++
+        }
+        ans += end - start
+    }
+    i, j, cur := l, mid, l
+    for cur != r {
+        if i == mid {
+            tmp[cur] = nums[j]
+            j++
+        } else if j == r {
+            tmp[cur] = nums[i]
+            i++
+        } else if nums[i] <= nums[j] {
+            tmp[cur] = nums[i]
+            i++
+        } else {
+            tmp[cur] = nums[j]
+            j++
+        }
+        cur++
+    }
+    copy(nums[l:r], tmp[l:r])
+}
+```
