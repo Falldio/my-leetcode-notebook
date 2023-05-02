@@ -2901,6 +2901,52 @@ func dfs(node *TreeNode, hashAll map[string]int, duplicate *[]*TreeNode) string 
 }
 ```
 
+A: 记录后序遍历序列。
+
+```cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    unordered_map<string, pair<TreeNode*, int>> map;
+    vector<TreeNode*> ans;
+    vector<TreeNode*> findDuplicateSubtrees(TreeNode* root) {
+        dfs(root);
+        for (auto &p : map) {
+            if (p.second.second > 1) {
+                ans.push_back(p.second.first);
+            }
+        }
+        return ans;
+    }
+
+    string dfs(TreeNode* root) {
+        if (!root) {
+            return "#";
+        }
+
+        string lstr = dfs(root->left);
+        string rstr = dfs(root->right);
+        string ans = lstr + "," + rstr + "," + to_string(root->val);
+        if (map.count(ans)) {
+            map[ans].second++;
+        } else {
+            map[ans] = {root, 1};
+        }
+        return ans;
+    }
+};
+```
+
 ## [Binary Tree Cameras](https://leetcode.com/problems/binary-tree-cameras)
 
 A: 贪心，优先安装在叶子节点的父节点上，这意味着需要**后序遍历**，对于每个节点，有三种状态：
