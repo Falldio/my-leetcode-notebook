@@ -3011,3 +3011,63 @@ func (this *SmallestInfiniteSet) AddBack(num int)  {
  * obj.AddBack(num);
  */
 ```
+
+## [Count of Smaller Numbers After Self](https://leetcode.com/problems/count-of-smaller-numbers-after-self)
+
+A: 用新的结构体记录原始数组的下标和值，然后归并排序，每次归并的时候，如果右边的值比左边的值小，那么右边的值的下标对应的值的个数就加1。
+
+```go
+var (
+    tmp []pair
+    ans []int
+)
+
+type pair struct{
+    k, v int
+}
+
+func countSmaller(nums []int) []int {
+    tmp = make([]pair, len(nums))
+    arr := make([]pair, len(nums))
+    for k, v := range nums {
+        tmp[k] = pair{k, v}
+        arr[k] = pair{k, v}
+    }
+    ans = make([]int, len(nums))
+    sort(arr, 0, len(arr))
+    return ans
+}
+
+func sort(nums []pair, l, r int) {
+    if l == r - 1 {
+        return
+    }
+    mid := l + (r - l) / 2
+    sort(nums, l, mid)
+    sort(nums, mid, r)
+    merge(nums, l, mid, r)
+}
+
+func merge(nums []pair, l, mid, r int) {
+    i, j, cur := l, mid, l
+    for cur != r {
+        if i == mid {
+            tmp[cur] = nums[j]
+            j++
+        } else if j == r {
+            tmp[cur] = nums[i]
+            i++
+            ans[tmp[cur].k] += j - mid
+        } else if nums[i].v <= nums[j].v {
+            tmp[cur] = nums[i]
+            i++
+            ans[tmp[cur].k] += j - mid
+        } else {
+            tmp[cur] = nums[j]
+            j++
+        }
+        cur++
+    }
+    copy(nums[l:r], tmp[l:r])
+}
+```
