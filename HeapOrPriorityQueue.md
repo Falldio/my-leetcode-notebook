@@ -273,6 +273,51 @@ public:
 };
 ```
 
+A: 快速选择，快排的每一次划分都会确定一个元素的最终位置，如果这个位置恰好是第 k 个位置，那么这个元素就是第 k 大的元素，如果这个位置比 k 小，那么第 k 大的元素就在右边，否则就在左边。
+
+```go
+func findKthLargest(nums []int, k int) int {
+    rand.Seed(time.Now().UnixNano())
+    rand.Shuffle(len(nums), func (i, j int) {
+        nums[i], nums[j] = nums[j], nums[i]
+    })
+    l, r := 0, len(nums)
+    k = len(nums) - k
+    for l < r {
+        p := partition(nums, l, r)
+        if p < k {
+            l = p + 1
+        } else if p > k {
+            r = p
+        } else {
+            return nums[p]
+        }
+    }
+    return -1
+}
+
+func partition(nums []int, left, right int) int {
+    i, j := left+1, right-1
+    mid := nums[left]
+    for {
+        for i < right && nums[i] < mid {
+            i++
+        }
+        for j > left && nums[j] > mid {
+            j--
+        }
+        if i >= j {
+            break
+        }
+        nums[i], nums[j] = nums[j], nums[i]
+        i++
+        j--
+    }
+    nums[left], nums[j] = nums[j], nums[left]
+    return j
+}
+```
+
 ## [Task Scheduler](https://leetcode.com/problems/task-scheduler)
 
 A: 优先安排最高频次任务。
