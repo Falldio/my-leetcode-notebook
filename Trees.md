@@ -2874,6 +2874,41 @@ func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
 }
 ```
 
+```cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        if (!root) {
+            return nullptr;
+        }
+
+        if (root == p || root == q) {
+            return root;
+        }
+
+        auto left = lowestCommonAncestor(root->left, p, q);
+        auto right = lowestCommonAncestor(root->right, p, q);
+        
+        if (left && right) {
+            return root;
+        } else if (left) {
+            return left;
+        } else {
+            return right;
+        }
+    }
+};
+```
+
 ## [Construct Quad Tree](https://leetcode.com/problems/construct-quad-tree)
 
 A: 遇到全0或全1则返回对应节点，否则递归构造子节点。
