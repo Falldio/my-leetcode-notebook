@@ -582,6 +582,34 @@ public:
 };
 ```
 
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+var (
+    ans []int
+)
+func kthSmallest(root *TreeNode, k int) int {
+    ans = []int{}
+    traverse(root)
+    return ans[k - 1]
+}
+
+func traverse(root *TreeNode) {
+    if root == nil {
+        return
+    }
+    traverse(root.Left)
+    ans = append(ans, root.Val)
+    traverse(root.Right)
+}
+```
+
 ## [Construct Binary Tree from Preorder and Inorder Traversal](https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal)
 
 A: 前序遍历当前的第一个元素始终是根节点，该元素在中序遍历中切分了左右子树。
