@@ -222,6 +222,54 @@ private:
 };
 ```
 
+```go
+var (
+    visited map[int]struct{}
+    cur map[int]bool
+    adj map[int][]int
+
+)
+
+func canFinish(numCourses int, prerequisites [][]int) bool {
+    visited = map[int]struct{}{}
+    adj = map[int][]int{}
+    cur = map[int]bool{}
+    for _, p := range prerequisites {
+        if _, ok := adj[p[0]]; !ok {
+            adj[p[0]] = []int{}
+        }
+        adj[p[0]] = append(adj[p[0]], p[1])
+    }
+    for i := 0; i < numCourses; i++ {
+        if !dfs(i) {
+            return false
+        }
+    }
+    return true
+}
+
+func dfs(i int) bool {
+    if cur[i] {
+        return false
+    }
+    if _, ok := visited[i]; ok {
+        return true
+    }
+    if len(adj[i]) == 0 {
+        return true
+    }
+    visited[i] = struct{}{}
+    cur[i] = true
+    for _, nxt := range adj[i] {
+        if !dfs(nxt) {
+            return false
+        }
+    }
+    cur[i] = false
+    return true
+}
+```
+
 ## Number of Connected Components In An Undirected Graph
 
 ![Number of Connected Components In An Undirected Graph](fig/323.png)
