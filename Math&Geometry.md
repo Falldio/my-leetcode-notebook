@@ -712,6 +712,43 @@ func predictPartyVictory(senateStr string) string {
 }
 ```
 
+```cpp
+class Solution {
+public:
+    string predictPartyVictory(string senate) {
+        bool R = true, D = true;
+        int flag = 0; // -1: R D, 1: D, R
+        while (R && D) {
+            R = false;
+            D = false;
+            for (int i = 0; i < senate.size(); i++) {
+                if (senate[i] == 'R') {
+                    if (flag > 0) {
+                        senate[i] = '#';
+                    } else {
+                        R = true;
+                    }
+                    flag--;
+                }
+                if (senate[i] == 'D') {
+                    if (flag < 0) {
+                        senate[i] = '#';
+                    } else {
+                        D = true;
+                    }
+                    flag++;
+                }
+            }
+        }
+        if (R) {
+            return "Radiant";
+        } else {
+            return "Dire";
+        }
+    }
+};
+```
+
 # [Robot Return to Origin](https://leetcode.com/problems/robot-return-to-origin)
 
 A: 记录两个方向的坐标偏移。
