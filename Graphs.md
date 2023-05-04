@@ -358,6 +358,36 @@ public:
 };
 ```
 
+```go
+var (
+    ans [][]int
+    cur []int
+)
+
+func allPathsSourceTarget(graph [][]int) [][]int {
+    ans = [][]int{}
+    cur = []int{0}
+    dfs(graph, 0, len(graph) - 1)
+    return ans
+}
+
+func dfs(graph [][]int, start, end int) {
+    if start == end {
+        tmp := make([]int, len(cur))
+        copy(tmp, cur)
+        ans = append(ans, tmp)
+    }
+    if len(graph[start]) == 0 {
+        return
+    }
+    for _, to := range graph[start] {
+        cur = append(cur, to)
+        dfs(graph, to, end)
+        cur = cur[:len(cur) - 1]
+    }
+}
+```
+
 ## [Max Area of Island](https://leetcode.com/problems/max-area-of-island)
 
 A: 递归函数直接返回当前岛屿面积。
