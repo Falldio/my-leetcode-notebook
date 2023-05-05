@@ -2307,3 +2307,56 @@ func dfs(graph [][]int, cur int) bool {
     return true
 }
 ```
+
+## [Possible Bipartition](https://leetcode.com/problems/possible-bipartition)
+
+A: 构建邻接表，再判断是否是二分图。
+
+```go
+var (
+    color []bool
+    visited []bool
+    graph [][]int
+)
+
+func possibleBipartition(n int, dislikes [][]int) bool {
+    graph = make([][]int, n + 1)
+    for i := 0; i < n + 1; i++ {
+        graph[i] = []int{}
+    }
+    for _, e := range dislikes {
+        from, to := e[0], e[1]
+        graph[from] = append(graph[from], to)
+        graph[to] = append(graph[to], from)
+    }
+    color = make([]bool, len(graph))
+    visited = make([]bool, len(graph))
+    for i := 0; i < len(graph); i++ {
+        if !dfs(graph, i) {
+            return false
+        }
+    }
+    return true
+}
+
+func dfs(graph [][]int, cur int) bool {
+    if visited[cur] {
+        return true
+    }
+    visited[cur] = true
+    for i := 0; i < len(graph[cur]); i++ {
+        nxt := graph[cur][i]
+        if visited[nxt] {
+            if color[nxt] == color[cur] {
+                return false
+            }
+        } else {
+            color[nxt] = !color[cur]
+            if !dfs(graph, nxt) {
+                return false
+            }
+        }
+    }
+    return true
+}
+```
