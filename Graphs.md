@@ -670,6 +670,60 @@ private:
 };
 ```
 
+```go
+var (
+    visited map[int]struct{}
+    cur map[int]bool
+    adj map[int][]int
+    ans []int
+)
+
+func findOrder(numCourses int, prerequisites [][]int) []int {
+    visited = map[int]struct{}{}
+    adj = map[int][]int{}
+    cur = map[int]bool{}
+    ans = []int{}
+    for _, p := range prerequisites {
+        if _, ok := adj[p[0]]; !ok {
+            adj[p[0]] = []int{}
+        }
+        adj[p[0]] = append(adj[p[0]], p[1])
+    }
+    for i := 0; i < numCourses; i++ {
+        if !dfs(i) {
+            return []int{}
+        }
+    }
+    return ans
+}
+
+func dfs(i int) bool {
+    if cur[i] {
+        return false
+    }
+    if _, ok := visited[i]; ok {
+        return true
+    }
+    if len(adj[i]) == 0 {
+        if _, ok := visited[i]; !ok {
+            ans = append(ans, i)
+        }
+        visited[i] = struct{}{}
+        return true
+    }
+    visited[i] = struct{}{}
+    cur[i] = true
+    for _, nxt := range adj[i] {
+        if !dfs(nxt) {
+            return false
+        }
+    }
+    cur[i] = false
+    ans = append(ans, i)
+    return true
+}
+```
+
 ## [Redundant Connection](https://leetcode.com/problems/redundant-connection)
 
 A: 并查集找最小生成树。
