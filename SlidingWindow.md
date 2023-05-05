@@ -747,3 +747,40 @@ public:
     }
 };
 ```
+
+## [Maximum Number of Vowels in a Substring of Given Length](https://leetcode.com/problems/maximum-number-of-vowels-in-a-substring-of-given-length)
+
+A: 滑动窗口。
+
+```go
+func maxVowels(s string, k int) int {
+    i, j := 0, 0
+    ans, cur := 0, 0
+    for j < len(s) && j - i < k {
+        if isValid(s[j]) {
+            cur++
+        }
+        j++
+    }
+    ans = cur
+    for j < len(s) {
+        if isValid(s[i]) {
+            cur--
+        }
+        if isValid(s[j]) {
+            cur++
+        }
+        if cur > ans {
+            ans = cur
+        }
+        i++
+        j++
+    }
+    return ans
+}
+
+var m = map[byte]bool{'a': true, 'e': true, 'i': true, 'o': true, 'u': true}
+func isValid(r byte) bool {
+    return m[r]
+}
+```
