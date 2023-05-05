@@ -2264,3 +2264,46 @@ func dfs(cur, n int, rooms [][]int, visited map[int]struct{}) bool {
     return ans
 }
 ```
+
+## [Is Graph Bipartite?](https://leetcode.com/problems/is-graph-bipartite)
+
+A: 遍历并染色，如果已经遍历，则检测颜色是否符合二分图条件。
+
+```go
+var (
+    color []bool
+    visited []bool
+)
+
+func isBipartite(graph [][]int) bool {
+    color = make([]bool, len(graph))
+    visited = make([]bool, len(graph))
+    for i := 0; i < len(graph); i++ {
+        if !dfs(graph, i) {
+            return false
+        }
+    }
+    return true
+}
+
+func dfs(graph [][]int, cur int) bool {
+    if visited[cur] {
+        return true
+    }
+    visited[cur] = true
+    for i := 0; i < len(graph[cur]); i++ {
+        nxt := graph[cur][i]
+        if visited[nxt] {
+            if color[nxt] == color[cur] {
+                return false
+            }
+        } else {
+            color[nxt] = !color[cur]
+            if !dfs(graph, nxt) {
+                return false
+            }
+        }
+    }
+    return true
+}
+```
