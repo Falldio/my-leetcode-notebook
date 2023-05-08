@@ -554,3 +554,78 @@ public:
     }
 };
 ```
+
+## [Path With Minimum Effort](https://leetcode.com/problems/path-with-minimum-effort)
+
+A: Dijkstra's，用优先队列存储当前最小代价的路径。
+
+```go
+import "container/heap"
+
+var dir = [][]int{{0, 1}, {0, -1}, {1, 0}, {-1, 0}}
+
+type dist struct {
+    x, y, w int
+}
+
+type distH []dist
+
+func (d distH) Len() int { return len(d) }
+
+func (d distH) Less(i, j int) bool { return d[i].w < d[j].w }
+
+func (d distH) Swap(i, j int) { d[i], d[j] = d[j], d[i] }
+
+func (d *distH) Pop() interface{} {
+    item := (*d)[len(*d) - 1]
+    *d = (*d)[:len(*d) - 1]
+    return item
+}
+
+func (d *distH) Push(x interface{}) {
+    *d = append(*d, x.(dist))
+}
+
+func minimumEffortPath(heights [][]int) int {
+    m, n := len(heights), len(heights[0])
+    memo := make([][]int, m)
+    for i := 0; i < m; i++ {
+        memo[i] = make([]int, n)
+        for j := 0; j < n; j++ {
+            memo[i][j] = math.MaxInt
+        }
+    }
+    memo[0][0] = 0
+    h := &distH{}
+    heap.Init(h)
+    heap.Push(h, dist{x: 0, y: 0, w: 0})
+    for len(*h) > 0 {
+        cur := h.Pop().(dist)
+        for i := 0; i < 4; i++ {
+            x := cur.x + dir[i][0]
+            y := cur.y + dir[i][1]
+            if x < 0 || x >= m || y < 0 || y >= n {
+                continue
+            }
+            effort := abs(heights[x][y] - heights[cur.x][cur.y])
+            // 注意要传递从起点到当前点的最大代价
+            if effort < cur.w {
+                effort = cur.w
+            }
+            if effort < memo[x][y] {
+                memo[x][y] = effort
+                heap.Push(h, dist{x: x, y: y, w: effort})
+            }
+        }
+    }
+    return memo[m - 1][n - 1]
+}
+
+func abs(i int) int {
+    if i > 0 {
+        return i
+    } else {
+        return -i
+    }
+}
+```
