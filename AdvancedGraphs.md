@@ -629,3 +629,38 @@ func abs(i int) int {
     }
 }
 ```
+
+## [Find the Celebrity](https://www.lintcode.com/problem/645/)
+
+A: 首先假设第一个人是名人，然后遍历所有人，如果当前人认识名人或者名人不认识当前人，则更新名人为当前人。然后再遍历一次，如果名人认识其他人或者其他人不认识名人，则返回-1，否则返回名人。
+
+```cpp
+// Forward declaration of the knows API.
+bool knows(int a, int b);
+
+class Solution {
+public:
+    /**
+     * @param n a party with n people
+     * @return the celebrity's label or -1
+     */
+    int findCelebrity(int n) {
+        // Write your code here
+        int ans = 0;
+        for (int i = 1; i < n; i++) {
+            if (knows(ans, i) || !knows(i, ans)) {
+                ans = i;
+            }
+        }
+        for (int i = 0; i < n; i++) {
+            if (ans == i) {
+                continue;
+            }
+            if (knows(ans, i) || !knows(i, ans)) {
+                return -1;
+            }
+        }
+        return ans;
+    }
+};
+```
