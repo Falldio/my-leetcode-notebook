@@ -794,3 +794,58 @@ public:
     }
 };
 ```
+
+## [Satisfiability of Equality Equations](https://leetcode.com/problems/satisfiability-of-equality-equations)
+
+A: 并查集，先处理等式，再处理不等式。
+
+```go
+var (
+    parent []int
+)
+
+func equationsPossible(equations []string) bool {
+    parent = make([]int, 26)
+    for i := range parent {
+        parent[i] = i
+    }
+    for _, e := range equations {
+        if e[1] == '!' {
+            continue
+        }
+        union(int(e[0] - 'a'), int(e[3] - 'a'))
+    }
+    fmt.Println(parent)
+    for _, e := range equations {
+        if e[1] == '=' {
+            continue
+        }
+        if connected(int(e[0] - 'a'), int(e[3] - 'a')) {
+            return false
+        }
+    }
+    return true
+}
+
+func union(n1, n2 int) {
+    p1, p2 := find(n1), find(n2)
+    if p1 == p2 {
+        return
+    } else if p1 < p2 {
+        parent[p1] = p2
+    } else {
+        parent[p2] = p1
+    }
+}
+
+func find(x int) int {
+    if x != parent[x] {
+        parent[x] = find(parent[x])
+    }
+    return parent[x]
+}
+
+func connected(n1, n2 int) bool {
+    return find(n1) == find(n2)
+}
+```
