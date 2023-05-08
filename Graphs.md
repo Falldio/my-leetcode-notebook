@@ -522,6 +522,89 @@ private:
 };
 ```
 
+A: 并查集，边界为O的元素根结点为dummy，其余O元素与其相邻的O元素合并，最后遍历所有元素，若元素与dummy相连，则为O，否则为X。
+
+```go
+var (
+    parent []int
+)
+
+func solve(board [][]byte)  {
+    m, n := len(board), len(board[0])
+    parent = make([]int, m * n + 1)
+    for i := range parent {
+        parent[i] = i
+    }
+    dummy := m * n
+
+    for i := 0; i < m; i++ {
+        if board[i][0] == 'O' {
+            union(i * n, dummy)
+        }
+        if board[i][n - 1] == 'O' {
+            union(i * n + n - 1, dummy)
+        }
+    }
+
+    for j := 0; j < n; j++ {
+        if board[0][j] == 'O' {
+            union(j, dummy)
+        }
+        if board[m - 1][j] == 'O' {
+            union(n * (m - 1) + j, dummy)
+        }
+    }
+
+    d := [][]int{{0, 1}, {1, 0}, {0, -1}, {-1, 0}}
+    for i := 1; i < m - 1; i++ {
+        for j := 1; j < n - 1; j++ {
+            for k := 0; k < 4; k++ {
+                if board[i][j] == 'X' {
+                    continue
+                }
+                x := i + d[k][0]
+                y := j + d[k][1]
+                if board[x][y] == 'O' {
+                    union(i * n + j, x * n + y)
+                }
+            }
+        }
+    }
+
+    for i := 1; i < m - 1; i++ {
+        for j := 1; j < n - 1; j++ {
+            if board[i][j] != 'O' {
+                continue
+            }
+            if !connected(dummy, i * n + j) {
+                board[i][j] = 'X'
+            }
+        }
+    }
+}
+
+func union(n1, n2 int) {
+    p1, p2 := find(n1), find(n2)
+    if p1 == p2 {
+        return
+    } else {
+        parent[p1] = p2
+    }
+}
+
+func find(n int) int {
+    if n != parent[n] {
+        parent[n] = find(parent[n])
+    }
+    return parent[n]
+}
+
+func connected(n1, n2 int) bool {
+    p1, p2 := find(n1), find(n2)
+    return p1 == p2
+}
+```
+
 ## [Rotting Oranges](https://leetcode.com/problems/rotting-oranges)
 
 A: BFS，用队列存储腐烂橘子，记录同一时刻腐烂橘子个数。
