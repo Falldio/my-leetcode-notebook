@@ -235,6 +235,72 @@ public:
 };
 ```
 
+```go
+var (
+    parent []int
+    cnt int
+)
+
+func minCostConnectPoints(points [][]int) int {
+    edges := [][]int{}
+    parent = make([]int, len(points))
+    cnt = len(points)
+    ans := 0
+    for i := range parent {
+        parent[i] = i
+    }
+    for i := 0; i < len(points); i++ {
+        for j := i + 1; j < len(points); j++ {
+            dist := abs(points[i][0] - points[j][0]) + abs(points[i][1] - points[j][1])
+            edges = append(edges, []int{i, j, dist})
+        }
+    }
+    sort.Slice(edges, func (i, j int) bool {
+        return edges[i][2] < edges[j][2]
+    })
+    for i := 0; i < len(edges); i++ {
+        if cnt == 1 {
+            return ans
+        }
+        pt1 := edges[i][0]
+        pt2 := edges[i][1]
+        if !connected(pt1, pt2) {
+            union(pt1, pt2)
+            ans += edges[i][2]
+        }
+    }
+    return ans
+}
+
+func union(n1, n2 int) {
+    p1, p2 := find(n1), find(n2)
+    if p1 == p2 {
+        return
+    } else {
+        parent[p1] = p2
+    }
+}
+
+func find(n int) int {
+    if n != parent[n] {
+        parent[n] = find(parent[n])
+    }
+    return parent[n]
+}
+
+func connected(n1, n2 int) bool {
+    return find(n1) == find(n2)
+}
+
+func abs(x int) int {
+    if x < 0 {
+        return -x
+    } else {
+        return x
+    }
+}
+```
+
 ## [Network Delay Time](https://leetcode.com/problems/network-delay-time)
 
 A: Dijkstra's->寻找指定结点到其余所有结点的最短路径。
