@@ -2443,3 +2443,51 @@ func dfs(graph [][]int, cur int) bool {
     return true
 }
 ```
+
+## [Graph Valid Tree](https://www.lintcode.com/problem/178/)
+
+A: 并查集，首先判断是否有环，其次判断最后的连通分量是否为1。
+
+```go
+var (
+    parent []int
+    cnt int
+)
+
+func ValidTree(n int, edges [][]int) bool {
+    // write your code here
+    parent = make([]int, n)
+    cnt = n
+    for i := range parent {
+        parent[i] = i
+    }
+    for _, e := range edges {
+        if !connected(e[0], e[1]) {
+            union(e[0], e[1])
+        } else {
+            return false
+        }
+    }
+    return cnt == 1
+}
+
+func union(n1, n2 int) {
+    p1, p2 := find(n1), find(n2)
+    if p1 == p2 {
+        return
+    }
+    cnt--
+    parent[p1] = p2
+}
+
+func find(n1 int) int {
+    if n1 != parent[n1] {
+        parent[n1] = find(parent[n1])
+    }
+    return parent[n1]
+}
+
+func connected(n1, n2 int) bool {
+    return find(n1) == find(n2)
+}
+```
