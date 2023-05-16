@@ -852,6 +852,106 @@ public:
 };
 ```
 
+```go
+import "container/list"
+
+
+type LFUCache struct {
+    cap int
+    minF int
+    mKV map[int]int
+    mKF map[int]int
+    mFK map[int]*list.List
+}
+
+
+type Node struct {
+    k, v, f int
+}
+
+
+func Constructor(capacity int) LFUCache {
+    return LFUCache {
+        cap: capacity,
+        minF: 0,
+        mKV: make(map[int]int),
+        mKF: make(map[int]int),
+        mFK: make(map[int]*list.List),
+    }
+}
+
+
+func (this *LFUCache) Get(key int) int {
+    if v, ok := this.mKV[key]; ok {
+        this.increaseFreq(key)
+        return v
+    }
+    return -1
+}
+
+
+func (this *LFUCache) Put(key int, value int)  {
+    if _, ok := this.mKV[key]; ok {
+        this.mKV[key] = value
+        this.increaseFreq(key)
+        return
+    }
+    if len(this.mKV) == this.cap {
+        fmt.Println(this.minF, key, value)
+        fmt.Println(this.mFK[this.minF])
+        this.removeMinFreq()
+    }
+    this.mKV[key] = value
+    this.mKF[key] = 1
+    if _, ok := this.mFK[1]; !ok {
+        this.mFK[1] = list.New()
+    }
+    this.mFK[1].PushFront(key)
+    this.minF = 1
+}
+
+
+func (this *LFUCache) increaseFreq(key int) {
+    f := this.mKF[key]
+    this.mKF[key]++
+    for e := this.mFK[f].Front(); e != nil; e = e.Next() {
+        if e.Value.(int) == key {
+            this.mFK[f].Remove(e)
+            break
+        }
+    }
+    if this.mFK[f].Len() == 0 {
+        delete(this.mFK, f)
+        if f == this.minF {
+            this.minF++
+        }
+    }
+    if l, ok := this.mFK[f + 1]; ok {
+        l.PushFront(key)
+    } else {
+        this.mFK[f + 1] = list.New()
+        this.mFK[f + 1].PushFront(key)
+    }
+}
+
+
+func (this *LFUCache) removeMinFreq() {
+    l := this.mFK[this.minF]
+    k := l.Remove(l.Back()).(int)
+    if l.Len() == 0 {
+        delete(this.mFK, this.minF)
+    }
+    delete(this.mKV, k)
+    delete(this.mKF, k)
+}
+/**
+ * Your LFUCache object will be instantiated and called as such:
+ * obj := Constructor(capacity);
+ * param_1 := obj.Get(key);
+ * obj.Put(key,value);
+ */
+```
+
 ## [Minimum Number of Swaps to Make the String Balanced](https://leetcode.com/problems/minimum-number-of-swaps-to-make-the-string-balanced)
 
 A: 双指针，统计未能成组的]数量。
