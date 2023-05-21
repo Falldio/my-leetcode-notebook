@@ -1329,3 +1329,43 @@ public:
     }
 };
 ```
+
+## [Minimum Falling Path Sum](https://leetcode.com/problems/minimum-falling-path-sum)
+
+A: dp中每个元素代表到达当前位置的最小路径和。
+
+```go
+func minFallingPathSum(matrix [][]int) int {
+    if len(matrix) == 1 {
+        return matrix[0][0]
+    }
+    pre := make([]int, len(matrix))
+    cur := make([]int, len(matrix))
+    for i := 0; i < len(matrix); i++ {
+        for j := 0; j < len(matrix); j++ {
+            if j == 0 {
+                cur[j] = min(pre[j], pre[j + 1])
+            } else if j == len(matrix) - 1 {
+                cur[j] = min(pre[j], pre[j - 1])
+            } else {
+                cur[j] = min(pre[j], pre[j - 1], pre[j + 1])
+            }
+            cur[j] += matrix[i][j]
+        }
+        tmp := make([]int, len(matrix))
+        copy(tmp, cur)
+        pre = tmp
+    }
+    return min(pre...)
+}
+
+func min(nums ...int) int {
+    ans := math.MaxInt
+    for i := range nums {
+        if ans > nums[i] {
+            ans = nums[i]
+        }
+    }
+    return ans
+}
+```
