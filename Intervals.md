@@ -526,3 +526,48 @@ int findMinimumTime(vector<vector<int>>& tasks) {
     return count(begin(line), end(line), true);
 }
 ```
+
+## [Video Stitching](https://leetcode.com/problems/video-stitching)
+
+A: 排序，每次选择End最大的区间，直到End大于等于time。
+
+```go
+func videoStitching(clips [][]int, time int) int {
+    sort.Slice(clips, func (i, j int) bool {
+        if clips[i][0] < clips[j][0] {
+            return true
+        } else if clips[i][0] == clips[j][0] {
+            return clips[i][1] > clips[j][1]
+        } else {
+            return false
+        }
+    })
+
+    if clips[0][0] > 0 {
+        return -1
+    }
+    curEnd, nextEnd := 0, 0
+    ans := 0
+    i := 0
+    for i < len(clips) && clips[i][0] <= curEnd {
+        for i < len(clips) && clips[i][0] <= curEnd {
+            nextEnd = max(nextEnd, clips[i][1])
+            i++
+        }
+        curEnd = nextEnd
+        ans++
+        if curEnd >= time {
+            return ans
+        }
+    }
+    return -1
+}
+
+func max(i, j int) int {
+    if i > j {
+        return i
+    } else {
+        return j
+    }
+}
+```
