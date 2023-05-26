@@ -1540,3 +1540,42 @@ func min(i, j int) int {
     }
 }
 ```
+
+## [Predict the Winner](https://leetcode.com/problems/predict-the-winner)
+
+A: 每次选择最优解，轮换时，对手也选择最优解，dp[i][j][0]代表先手在[i, j]区间内的最大得分，dp[i][j][1]代表后手在[i, j]区间内的最大得分。
+
+```go
+var (
+    memo [][][]int
+)
+
+func PredictTheWinner(nums []int) bool {
+    m := len(nums)
+    memo = make([][][]int, m)
+    for i := range memo {
+        memo[i] = make([][]int, m)
+        for j := range memo[i] {
+            memo[i][j] = make([]int, 2)
+        }
+        memo[i][i][0] = nums[i]
+        memo[i][i][1] = 0
+    }
+    
+    for i := m - 2; i >= 0; i-- {
+        for j := i + 1; j < m; j++ {
+            left := nums[i] + memo[i + 1][j][1]
+            right := nums[j] + memo[i][j - 1][1]
+            if left > right {
+                memo[i][j][0] = left
+                memo[i][j][1] = memo[i + 1][j][0]
+            } else {
+                memo[i][j][0] = right
+                memo[i][j][1] = memo[i][j - 1][0]
+            }
+        }
+    }
+
+    return memo[0][m - 1][0] - memo[0][m - 1][1] >= 0
+}
+```
