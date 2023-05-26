@@ -1479,3 +1479,64 @@ func min(i, j int) int {
     }
 }
 ```
+
+## [Freedom Trail](https://leetcode.com/problems/freedom-trail)
+
+A: 记录每个字符在ring中的位置，dp[i][j]代表从ring[i]到key[j]的最小步数。
+
+```go
+var (
+    m map[byte][]int
+    memo [][]int
+)
+
+func findRotateSteps(ring string, key string) int {
+    m = map[byte][]int{}
+    for i := range ring {
+        if _, ok := m[ring[i]]; !ok {
+            m[ring[i]] = []int{}
+        }
+        m[ring[i]] = append(m[ring[i]], i)
+    }
+    memo = make([][]int, len(ring))
+    for i := range memo {
+        memo[i] = make([]int, len(key))
+    }
+    return dp(ring, 0, key, 0)
+}
+
+func dp(ring string, i int, key string, j int) int {
+    ans := math.MaxInt
+    if j == len(key) {
+        return 0
+    }
+    if memo[i][j] != 0 {
+        return memo[i][j]
+    }
+
+    for _, idx := range m[key[j]] {
+        delta := abs(idx - i)
+        delta = min(delta, len(ring) - delta)
+        sub := dp(ring, idx, key, j + 1)
+        ans = min(ans, 1 + delta + sub)
+    }
+    memo[i][j] = ans
+    return ans
+}
+
+func abs(i int) int {
+    if i < 0 {
+        return -i
+    } else {
+        return i
+    }
+}
+
+func min(i, j int) int {
+    if i < j {
+        return i
+    } else {
+        return j
+    }
+}
+```
