@@ -1425,3 +1425,57 @@ func min(nums ...int) int {
     return ans
 }
 ```
+
+## [Dungeon Game](https://leetcode.com/problems/dungeon-game)
+
+A: 反向思考，dp[i][j]代表从(i, j)到达右下角所需的最小初始血量。
+
+```go
+var (
+    memo [][]int
+    m, n int
+)
+
+func calculateMinimumHP(dungeon [][]int) int {
+    m, n = len(dungeon), len(dungeon[0])
+    memo = make([][]int, m)
+    for i := range memo {
+        memo[i] = make([]int, n)
+        for j := range memo[i] {
+            memo[i][j] = -1
+        }
+    }
+    return dp(dungeon, 0, 0)
+}
+
+func dp(dungeon [][]int, i, j int) int {
+    if i < 0 || i >= m || j < 0 || j >= n {
+        return math.MaxInt
+    }
+    if i == m - 1 && j == n - 1 {
+        if dungeon[i][j] >= 0 {
+            return 1
+        } else {
+            return -dungeon[i][j] + 1
+        }
+    }
+    if memo[i][j] != -1 {
+        return memo[i][j]
+    }
+    ans := min(dp(dungeon, i + 1, j), dp(dungeon, i, j + 1)) - dungeon[i][j]
+    if ans <= 0 {
+        memo[i][j] = 1
+    } else {
+        memo[i][j] = ans
+    }
+    return memo[i][j]
+}
+
+func min(i, j int) int {
+    if i < j {
+        return i
+    } else {
+        return j
+    }
+}
+```
