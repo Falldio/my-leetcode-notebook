@@ -164,6 +164,62 @@ func max(i, j int) int {
 }
 ```
 
+## [Minimum ASCII Delete Sum for Two Strings](https://leetcode.com/problems/minimum-ascii-delete-sum-for-two-strings)
+
+A: 同LCS，但是需要记录删除的字符的ASCII码。
+
+```go
+var (
+    memo [][]int
+    m, n int
+)
+
+func minimumDeleteSum(s1 string, s2 string) int {
+    m, n = len(s1), len(s2)
+    memo = make([][]int, m)
+    for i := range memo {
+        memo[i] = make([]int, n)
+        for j := range memo[i] {
+            memo[i][j] = -1
+        }
+    }
+    return dp(s1, 0, s2, 0)
+}
+
+func dp(s1 string, i int, s2 string, j int) int {
+    ans := 0
+    if i == m {
+        for ; j < n; j++ {
+            ans += int(s2[j])
+        }
+        return ans
+    }
+    if j == n {
+        for ; i < m; i++ {
+            ans += int(s1[i])
+        }
+        return ans
+    }
+    if memo[i][j] != -1 {
+        return memo[i][j]
+    }
+    if s1[i] == s2[j] {
+        memo[i][j] = dp(s1, i + 1, s2, j + 1)
+    } else {
+        memo[i][j] = min(int(s1[i]) + dp(s1, i + 1, s2, j), int(s2[j]) + dp(s1, i, s2, j + 1))
+    }
+    return memo[i][j]
+}
+
+func min(i, j int) int {
+    if i < j {
+        return i
+    } else {
+        return j
+    }
+}
+```
+
 ## [Best Time to Buy And Sell Stock With Cooldown](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown)
 
 A: DP + 状态机（卖、持有、cd）。
