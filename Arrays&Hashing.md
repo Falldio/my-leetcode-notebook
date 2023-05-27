@@ -3370,3 +3370,42 @@ public:
     }
 };
 ```
+
+## [Shuffle an Array](https://leetcode.com/problems/shuffle-an-array)
+
+A: 随机将每个元素与其后面的元素交换。
+
+```go
+type Solution struct {
+    nums []int
+}
+
+
+func Constructor(nums []int) Solution {
+    return Solution{nums: nums}
+}
+
+
+func (this *Solution) Reset() []int {
+    return this.nums
+}
+
+
+func (this *Solution) Shuffle() []int {
+    tmp := make([]int, len(this.nums))
+    copy(tmp, this.nums)
+    for i := range tmp {
+        r := i + rand.Intn(len(tmp) - i)
+        tmp[r], tmp[i] = tmp[i], tmp[r]
+    }
+    return tmp
+}
+
+
+/**
+ * Your Solution object will be instantiated and called as such:
+ * obj := Constructor(nums);
+ * param_1 := obj.Reset();
+ * param_2 := obj.Shuffle();
+ */
+```
