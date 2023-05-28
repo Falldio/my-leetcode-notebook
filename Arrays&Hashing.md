@@ -3409,3 +3409,36 @@ func (this *Solution) Shuffle() []int {
  * param_2 := obj.Shuffle();
  */
 ```
+
+## [Set MisMatch](https://leetcode.com/problems/set-mismatch)
+
+A: 将索引值和元素值对应，遍历数组，用负数标记已经出现过的元素，最后遍历数组，找到第一个正数，即为缺失的元素。
+
+```go
+func findErrorNums(nums []int) []int {
+    dup := -1
+    for i := range nums {
+        idx := abs(nums[i]) - 1
+        if nums[idx] < 0 {
+            dup = abs(nums[i])
+        } else {
+            nums[idx] *= -1
+        }
+    }
+    missing := -1
+    for i := range nums {
+        if nums[i] > 0 {
+            missing = i + 1
+        }
+    }
+    return []int{dup, missing}
+}
+
+func abs(n int) int {
+    if n < 0 {
+        return n * -1
+    } else {
+        return n
+    }
+}
+```
