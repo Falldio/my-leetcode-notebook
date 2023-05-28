@@ -920,3 +920,13 @@ func pow(a int, b int) int {
     return ans
 }
 ```
+
+## [Nim Game](https://leetcode.com/problems/nim-game)
+
+A: 只要n不是4的倍数，就可以赢。
+
+```go
+func canWinNim(n int) bool {
+    return n % 4 != 0
+}
+```
