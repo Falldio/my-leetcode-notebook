@@ -893,3 +893,30 @@ func countPrimes(n int) int {
     return ans
 }
 ```
+
+## [Super Pow](https://leetcode.com/problems/super-pow)
+
+A: 递归，a^b % 1337 = (a % 1337)^b % 1337。
+
+```go
+func superPow(a int, b []int) int {
+    if len(b) == 0 {
+        return 1
+    }
+    last := b[len(b) - 1]
+    b = b[:len(b) - 1]
+    p1 := pow(a, last)
+    p2 := pow(superPow(a, b), 10)
+    return p1 * p2 % 1337
+}
+
+func pow(a int, b int) int {
+    a %= 1337
+    ans := 1
+    for i := 0; i < b; i++ {
+        ans *= a
+        ans %= 1337
+    }
+    return ans
+}
+```
