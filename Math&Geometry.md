@@ -849,3 +849,19 @@ func connected(n1, n2 int) bool {
     return find(n1) == find(n2)
 }
 ```
+
+## [Factorial Trailing Zeroes](https://leetcode.com/problems/factorial-trailing-zeroes)
+
+A: div = 5, 25, 125, ...时，依次可以额外提供一个0。
+
+```go
+func trailingZeroes(n int) int {
+    ans := 0
+    div := 5
+    for div <= n {
+        ans += n / div
+        div *= 5
+    }
+    return ans
+}
+```
