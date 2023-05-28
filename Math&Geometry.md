@@ -865,3 +865,31 @@ func trailingZeroes(n int) int {
     return ans
 }
 ```
+
+## [Count Primes](https://leetcode.com/problems/count-primes)
+
+A: 每当找到一个素数，就将其倍数标记为非素数。
+
+```go
+func countPrimes(n int) int {
+    isPrime := make([]bool, n)
+    for i := range isPrime {
+        isPrime[i] = true
+    }
+    for i := 2; i < n; i++ {
+        if isPrime[i] {
+            for j := 2 * i; j < n; j += i {
+                isPrime[j] = false
+            }
+        }
+    }
+
+    ans := 0
+    for i := 2; i < n; i++ {
+        if isPrime[i] {
+            ans++
+        }
+    }
+    return ans
+}
+```
