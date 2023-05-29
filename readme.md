@@ -4,6 +4,8 @@
 
 > 部分题目答案来自于各类题解网页，并不完全是原创，仅作个人记录使用。
 
+> 之前制订的刷题计划基本已经完成，未来将坚持每日一题，但不再重度刷题。
+
 ## 题目分类
 
 题目分类沿用[NeetCode](https://neetcode.io/)。
@@ -50,4 +52,4 @@
 
 - [x] 跟随([代码随想录 (programmercarl.com)](https://www.programmercarl.com/)二刷（大部分题目都是重复的），用Golang
 
-- [ ] 用([labuladong 的算法小抄 :: labuladong的算法小抄](https://labuladong.github.io/algo/))三刷
+- [x] 用([labuladong 的算法小抄 :: labuladong的算法小抄](https://labuladong.github.io/algo/))三刷
