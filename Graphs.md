@@ -1710,6 +1710,40 @@ public:
 };
 ```
 
+A: BFS，但直接在原数组上记录步数，不需要额外的空间。
+
+```go
+type node struct {
+    x, y int
+}
+
+func shortestPathBinaryMatrix(grid [][]int) int {
+    q := []node{node{x: 0, y: 0}}
+    if grid[0][0] != 0 || grid[len(grid) - 1][len(grid[0]) - 1] != 0 {
+        return -1
+    }
+    grid[0][0] = 1
+    for len(q) > 0 {
+        cur := q[0]
+        q = q[1:]
+        if cur.x == len(grid) - 1 && cur.y == len(grid[0]) - 1 {
+            return grid[cur.x][cur.y]
+        }
+        for i := cur.x - 1; i <= cur.x + 1; i++ {
+            for j := cur.y - 1; j <= cur.y + 1; j++ {
+                if i >= 0 && i < len(grid) && j >= 0 && j < len(grid[0]) {
+                    if grid[i][j] == 0 {
+                        grid[i][j] = grid[cur.x][cur.y] + 1
+                        q = append(q, node{i, j})
+                    }
+                }
+            }
+        }
+    }
+    return -1
+}
+```
+
 ## [As Far from Land as Possible](https://leetcode.com/problems/as-far-from-land-as-possible)
 
 A: BFS，将所有陆地入队，然后从陆地开始向四周扩散，直到遇到海洋。直到最远的陆地都扩散完，就是最远距离。
