@@ -2588,3 +2588,64 @@ func calcEquation(equations [][]string, values []float64, queries [][]string) []
     return results
 }
 ```
+
+## [Detonate the Maximum Number of Bombs](https://leetcode.com/problems/detonate-the-maximum-number-of-bombs/)
+
+A: 将炸弹引爆关系转换成图，然后DFS。
+
+```go
+var (
+    adj [][]int
+    visited []bool
+    ans int
+)
+
+func maximumDetonation(bombs [][]int) int {
+    adj = make([][]int, len(bombs))
+    ans = 0
+    for i := range adj {
+        adj[i] = []int{}
+    }
+    for i := range bombs {
+        r := bombs[i][2] * bombs[i][2]
+        for j := range bombs {
+            if i == j {
+                continue
+            }
+            dist := pow2(bombs[i][0] - bombs[j][0]) + pow2(bombs[i][1] - bombs[j][1])
+            if dist <= r {
+                adj[i] = append(adj[i], j)
+            }
+        }
+    }
+    for i := range bombs {
+        visited = make([]bool, len(bombs))
+        ans = max(dfs(bombs, i), ans)
+    }
+    return ans
+}
+
+func dfs(bombs [][]int, idx int) int {
+    if visited[idx] {
+        return 0
+    }
+    nums := 1
+    visited[idx] = true
+    for _, i := range adj[idx] {
+        nums += dfs(bombs, i)
+    }
+    return nums
+}
+
+func max(i, j int) int {
+    if i < j {
+        return j
+    } else {
+        return i
+    }
+}
+
+func pow2(i int) int {
+    return i * i
+}
+```
