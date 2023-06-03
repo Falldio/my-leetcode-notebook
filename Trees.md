@@ -3532,3 +3532,48 @@ func flatten(root *TreeNode)  {
     cur.Right = r
 }
 ```
+
+## [Time Needed to Inform All Employees](https://leetcode.com/problems/time-needed-to-inform-all-employees)
+
+A: 从叶子节点开始向上遍历，记录每个节点的最大路径和，最后取最大值。
+
+```go
+func numOfMinutes(n int, headID int, manager []int, informTime []int) int {
+    totalTime := [100000]int{}
+    
+    /*
+    traverse from leaf to head and track the max path-sum, memo results
+    */
+    maxTime := 0
+    for i := 0; i < n; i++ {
+        if totalTime[i] > 0 {
+            continue
+        }
+        
+        totTime := 0
+        curr := i
+        for curr != headID {
+            mgr := manager[curr]
+            if totalTime[mgr] > 0 {
+                totTime += (totalTime[mgr] + informTime[mgr])
+                break
+            }
+            totTime += informTime[mgr]
+            curr = mgr
+        }
+        
+        totalTime[i] = totTime
+        
+        maxTime = max(maxTime, totTime)
+    } 
+    
+    return maxTime
+}
+
+func max(v1, v2 int) int {
+    if v1 > v2 {
+        return v1
+    }
+    return v2
+}
+```
