@@ -2649,3 +2649,112 @@ func pow2(i int) int {
     return i * i
 }
 ```
+
+## [Number of Provinces](https://leetcode.com/problems/number-of-provinces/)
+
+A: 并查集，成功联通则总数减一。
+
+```cpp
+class Solution {
+public:
+    int findCircleNum(vector<vector<int>>& isConnected) {
+        int num = isConnected.size();
+        vector<int> rank, parent;
+        for (int i = 0; i < num; i++) {
+            parent.push_back(i);
+            rank.push_back(1);
+        }
+        int ans = num;
+        for (int i = 0; i < num; i++) {
+            for (int j = 0; j < num; j++) {
+                if (i==j) continue;
+                if (isConnected[i][j]) {
+                    ans -= doUnion(i, j, rank, parent);
+                }
+            }
+        }
+        return ans;
+    }
+private:
+    int doFind(int i, vector<int> &parent) {
+        int p = parent[i];
+
+        while(p != parent[p]) {
+            parent[p] = parent[parent[p]];
+            p = parent[p];
+        }
+
+        return p;
+    }
+
+    int doUnion(int i, int j, vector<int> &rank, vector<int> &parent) {
+        int p1 = doFind(i, parent);
+        int p2 = doFind(j, parent);
+
+        if (p1 == p2)   return 0;
+
+        if (rank[p1] >= rank[p2]) {
+            rank[p1] += rank[p2];
+            parent[p2] = p1;
+        } else {
+            rank[p2] += rank[p1];
+            parent[p1] = p2;
+        }
+        return 1;
+    }
+};
+```
+
+```go
+var (
+    parent []int
+    rank []int
+)
+
+func findCircleNum(isConnected [][]int) int {
+    n := len(isConnected)
+    parent = make([]int, n)
+    rank = make([]int, n)
+    for i := range parent {
+        parent[i] = i
+        rank[i] = 1
+    }
+    ans := n
+    for i := range isConnected {
+        for j := range isConnected[i] {
+            if i == j {
+                continue
+            }
+            if isConnected[i][j] == 1 {
+                if union(i, j) {
+                    ans --
+                }
+            }
+        }
+    }
+    return ans
+}
+
+func union(i, j int) bool {
+    p1, p2 := find(i), find(j)
+    if p1 == p2 {
+        return false
+    }
+    if rank[p1] > rank[p2] {
+        parent[p2] = p1
+        rank[p1] += rank[p2]
+    } else {
+        parent[p1] = p2
+        rank[p2] += rank[p1]
+    }
+    return true
+}
+
+func find(i int) int {
+    for i != parent[i] {
+        parent[i] = parent[parent[i]]
+        i = parent[i]
+    }
+    return i
+}
+```
