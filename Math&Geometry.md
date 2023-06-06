@@ -949,3 +949,20 @@ func checkStraightLine(coordinates [][]int) bool {
     return true
 }
 ```
+
+## [Can Make Arithmetic Progression From Sequence](https://leetcode.com/problems/can-make-arithmetic-progression-from-sequence)
+
+A: 排列，判断等差数列。
+
+```go
+func canMakeArithmeticProgression(arr []int) bool {
+    sort.Ints(arr)
+    diff := arr[1] - arr[0]
+    for i := 1; i < len(arr) - 1; i++ {
+        if arr[i + 1] - arr[i] != diff {
+            return false
+        }
+    }
+    return true
+}
+```
