@@ -246,3 +246,28 @@ func beautifulSubarrays(nums []int) int64 {
     return int64(answer)
 }
 ```
+
+## [Minimum Flips to Make a OR b Equal to c](https://leetcode.com/problems/minimum-flips-to-make-a-or-b-equal-to-c)
+
+A: 依次检查每一位，如果`c`的当前位为0，那么`a`和`b`的当前位必须有一个为1，否则需要翻转；如果`c`的当前位为1，那么`a`和`b`的当前位必须有一个为0，否则需要翻转。
+
+```go
+func minFlips(a int, b int, c int) int {
+	res := 0
+	for a > 0 || b > 0 || c > 0 {
+		if c & 1 == 0 {
+			if a & 1 == 1 {
+				res++
+			}
+			if b & 1 == 1 { 
+				res++ 
+			}
+		} else if a & 1 == 0 && b & 1 == 0 {
+			res++
+		}
+		
+		a, b, c = a >> 1, b >> 1, c >> 1
+	}
+	return res
+}
+```
