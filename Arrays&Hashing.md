@@ -3283,3 +3283,24 @@ func abs(n int) int {
     }
 }
 ```
+
+## [Count Negative Numbers in a Sorted Matrix](https://leetcode.com/problems/count-negative-numbers-in-a-sorted-matrix)
+
+A: 从右上角开始，如果当前元素小于0，则当前元素下面的元素都小于0，否则，当前元素左边的元素都大于等于0。
+
+```go
+func countNegatives(grid [][]int) int {
+    m, n := len(grid), len(grid[0])
+    r, c := 0, n - 1
+    ans := 0
+    for r != m && c >= 0 {
+        if grid[r][c] < 0 {
+            ans += m - r
+            c--
+        } else {
+            r++
+        }
+    }
+    return ans
+}
+```
