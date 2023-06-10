@@ -761,3 +761,27 @@ func nextGreatestLetter(letters []byte, target byte) byte {
     return ans
 }
 ```
+
+## [Maximum Value at a Given Index in a Bounded Array](https://leetcode.com/problems/maximum-value-at-a-given-index-in-a-bounded-array)
+
+A: 转换为二分查找问题，当前index的值为最大值，则边界条件是出于波峰，另外，需要满足所有元素为正数，所以需要判断`sum - n`是否大于等于0。
+
+```cpp
+class Solution {
+public:
+    int maxValue(int n, int i, int maxSum) {
+        int l = 0, r = maxSum, j = n - i - 1;
+        while (l < r) {
+            long m = (l + r + 1) / 2;
+            // 实际操作上先给所有元素加1，这样判断时只需要保证所有元素非负即可
+            auto need = m * m - ((m > i ? (m - i - 1) * (m - i) : 0)
+                + (m > j ? (m - j - 1) * (m - j) : 0)) / 2;
+            if (need <= maxSum - n)
+                l = m;
+            else
+                r = m - 1;
+        }
+        return l + 1;
+    }
+};
+```
