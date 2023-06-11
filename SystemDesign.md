@@ -402,3 +402,75 @@ func (this *UndergroundSystem) GetAverageTime(startStation string, endStation st
     return time / freq
 }
 ```
+
+## [Snapshot Array](https://leetcode.com/problems/snapshot-array)
+
+A: 记录每个元素的历史值，每次set时，如果当前版本小于快照版本，则添加新的快照，否则更新当前快照的值，最后使用二分查找找到最近的快照版本。
+
+```go
+type SnapshotArray struct {
+    nums [][][]int // nums, snap version, {snap id, val}
+    cnt int // snap cnt
+}
+
+
+func Constructor(length int) SnapshotArray {
+    sa := SnapshotArray{
+        nums: make([][][]int, length),
+        cnt: 0,
+    }
+    for i := range sa.nums {
+        sa.nums[i] = make([][]int, 1)
+        sa.nums[i][0] = []int{0, 0}
+    }
+    return sa
+}
+
+
+func (this *SnapshotArray) Set(index int, val int)  {
+    end := len(this.nums[index]) - 1
+    snapVer := this.nums[index][end][0]
+    if snapVer < this.cnt {
+        this.nums[index] = append(this.nums[index], []int{this.cnt, val})
+    } else {
+        this.nums[index][end][0] = this.cnt
+        this.nums[index][end][1] = val
+    }
+}
+
+
+func (this *SnapshotArray) Snap() int {
+    this.cnt++
+    return this.cnt - 1
+}
+
+
+func (this *SnapshotArray) Get(index int, snap_id int) int {
+    vers := this.nums[index]
+    l, r := 0, len(vers) - 1
+    ans := -1
+    for l <= r {
+        mid := l + (r - l) / 2
+        id := vers[mid][0]
+        if id == snap_id {
+            return vers[mid][1]
+        } else if id > snap_id {
+            r = mid - 1
+        } else {
+            l = mid + 1
+            ans = vers[mid][1]
+        }
+    }
+    return ans
+}
+
+
+/**
+ * Your SnapshotArray object will be instantiated and called as such:
+ * obj := Constructor(length);
+ * obj.Set(index,val);
+ * param_2 := obj.Snap();
+ * param_3 := obj.Get(index,snap_id);
+ */
+ ```
+ 
