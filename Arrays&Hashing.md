@@ -3304,3 +3304,37 @@ func countNegatives(grid [][]int) int {
     return ans
 }
 ```
+
+## [Summary Ranges](https://leetcode.com/problems/summary-ranges)
+
+A: 遍历，分两种情况组装字符串。
+
+```go
+func summaryRanges(nums []int) []string {
+    if len(nums) == 0 {
+        return []string{}
+    }
+    start, old := nums[0], nums[0]
+    ans := []string{}
+    var s string
+    for _, n := range nums {
+        if n - old > 1 {
+            if start != old {
+                s = fmt.Sprintf("%d->%d", start, old)
+            } else {
+                s = fmt.Sprintf("%d", old)
+            }
+            ans = append(ans, s)
+            start = n
+        }
+        old = n
+    }
+    if start != old {
+        s = fmt.Sprintf("%d->%d", start, old)
+    } else {
+        s = fmt.Sprintf("%d", old)
+    }
+    ans = append(ans, s)
+    return ans
+}
+```
