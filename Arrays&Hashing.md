@@ -3338,3 +3338,33 @@ func summaryRanges(nums []int) []string {
     return ans
 }
 ```
+
+## [Equal Row and Column Pairs](https://leetcode.com/problems/equal-row-and-column-pairs)
+
+A: 将每一行和每一列的元素拼接成字符串，然后用map记录每个字符串出现的次数，最后遍历每一列，找到对应的行，将出现的次数相加。
+
+```go
+func equalPairs(grid [][]int) int {
+    m := map[string]int{}
+    ans := 0
+    for i := range grid {
+        key := []byte{}
+        for j := range grid[i] {
+            key = append(key, []byte(strconv.Itoa(grid[i][j]))...)
+            key = append(key, ',')
+        }
+        m[string(key)]++
+    }
+    
+    for j := range grid {
+        key := []byte{}
+        for i := range grid {
+            key = append(key, []byte(strconv.Itoa(grid[i][j]))...)
+            key = append(key, ',')
+        }
+        ans += m[string(key)]
+    }
+
+    return ans
+}
+```
