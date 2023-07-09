@@ -37,6 +37,26 @@ func containsDuplicate(nums []int) bool {
 }
 ```
 
+## [数组中重复的数字](https://www.nowcoder.com/practice/6fe361ede7e54db1b84adc81d09d8524?tpId=265&tqId=39207&rp=1&ru=/exam/oj/ta&qru=/exam/oj/ta&sourceUrl=%2Fexam%2Foj%2Fta%3FtpId%3D13&difficulty=undefined&judgeStatus=undefined&tags=&title=)
+
+A: 该数组排序后必然出现数字和下标不一致的情况，因此只需要比较数字和下标，出现不一致，则将该数字与下标对应的数字交换，直到出现重复数字。
+
+```go
+func duplicate(numbers []int) int {
+	// write code here
+	for i := range numbers {
+		for numbers[i] != i {
+			if numbers[i] == numbers[numbers[i]] {
+				return numbers[i]
+			} else {
+                numbers[i], numbers[numbers[i]] = numbers[numbers[i]], numbers[i]
+			}
+		}
+	}
+	return -1
+}
+```
+
 ## [Valid Anagram](https://leetcode.com/problems/valid-anagram)
 
 A: 建立哈希表：全为小写英文字母则用数组，反之用`unordered_map`；而后用哈希表数值加一减一判断条件是否成立。

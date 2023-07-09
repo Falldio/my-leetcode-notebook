@@ -3577,3 +3577,30 @@ func max(v1, v2 int) int {
     return v2
 }
 ```
+
+## [二叉树的下一个节点](https://www.nowcoder.com/practice/9023a0c988684a53960365b889ceaf5e?tpId=265&tags=&title=&difficulty=0&judgeStatus=0&rp=1&sourceUrl=%2Fexam%2Foj%2Fta%3Fpage%3D1%26tpId%3D13%26type%3D265)
+
+A: 分类讨论，如果当前节点有右子树，则下一个节点为右子树的最左节点；如果当前节点没有右子树，**则向上找，直到找到一个节点是其父节点的左子树，则下一个节点为该父节点**。
+
+```go
+func GetNext(pNode *TreeLinkNode) *TreeLinkNode {
+    if pNode == nil {
+        return nil
+    }
+    cur := pNode
+    var nxt *TreeLinkNode
+    if cur.Right != nil {
+        nxt = cur.Right
+        for nxt.Left != nil {
+            nxt = nxt.Left
+        }
+    } else if cur.Next != nil {
+        nxt = cur.Next
+        for nxt != nil && nxt.Right == cur {
+            cur = nxt
+            nxt = nxt.Next
+        }
+    }
+    return nxt
+}
+```

@@ -1449,3 +1449,27 @@ public:
     }
 };
 ```
+
+## [剪绳子](https://www.nowcoder.com/practice/57d85990ba5b440ab888fc72b0751bf8?tpId=265&tags=&title=&difficulty=0&judgeStatus=0&rp=1&sourceUrl=%2Fexam%2Foj%2Fta%3Fpage%3D1%26tpId%3D13%26type%3D265)
+
+A: 自底而上的DP。
+
+```go
+func cutRope( n int ) int {
+    ans := make([]int, n + 1)
+    ans[1] = 1
+    ans[2] = 2
+    ans[3] = 3
+    for i := 4; i <= n; i++ {
+        max := 0
+        for j := 1; j <= i/2; j++ {
+            p := ans[j] * ans[i - j]
+            if max < p {
+                max = p
+            }
+            ans[i] = max
+        }
+    }
+    return ans[n]
+}
+```

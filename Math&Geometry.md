@@ -966,3 +966,28 @@ func canMakeArithmeticProgression(arr []int) bool {
     return true
 }
 ```
+
+## [数值的整数次方](https://www.nowcoder.com/practice/1a834e5e3e1a4b7ba251417554e07c00?tpId=265&tags=&title=&difficulty=0&judgeStatus=0&rp=1&sourceUrl=%2Fexam%2Foj%2Fta%3Fpage%3D1%26tpId%3D13%26type%3D265)
+
+A: 需要考虑底数为0的情况，以及指数为负数的情况。
+
+```go
+func Power( base float64 ,  exponent int ) float64 {
+    if base == 0.0 && exponent < 0 {
+        return 0.0
+    }
+
+    absExp := exponent
+    if exponent < 0 {
+        absExp = -absExp
+    }
+    ans := 1.0
+    for i := 1; i <= absExp; i++ {
+        ans *= base
+    }
+    if exponent < 0 {
+        ans = 1 / ans
+    }
+    return ans
+}
+```

@@ -1409,3 +1409,87 @@ func minimumDeviation(nums []int) int {
     return ans
 }
 ```
+
+## [矩阵中的路径](https://www.nowcoder.com/practice/2a49359695a544b8939c77358d29b7e6?tpId=265&tags=&title=&difficulty=0&judgeStatus=0&rp=1&sourceUrl=%2Fexam%2Foj%2Fta%3Fpage%3D1%26tpId%3D13%26type%3D265)
+
+A: 回溯。
+
+```go
+func hasPath( matrix [][]byte ,  word string ) bool {
+    if matrix == nil || len(matrix) == 0 || len(matrix[0]) == 0 {
+        return false
+    }
+    bts := []byte(word)
+    m, n := len(matrix), len(matrix[0])
+    for i := 0; i < m; i++ {
+        for j := 0; j < n; j++ {
+            if dfs(i, j, 0, matrix, bts) {
+                return true
+            }
+        }
+    }
+    return false
+}
+
+func dfs(i, j, idx int, matrix [][]byte, word []byte) bool {
+    if idx == len(word) {
+        return true
+    }
+    if i < 0 || i >= len(matrix) || j < 0 || j >= len(matrix[0]) || matrix[i][j] != word[idx] || matrix[i][j] == '#' {
+        return false
+    }
+    oldVal := matrix[i][j]
+    matrix[i][j] = '#'
+    ans := dfs(i+1, j, idx + 1, matrix, word) ||
+        dfs(i, j+1, idx+1, matrix, word) ||
+        dfs(i-1, j, idx+1, matrix, word) ||
+        dfs(i, j-1, idx+1, matrix, word)
+    if ans == false {
+        matrix[i][j] = oldVal
+    }
+    return ans
+}
+```
+
+## [机器人的运动范围](https://www.nowcoder.com/practice/6e5207314b5241fb83f2329e89fdecc8?tpId=265&tags=&title=&difficulty=0&judgeStatus=0&rp=1&sourceUrl=%2Fexam%2Foj%2Fta%3Fpage%3D1%26tpId%3D13%26type%3D265)
+
+A: 标记已经访问过的位置，回溯。
+
+```go
+var visited [][]bool
+func movingCount( threshold int ,  rows int ,  cols int ) int {
+    visited = make([][]bool, rows)
+    for i := range visited {
+        visited[i] = make([]bool, cols)
+    }
+    return dfs(threshold, rows, cols, 0, 0)
+}
+
+func dfs(threshold, rows, cols, i, j int) int {
+    if i < 0 || i >= rows || j < 0 || j >= cols || visited[i][j] {
+        return 0
+    }
+    if !isValid(i, j, threshold) {
+        return 0
+    }
+    visited[i][j] = true
+    cnt := dfs(threshold, rows, cols, i+1, j) +
+            dfs(threshold, rows, cols, i, j+1) +
+            dfs(threshold, rows, cols, i-1, j) +
+            dfs(threshold, rows, cols, i, j-1) + 1
+    return cnt
+}
+
+func isValid(i, j, threshold int) bool {
+    ans := 0
+    for i > 0 {
+        ans += i % 10
+        i /= 10
+    }
+    for j > 0 {
+        ans += j % 10
+        j /= 10
+    }
+    return ans <= threshold
+}
+```

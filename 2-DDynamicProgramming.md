@@ -716,6 +716,45 @@ private:
 };
 ```
 
+```go
+var dp map[string]bool
+
+func match( str string ,  pattern string ) bool {
+    dp = make(map[string]bool)
+    return dfs(str, pattern, 0, 0)
+}
+
+func dfs(str, pattern string, i, j int) bool {
+    key := fmt.Sprintf("%d_%d", i, j)
+    if v, ok := dp[key]; ok {
+        return v
+    }
+
+    if i == len(str) && j == len(pattern) {
+        return true
+    }
+
+    if i != len(str) && j == len(pattern) {
+        return false
+    }
+
+
+    match := (i < len(str)) && (str[i] == pattern[j] || pattern[j] == '.')
+    if (j + 1 < len(pattern)) && (pattern[j + 1] == '*') {
+        dp[key] = dfs(str, pattern, i, j + 2) ||
+                    (match && dfs(str, pattern, i + 1, j))
+        return dp[key]
+    }
+    
+    if match {
+        dp[key] = dfs(str, pattern, i + 1, j + 1)
+        return dp[key]
+    }
+
+    dp[key] = false
+    return dp[key]
+```
+
 ## [Stone Game](https://leetcode.com/problems/stone-game)
 
 A: 不会平局，A的第一次选择决定了她选择奇数堆还是偶数堆，两种情况她只需要选择较大的情况即可。

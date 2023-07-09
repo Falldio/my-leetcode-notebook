@@ -72,6 +72,43 @@ public:
 };
 ```
 
+## [旋转数组的最小数字](https://www.nowcoder.com/practice/9f3231a991af4f55b95579b44b7a01ba?tpId=265&tags=&title=&difficulty=0&judgeStatus=0&rp=1&sourceUrl=%2Fexam%2Foj%2Fta%3Fpage%3D1%26tpId%3D13%26type%3D265)
+
+A: 注意此题与上一题的区别，旋转数组中可能存在重复元素，因此需要考虑`nums[l] == nums[r]`的情况。
+
+```go
+func minNumberInRotateArray( nums []int ) int {
+    l, r := 0, len(nums) - 1
+    ans := nums[l]
+    for nums[l] >= nums[r] {
+        mid := l + (r - l) / 2
+        if r - l == 1 {
+            return nums[r]
+        }
+        if nums[mid] == nums[l] && nums[mid] == nums[r] {
+            return min(nums[l:r+1]...)
+        }
+        ans = min(ans, nums[mid])
+        if nums[mid] >= nums[l] {
+            l = mid
+        } else if nums[mid] <= nums[r] {
+            r = mid
+        }
+    }
+    return ans
+}
+
+func min(nums ...int) int {
+    ans := math.MaxInt
+    for _, n := range nums {
+        if n < ans {
+            ans = n
+        }
+    }
+    return ans
+}
+```
+
 ## [Binary Search](https://leetcode.com/problems/binary-search)
 
 A: 简单二分查找。
