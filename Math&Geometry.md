@@ -991,3 +991,44 @@ func Power( base float64 ,  exponent int ) float64 {
     return ans
 }
 ```
+
+## [表示数值的字符串](https://www.nowcoder.com/practice/e69148f8528c4039ad89bb2546fd4ff8?tpId=265&tqId=39222&rp=1&ru=/exam/oj/ta&qru=/exam/oj/ta&sourceUrl=%2Fexam%2Foj%2Fta%3FtpId%3D13&difficulty=undefined&judgeStatus=undefined&tags=&title=)
+
+A: 注意空格、正负号、小数点、e的情况，同时确保scan函数在条件判断时也要正常执行（即||和scan的顺序）。
+
+```go
+func isNumeric(str string) bool {
+	cur := 0
+    for cur < len(str) && str[cur] == ' ' {
+        cur++
+    }
+	if cur < len(str) && (str[cur] == '+' || str[cur] == '-') {
+		cur++
+	}
+	valid := scan(str, &cur)
+
+	if cur < len(str) && str[cur] == '.' {
+		cur++
+		valid = scan(str, &cur) || valid
+	}
+	if cur < len(str) && (str[cur] == 'e' || str[cur] == 'E') {
+		cur++
+		if cur < len(str) && (str[cur] == '+' || str[cur] == '-') {
+			cur++
+		}
+		valid = valid && scan(str, &cur)
+	}
+	for cur < len(str) && str[cur] == ' ' {
+		cur++
+	}
+	return valid && cur == len(str)
+}
+
+func scan(str string, cur *int) bool {
+	before := *cur
+	for *cur != len(str) && str[*cur] >= '0' && str[*cur] <= '9' {
+		(*cur)++
+	}
+	return before < *cur
+}
+```
