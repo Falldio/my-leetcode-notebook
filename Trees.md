@@ -794,6 +794,45 @@ private:
 };
 ```
 
+```go
+func Serialize(root *TreeNode) string {
+	ans := []byte{}
+	encode(root, &ans)
+	return string(ans)
+}
+
+func encode(root *TreeNode, ans *[]byte) {
+	if root == nil {
+		*ans = append(*ans, "$,"...)
+	} else {
+		*ans = append(*ans, fmt.Sprintf("%d,", root.Val)...)
+		encode(root.Left, ans)
+		encode(root.Right, ans)
+	}
+}
+
+func Deserialize(s string) *TreeNode {
+    strs := strings.Split(s, ",")
+    return decode(&strs)
+}
+
+func decode(strs *[]string) *TreeNode {
+    if len(*strs) == 0 {
+        return nil
+    }
+    if (*strs)[0] == "$" {
+        *strs = (*strs)[1:]
+        return nil
+    }
+    val, _ := strconv.Atoi((*strs)[0])
+    *strs = (*strs)[1:]
+    node := &TreeNode{Val: val}
+    node.Left = decode(strs)
+    node.Right = decode(strs)
+    return node
+}
+```
+
 A: Golang json解码。
 
 ```go
@@ -3602,5 +3641,41 @@ func GetNext(pNode *TreeLinkNode) *TreeLinkNode {
         }
     }
     return nxt
+}
+```
+
+## [二叉搜索树的后序遍历序列](https://www.nowcoder.com/practice/a861533d45854474ac791d90e447bafd?tpId=265&tags=&title=&difficulty=0&judgeStatus=0&rp=1&sourceUrl=%2Fexam%2Foj%2Fta%3FtpId%3D13)
+
+A: 抓住BST后序遍历的大小关系，将序列分为左子树、右子树和根节点，然后递归判断左右子树是否为BST。
+
+```go
+func VerifySquenceOfBST( sequence []int ) bool {
+    if len(sequence) == 0 {
+        return false
+    }
+    if len(sequence) == 1 {
+        return true
+    }
+    root := sequence[len(sequence)-1]
+    leftEnd, rightStart := -1, -1
+    for i := 0; i < len(sequence) - 1; i++ {
+        if sequence[i] >= root {
+            leftEnd = i
+            break
+        }
+    }
+    for i := len(sequence) - 2; i >= 0; i-- {
+        if sequence[i] < root {
+            rightStart = i + 1
+            break
+        }
+    }
+    if leftEnd != rightStart && leftEnd != -1 && rightStart != -1 {
+        return false
+    }
+    if leftEnd == 0 || rightStart == len(sequence) - 1 {
+        return VerifySquenceOfBST(sequence[:len(sequence)-1])
+    }
+    return VerifySquenceOfBST(sequence[:leftEnd]) && VerifySquenceOfBST(sequence[leftEnd:len(sequence)-1])
 }
 ```

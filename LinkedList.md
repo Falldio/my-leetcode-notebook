@@ -1596,3 +1596,81 @@ func pairSum(head *ListNode) int {
     return ans
 }
 ```
+
+## [复杂链表的复制](https://www.nowcoder.com/practice/f836b2c43afc4b35ad6adc41ec941dba?tpId=265&tags=&title=&difficulty=0&judgeStatus=0&rp=1&sourceUrl=%2Fexam%2Foj%2Fta%3FtpId%3D13)
+
+A: 将每个节点复制一份，然后**将复制的节点插入到原节点的后面**，然后复制节点的random指针指向原节点的random指针的下一个节点，**最后将复制的节点从原链表中拆分出来**。
+
+```go
+func Clone( head *RandomListNode ) *RandomListNode {
+    if head == nil {
+        return nil
+    }
+    cur := head
+    for cur != nil {
+        pClone := CloneNode(cur)
+        pre := cur
+        cur = cur.Next
+        pre.Next = pClone
+        pClone.Next = cur
+    }
+    cur = head
+    for cur != nil {
+        pClone := cur.Next
+        if cur.Random != nil {
+            pClone.Random = cur.Random.Next
+        }
+        cur = cur.Next.Next
+    }
+    dummy := &RandomListNode{}
+    pre, cur := dummy, head
+    for cur != nil {
+        pre.Next = cur.Next
+        pre = pre.Next
+        cur.Next = cur.Next.Next
+        cur = cur.Next
+    }
+    return dummy.Next
+}
+
+func CloneNode(node *RandomListNode) *RandomListNode {
+    return &RandomListNode{
+        Label: node.Label,
+    }
+}
+```
+
+## [二叉搜索树与双向链表](https://www.nowcoder.com/practice/947f6eb80d944a84850b0538bf0ec3a5?tpId=265&tags=&title=&difficulty=0&judgeStatus=0&rp=1&sourceUrl=%2Fexam%2Foj%2Fta%3FtpId%3D13)
+
+A: 递归，**递归的返回值是左子树排序的头节点**，然后将左子树的最后一个节点和根节点连接，然后将根节点和右子树的最左节点连接。注意左子树为空时，返回的是根节点。
+
+```go
+func Convert( pRootOfTree *TreeNode ) *TreeNode {
+    if pRootOfTree == nil {
+        return nil
+    }
+    if pRootOfTree.Left == nil && pRootOfTree.Right == nil {
+        return pRootOfTree
+    }
+    left := Convert(pRootOfTree.Left)
+    right := Convert(pRootOfTree.Right)
+    var ans *TreeNode
+    if left != nil {
+        ans = left
+    } else {
+        ans = pRootOfTree
+    }
+    for left != nil && left.Right != nil {
+        left = left.Right
+    }
+    if left != nil {
+        left.Right = pRootOfTree
+        pRootOfTree.Left = left
+    }
+    if right != nil {
+        right.Left = pRootOfTree
+        pRootOfTree.Right = right
+    }
+    return ans
+}
+```
