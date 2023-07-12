@@ -1473,3 +1473,35 @@ func cutRope( n int ) int {
     return ans[n]
 }
 ```
+
+## [把数字翻译成字符串](https://www.nowcoder.com/practice/046a55e6cd274cffb88fc32dba695668?tpId=265&tags=&title=&difficulty=0&judgeStatus=0&rp=1&sourceUrl=%2Fexam%2Foj%2Fta%3FtpId%3D13)
+
+A: 自底而上的DP，需要注意的是和剑指Offer原题不同，如果两位数字首位为0，则无效。
+
+```go
+func solve(nums string) int {
+    if len(nums) == 0 || nums[0] == '0' {
+        return 0
+    }
+	dp := make([]int, len(nums)+1)
+    dp[0] = 1
+    dp[1] = 1
+	for i := 2; i <= len(nums); i++ {
+		if nums[i-1] == '0' {
+            if nums[i-2] <= '2' && nums[i-2] > '0' {
+			    dp[i] = dp[i-1]
+            }
+		} else {
+			dp[i] = dp[i-1]
+            if nums[i-2] == '0' {
+                continue
+            }
+			n, _ := strconv.Atoi(nums[i-2 : i])
+			if n >= 1 && n <= 26 {
+				dp[i] += dp[i-2]
+			}
+		}
+	}
+	return dp[len(nums)]
+}
+```

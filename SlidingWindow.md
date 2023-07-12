@@ -96,6 +96,32 @@ func lengthOfLongestSubstring(s string) int {
 }
 ```
 
+```go
+func lengthOfLongestSubstring( s string ) int {
+    if len(s) == 0 {
+        return 0
+    }
+    pos := make(map[byte]int)
+    ans := 0
+    cur := 0
+    for i := 0; i < len(s); i++ {
+        if v, ok := pos[s[i]]; !ok || i - v > cur {
+            cur++
+        } else {
+            if cur > ans {
+                ans = cur
+            }
+            cur = i - pos[s[i]]
+        }
+        pos[s[i]] = i
+    }
+    if cur > ans {
+        ans = cur
+    }
+    return ans
+}
+```
+
 ## [Longest Repeating Character Replacement](https://leetcode.com/problems/longest-repeating-character-replacement)
 
 A: 判断次小字符集之和与k的大小，以此滑动左指针。

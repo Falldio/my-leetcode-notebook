@@ -550,6 +550,46 @@ public:
 };
 ```
 
+## [丑数](https://www.nowcoder.com/practice/6aa9e04fc3794f68acf8778237ba065b?tpId=265&tags=&title=&difficulty=0&judgeStatus=0&rp=1&sourceUrl=%2Fexam%2Foj%2Fta%3FtpId%3D13)
+
+A: 保持三个指针，分别指向乘2，乘3，乘5的位置，每次取最小值，然后更新指针。
+
+```go
+func GetUglyNumber_Solution( index int ) int {
+    if index == 0 {
+        return 0
+    }
+    ans := make([]int, index)
+    ans[0] = 1
+    nxt := 1
+    time2, time3, time5 := 0, 0, 0
+    for nxt < index {
+        ans[nxt] = min(ans[time2] * 2, ans[time3] * 3, ans[time5] * 5)
+        for ans[time2] * 2 <= ans[nxt] {
+            time2++
+        }
+        for ans[time3] * 3 <= ans[nxt] {
+            time3++
+        }
+        for ans[time5] * 5 <= ans[nxt] {
+            time5++
+        }
+        nxt++
+    }
+    return ans[index - 1]
+}
+
+func min(nums ...int) int {
+    ans := nums[0]
+    for _, n := range nums {
+        if ans > n {
+            ans = n
+        }
+    }
+    return ans
+}
+```
+
 ## [Shift 2D Grid](https://leetcode.com/problems/shift-2d-grid)
 
 A: 重新构造矩阵，计算拷贝后的元素位置。
@@ -1030,5 +1070,93 @@ func scan(str string, cur *int) bool {
 		(*cur)++
 	}
 	return before < *cur
+}
+```
+
+## [整数中1出现的次数（从1到n整数中1出现的次数）](https://www.nowcoder.com/practice/bd7f978302044eee894445e244c7eee6?tpId=265&tags=&title=&difficulty=0&judgeStatus=0&rp=1&sourceUrl=%2Fexam%2Foj%2Fta%3FtpId%3D13)
+
+A: 分情况，首位为1的数字个数+首位不为1但其他位为1的数字个数+去掉首位的1的个数。
+
+```go
+func NumberOf1Between1AndN_Solution( n int ) int {
+    str := fmt.Sprintf("%d", n)
+    return count(str)
+}
+
+func count(str string) int {
+    first, _ := strconv.Atoi(str[:1])
+    size := len(str)
+    if first == 0 && size == 1 {
+        return 0
+    }
+    if first > 0 && size == 1 {
+        return 1
+    }
+    ans := 0
+    if first == 1 {
+        n, _ := strconv.Atoi(str[1:])
+        ans += n + 1
+    } else {
+        ans += pow10(size - 1)
+    }
+    ans += first * (size - 1) * pow10(size - 2)
+    for idx := 1; idx < size; idx++ {
+        if str[idx] != '0' {
+            ans += count(str[idx:])
+            break
+        }
+    }
+    return ans
+}
+
+func pow10(base int) int {
+    n := 1
+    for i := 0; i < base; i++ {
+        n *= 10
+    }
+    return n
+}
+```
+
+## [数字序列中某一位的数字](https://www.nowcoder.com/practice/29311ff7404d44e0b07077f4201418f5?tpId=265&tqId=39335&rp=1&ru=/exam/oj/ta&qru=/exam/oj/ta&sourceUrl=%2Fexam%2Foj%2Fta%3FtpId%3D13&difficulty=undefined&judgeStatus=undefined&tags=&title=)
+
+A: 首先确定所在数字的位数，计算出该数字的基数，然后计算出该数字的值，最后确定所在的位。
+
+```go
+func findNthDigit( n int ) int {
+    digits := 1
+    for {
+        num := countDigits(digits)
+        if num * digits >= n {
+            break
+        }
+        n -= num * digits
+        digits++
+    }
+    base := countBase(digits)
+    ans := fmt.Sprintf("%d", n / digits + base)
+    return int(ans[n % digits] - '0')
+}
+
+func countDigits(digits int) int {
+    if digits == 1 {
+        return 10
+    }
+    n := 1
+    for i := 0; i < digits - 1; i++ {
+        n *= 10
+    }
+    return n * 9
+}
+
+func countBase(digits int) int {
+    if digits == 1 {
+        return 0
+    }
+    ans := 1
+    for i := 0; i < digits - 1; i++ {
+        ans *= 10
+    }
+    return ans
 }
 ```

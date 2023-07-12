@@ -3388,3 +3388,112 @@ func equalPairs(grid [][]int) int {
     return ans
 }
 ```
+
+## [数组中出现次数超过一半的数字](https://www.nowcoder.com/practice/e8a1b01a2df14cb2b228b30ee6a92163?tpId=265&tqId=39241&rp=1&ru=/exam/oj/ta&qru=/exam/oj/ta&sourceUrl=%2Fexam%2Foj%2Fta%3FtpId%3D13&difficulty=undefined&judgeStatus=undefined&tags=&title=)
+
+A: 摩尔投票法，遍历数组，如果当前元素和候选元素相同，则计数器加1，否则减1，如果计数器为0，则将当前元素设置为候选元素。
+
+```go
+func MoreThanHalfNum_Solution( numbers []int ) int {
+    if len(numbers) == 1 {
+        return numbers[0]
+    }
+    cur := numbers[0]
+    cnt := 1
+    for i := 1; i < len(numbers); i++ {
+        if cur != numbers[i] {
+            cnt--
+            if cnt == 0 {
+                cur = numbers[i]
+                cnt = 1
+            }
+        } else {
+            cnt++
+        }
+    }
+    return cur
+}
+```
+
+## [把数组排成最小的数](https://www.nowcoder.com/practice/8fecd3f8ba334add803bf2a06af1b993?tpId=265&tags=&title=&difficulty=0&judgeStatus=0&rp=1&sourceUrl=%2Fexam%2Foj%2Fta%3FtpId%3D13)
+
+A: 首先将数组转换成字符串数组以避免大数问题，然后对字符串数组按拼接大小进行排序，最后将排序后的字符串数组拼接成一个字符串。 
+
+```go
+func PrintMinNumber( numbers []int ) string {
+    strs := make([]string, len(numbers))
+    for i := range numbers {
+        strs[i] = fmt.Sprintf("%d", numbers[i])
+    }
+    sort.Slice(strs, func(i, j int) bool {
+        s1 := strs[i] + strs[j]
+        s2 := strs[j] + strs[i]
+        return s1 < s2
+    })
+    return strings.Join(strs, "")
+}
+```
+
+## [数组中的逆序对](https://www.nowcoder.com/practice/96bd6684e04a44eb80e6a68efc0ec6c5?tpId=265&tags=&title=&difficulty=0&judgeStatus=0&rp=1&sourceUrl=%2Fexam%2Foj%2Fta%3FtpId%3D13)
+
+A: 归并排序，将数组分成两部分，分别对两部分进行排序，然后将两部分合并，合并的过程中，如果左边的元素大于右边的元素，则左边剩余的元素都大于右边的元素，因此逆序对的个数为左边剩余的元素的个数。
+
+```go
+func InversePairs(data []int) int {
+	// write code here
+	tmp := make([]int, len(data))
+	count := 0
+	mergeSort(data, tmp, 0, len(data)-1, &count)
+	return count
+}
+
+func mergeSort(data, tmp []int, start, end int, count *int) {
+	if start >= end {
+		return
+	}
+
+	mid := start + (end-start)>>1
+
+	mergeSort(data, tmp, start, mid, count)
+	mergeSort(data, tmp, mid+1, end, count)
+	merge(data, tmp, start, mid, end, count)
+}
+
+func merge(data, tmp []int, start, mid, end int, count *int) {
+	if start >= end {
+		return
+	}
+
+	i := start
+	j := mid + 1
+	k := start
+	for i <= mid && j <= end {
+		if data[i] <= data[j] {
+			tmp[k] = data[i]
+			i++
+		} else {
+			*count = *count + (mid - i + 1)
+			*count = *count % 1000000007
+			tmp[k] = data[j]
+			j++
+		}
+		k++
+	}
+
+	for i <= mid {
+		tmp[k] = data[i]
+		i++
+		k++
+	}
+
+	for j <= end {
+		tmp[k] = data[j]
+		j++
+		k++
+	}
+
+	for i = start; i <= end; i++ {
+		data[i] = tmp[i]
+	}
+}
+```

@@ -65,6 +65,81 @@ private:
  */
 ```
 
+```go
+var minH minHeap
+var maxH maxHeap
+
+func Insert(num int){
+    if minH == nil {
+        minH = minHeap{}
+        maxH = maxHeap{}
+        heap.Init(&minH)
+        heap.Init(&maxH)
+    }
+    if len(maxH) == 0 {
+        heap.Push(&maxH, num)
+        return
+    }
+    if len(maxH) < len(minH) {
+        if num > minH[0] {
+            heap.Push(&maxH, heap.Pop(&minH))
+            heap.Push(&minH, num)
+        } else {
+            heap.Push(&maxH, num)
+        }
+    } else {
+        if num < maxH[0] {
+            heap.Push(&minH, heap.Pop(&maxH))
+            heap.Push(&maxH, num)
+        } else {
+            heap.Push(&minH, num)
+        }
+    }
+}
+
+func GetMedian() float64{
+    if len(maxH) == len(minH) {
+        n1 := float64(maxH[0])
+        n2 := float64(minH[0])
+        return (n1 + n2) / float64(2)
+    } else if len(maxH) > len(minH) {
+        return float64(maxH[0])
+    } else {
+        return float64(minH[0])
+    }
+}
+
+type minHeap []int
+type maxHeap []int
+
+func (h minHeap) Len() int {return len(h)}
+func (h maxHeap) Len() int {return len(h)}
+
+func (h minHeap) Less(i, j int) bool {return h[i] < h[j]}
+func (h maxHeap) Less(i, j int) bool {return h[i] > h[j]}
+
+func (h minHeap) Swap(i, j int) {h[i], h[j] = h[j], h[i]}
+func (h maxHeap) Swap(i, j int) {h[i], h[j] = h[j], h[i]}
+
+func (h *minHeap) Pop() interface{} {
+    elem := (*h)[len(*h)-1]
+    *h = (*h)[:len(*h)-1]
+    return elem
+}
+func (h *maxHeap) Pop() interface{} {
+    elem := (*h)[len(*h)-1]
+    *h = (*h)[:len(*h)-1]
+    return elem
+}
+
+func (h *minHeap) Push(x interface{}) {
+    *h = append(*h, x.(int))
+}
+func (h *maxHeap) Push(x interface{}) {
+    *h = append(*h, x.(int))
+}
+```
+
 ## [Single-Threaded CPU](https://leetcode.com/problems/single-threaded-cpu)
 
 A: 堆排序，索引、入队时间和处理时间均存入堆（嵌套`pair`）。
