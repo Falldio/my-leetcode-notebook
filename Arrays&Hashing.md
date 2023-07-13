@@ -3497,3 +3497,68 @@ func merge(data, tmp []int, start, mid, end int, count *int) {
 	}
 }
 ```
+
+## [把字符串转换成整数(atoi)](https://www.nowcoder.com/practice/d11471c3bf2d40f38b66bb12785df47f?tpId=265&tags=&title=&difficulty=0&judgeStatus=0&rp=1&sourceUrl=%2Fexam%2Foj%2Fta%3FtpId%3D13)
+
+A: 需要注意输入的合法检验。
+
+```go
+var isValid bool
+
+func StrToInt( s string ) int {
+    if len(s) == 0 {
+        isValid = false
+        return 0
+    }
+    isNegative := false
+    start, end := 0, len(s) - 1
+    for start < len(s) && s[start] == ' ' {
+        start++
+    }
+    for end >= 0 && s[end] == ' ' {
+        end--
+    }
+    if start < end {
+        if s[start] == '-' {
+            isNegative = true
+            start++
+        } else if s[start] == '+' {
+            start++
+        }
+    }
+    if start >= end || s[start] < '0' || s[start] > '9' {
+        isValid = false
+        return 0
+    }
+    isValid = true
+    ans := transform(s, start, end)
+    if isNegative {
+        ans = ans * -1
+        if ans < (1 << 31) * -1 {
+            return (1 << 31) * -1
+        }
+    } else {
+        if ans > (1 << 31) - 1 {
+            return (1 << 31) -1
+        } else {
+            return ans
+        }
+    }
+    return ans
+}
+
+func transform(s string, start, end int) int {
+    ans := 0
+    for i := start; i <= end; i++ {
+        if s[i] < '0' || s[i] > '9' {
+            break
+        }
+        digit := int(s[i] - '0')
+        ans = ans * 10 + digit
+        if ans > (1 << 31) {
+            return 1 << 31
+        }
+    }
+    return ans
+}
+```

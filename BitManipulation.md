@@ -271,3 +271,59 @@ func minFlips(a int, b int, c int) int {
 	return res
 }
 ```
+
+## [数组中只出现一次的两个数字](https://www.nowcoder.com/practice/389fc1c3d3be4479a154f63f495abff8?tpId=265&tags=&title=&difficulty=0&judgeStatus=0&rp=1&sourceUrl=%2Fexam%2Foj%2Fta%3FtpId%3D13)
+
+A: 由于其他数字都出现两次，整个数组异或必然不为0，因此对结果进行分组，分组依据为异或结果的第一个1的位置，这样两个只出现一次的数字必然被分到不同的组中，然后对每个组进行异或即可。
+
+```go
+func FindNumsAppearOnce( nums []int ) []int {
+    xor := 0
+    for _, n := range nums {
+        xor ^= n
+    }
+    idx := findFirst1(xor)
+    n1, n2 := 0, 0
+    for _, n := range nums {
+        if (n >> idx) & 1 != 0 {
+            n1 ^= n
+        } else {
+            n2 ^= n
+        }
+    }
+    if n1 < n2 {
+        return []int{n1, n2}
+    } else {
+        return []int{n2, n1}
+    }
+}
+
+func findFirst1(xor int) int {
+    ans := 0
+    for (xor & 1) == 0 {
+        xor = xor >> 1
+        ans++
+    }
+    return ans
+}
+```
+
+## [不用加减乘除做加法](https://www.nowcoder.com/practice/59ac416b4b944300b617d4f7f111b215?tpId=265&tags=&title=&difficulty=0&judgeStatus=0&rp=1&sourceUrl=%2Fexam%2Foj%2Fta%3FtpId%3D13)
+
+A: 异或相当于不进位的加法，与相当于进位，因此可以用异或和与来模拟加法，循环直到不再有进位。
+
+```go
+func Add( num1 int ,  num2 int ) int {
+    ans, carry := 0, 0
+    for {
+        ans = num1 ^ num2
+        carry = (num1 & num2) << 1
+        num1 = ans
+        num2 = carry
+        if num2 == 0 {
+            return num1
+        }
+    }
+    return -1
+}
+```

@@ -1160,3 +1160,66 @@ func countBase(digits int) int {
     return ans
 }
 ```
+
+## [扑克牌顺子](https://www.nowcoder.com/practice/762836f4d43d43ca9deb273b3de8e1f4?tpId=265&tags=&title=&difficulty=0&judgeStatus=0&rp=1&sourceUrl=%2Fexam%2Foj%2Fta%3FtpId%3D13)
+
+A: 计算赖子和间距数量并做比较，同时如果出现对子则立刻返回。
+
+```go
+func IsContinuous( numbers []int ) bool {
+    sort.Ints(numbers)
+    zeros := 0
+    for i := 0; i < len(numbers) && numbers[i] == 0; i++ {
+        zeros++
+    }
+    gaps := 0
+    for i := zeros; i < len(numbers); i++ {
+        if i + 1 < len(numbers) {
+            if numbers[i] == numbers[i+1] {
+                return false
+            }
+            gaps += numbers[i+1] - numbers[i] - 1
+        }
+    }
+    return gaps <= zeros
+}
+```
+
+## [圆圈中最后剩下的数](https://www.nowcoder.com/practice/f78a359491e64a50bce2d89cff857eb6?tpId=265&tags=&title=&difficulty=0&judgeStatus=0&rp=1&sourceUrl=%2Fexam%2Foj%2Fta%3FtpId%3D13)
+
+A: 每次删除第m个数字，然后从下一个数字开始继续删除，此时进行重映射，将当前数字映射到0，下一个映射到1，那么p(x) = (x-k-1)%n。
+
+```go
+func LastRemaining_Solution(n int, m int) int {
+    ans := 0
+    for i := 2; i <= n; i++ {
+        ans = (ans + m) % i
+    }
+    return ans
+}
+```
+
+## [构建乘积数组](https://www.nowcoder.com/practice/94a4d381a68b47b7a8bed86f2975db46?tpId=265&tags=&title=&difficulty=0&judgeStatus=0&rp=1&sourceUrl=%2Fexam%2Foj%2Fta%3FtpId%3D13)
+
+A: 构造前缀积和后缀积，然后相乘。
+
+```go
+func multiply(A []int) []int {
+    prefix := make([]int, len(A))
+    suffix := make([]int, len(A))
+    for i := 0; i < len(A); i++ {
+        if i == 0 {
+            prefix[i] = 1
+            suffix[len(A) - i - 1] = 1
+        } else {
+            prefix[i] = prefix[i-1] * A[i-1]
+            suffix[len(A) - i - 1] = suffix[len(A) - i] * A[len(A) - i]
+        }
+    }
+    ans := make([]int, len(A))
+    for i := range ans {
+        ans[i] = prefix[i] * suffix[i]
+    }
+    return ans
+}
+```

@@ -371,13 +371,13 @@ func getLeft(nums []int, target int) int {
     left, right := 0, len(nums)-1
     border := -2 // 记录border没有被赋值的情况；这里不能赋值-1，target = num[0]时，会无法区分情况一和情况二
     for left <= right { // []闭区间
-	mid := left + ((right - left) >> 1)
-	if nums[mid] >= target { // 找到第一个等于target的位置
-	    right = mid - 1
+	    mid := left + ((right - left) >> 1)
+	    if nums[mid] >= target { // 找到第一个等于target的位置
+	        right = mid - 1
             border = right
-	} else {
-	    left =  mid + 1
-	}
+	    } else {
+	        left =  mid + 1
+	    }
     }
     return border
 }
@@ -386,16 +386,53 @@ func getRight(nums []int, target int) int {
     left, right := 0, len(nums) - 1
     border := -2
     for left <= right {
-	mid := left + ((right - left) >> 1)
-	if nums[mid] > target { 
-		right = mid - 1
-	} else { // 找到第一个大于target的位置
-	    left = mid + 1
+	    mid := left + ((right - left) >> 1)
+	    if nums[mid] > target { 
+	    	right = mid - 1
+	    } else { // 找到第一个大于target的位置
+	        left = mid + 1
             border = left
-	}
+	    }
     }
     return border
+}
+```
 
+## [数字在升序数组中出现的次数](https://www.nowcoder.com/practice/70610bf967994b22bb1c26f9ae901fa2?tpId=265&tqId=39266&rp=1&ru=/exam/oj/ta&qru=/exam/oj/ta&sourceUrl=%2Fexam%2Foj%2Fta%3FtpId%3D13&difficulty=undefined&judgeStatus=undefined&tags=&title=)
+
+A: 同上一题，两次二分查找寻找左右边界。
+
+```go
+func GetNumberOfK( nums []int ,  k int ) int {
+    if len(nums) == 0 || nums[0] > k || nums[len(nums)-1] < k {
+        return 0
+    }
+    start, end := 0, 0
+    l, r := 0, len(nums) - 1
+    for l <= r {
+        mid := l + (r - l) / 2
+        if nums[mid] < k {
+            l = mid + 1
+        } else if nums[mid] >= k {
+            r = mid - 1
+            start = r
+        }
+    }
+    l, r = 0, len(nums) - 1
+    for l <= r {
+        mid := l + (r - l) / 2
+        if nums[mid] <= k {
+            l = mid + 1
+            end = l
+        } else if nums[mid] > k {
+            r = mid - 1
+        }
+    }
+    if end - start > 1 {
+        return end - start - 1
+    } else {
+        return 0
+    }
 }
 ```
 
