@@ -411,6 +411,28 @@ public:
 };
 ```
 
+```go
+func asteroidCollision(asteroids []int) []int {
+    stk := []int{}
+    for i := 0; i < len(asteroids); i++ {
+        if len(stk) == 0 || asteroids[i] > 0 || stk[len(stk)-1] < 0 {
+            // 不可能碰撞的三种情况：
+            // 1. 栈为空
+            // 2. 当前asteroid为正，即向右飞
+            // 3. 栈顶为负，即栈顶向左飞
+            stk = append(stk, asteroids[i])
+        } else if stk[len(stk)-1] <= -asteroids[i] {
+            // 栈顶向左飞，且asteroid向右飞，且asteroid比栈顶大，栈顶被撞碎
+            if stk[len(stk)-1] < -asteroids[i] {
+                i--
+            }
+            stk = stk[:len(stk)-1]
+        } // 栈顶撞碎asteroid，不用处理
+    }
+    return stk
+}
+```
+
 ## [Online Stock Span](https://leetcode.com/problems/online-stock-span)
 
 A: 栈保存历史日期和当天结果，类似于回溯。
