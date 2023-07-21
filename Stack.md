@@ -424,6 +424,7 @@ func asteroidCollision(asteroids []int) []int {
         } else if stk[len(stk)-1] <= -asteroids[i] {
             // 栈顶向左飞，且asteroid向右飞，且asteroid比栈顶大，栈顶被撞碎
             if stk[len(stk)-1] < -asteroids[i] {
+                // i--之后，下一轮循环还是从i开始，因为i--之后i++，i还是指向当前asteroid
                 i--
             }
             stk = stk[:len(stk)-1]

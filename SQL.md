@@ -110,3 +110,17 @@ WHERE
     AND l1.num = l2.num
     AND l2.num = l3.num
 ```
+
+## [Employees Earning More Than Their Managers](https://leetcode.com/problems/employees-earning-more-than-their-managers/)
+
+A: 自连接，注意`WHERE`和`ON`的区别。`WHERE`用于过滤，`ON`用于连接条件。
+
+```sql
+SELECT
+    e.name AS Employee
+FROM
+    Employee AS e
+    JOIN Employee AS m
+ON e.managerId = m.id
+WHERE e.salary > m.salary
+```
