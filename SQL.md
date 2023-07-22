@@ -124,3 +124,18 @@ FROM
 ON e.managerId = m.id
 WHERE e.salary > m.salary
 ```
+
+## [Duplicate Emails](https://leetcode.com/problems/duplicate-emails/)
+
+A: `GROUP BY`和`HAVING`的用法。`GROUP BY`用于分组，`HAVING`用于过滤分组后的结果。
+
+```sql
+SELECT
+    Email
+FROM
+    Person
+GROUP BY
+    Email
+HAVING
+    COUNT(Email) > 1
+```
