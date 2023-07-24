@@ -139,3 +139,17 @@ GROUP BY
 HAVING
     COUNT(Email) > 1
 ```
+
+## [Customers Who Never Order](https://leetcode.com/problems/customers-who-never-order/)
+
+A: `LEFT JOIN`和`IS NULL`的用法。`LEFT JOIN`表示左连接，`IS NULL`表示为空。
+
+```sql
+SELECT
+    c.name AS Customers
+FROM
+    Customers AS c
+LEFT JOIN Orders AS o
+ON c.id = o.customerId
+WHERE o.id IS NULL
+```
