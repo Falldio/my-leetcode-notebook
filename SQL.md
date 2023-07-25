@@ -153,3 +153,48 @@ LEFT JOIN Orders AS o
 ON c.id = o.customerId
 WHERE o.id IS NULL
 ```
+
+## [Department Highest Salary](https://leetcode.com/problems/department-highest-salary/)
+
+A: 利用max函数，先找出每个部门的最高工资，然后再找出对应的员工。
+
+```sql
+SELECT
+    d.name AS Department,
+    e.name AS Employee,
+    e.salary AS Salary
+FROM
+    Employee AS e,
+    Department AS d
+WHERE e.departmentId = d.id
+    AND (e.departmentId, e.salary) in (
+        SELECT
+            departmentId,
+            max(salary) AS max
+        FROM Employee
+        GROUP BY departmentId
+    )
+```
+
+A: 利用窗口函数，先找出每个部门的最高工资，然后再找出对应的员工。`PARTITION BY`表示分组，`ORDER BY`表示排序，`DESC`表示降序，`ASC`表示升序。
+
+```sql
+SELECT
+    Department,
+    Employee,
+    Salary
+FROM (
+    SELECT
+        d.name AS Department,
+        e.name AS Employee,
+        e.salary AS Salary,
+        rank() OVER (
+            PARTITION BY e.departmentId
+            ORDER BY e.salary DESC
+        ) AS rn
+    FROM Employee AS e
+    JOIN Department AS d
+    ON e.departmentId = d.Id
+) AS tmp
+WHERE tmp.rn = 1
+```
