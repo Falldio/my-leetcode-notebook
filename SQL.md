@@ -83,7 +83,7 @@ ORDER BY
   S.score DESC;
 ```
 
-A: 窗口函数，`DENSE_RANK`表示计算密集排名，`RANK`表示计算排名。`DENSE_RANK`和`RANK`的区别是，`DENSE_RANK`不会跳过相同的分数，而`RANK`会跳过相同的分数。`DENSE_RANK`和`RANK`的区别是，`DENSE_RANK`不会跳过相同的分数，而`RANK`会跳过相同的分数。
+A: 窗口函数，`DENSE_RANK`表示计算密集排名，`RANK`表示计算排名。`DENSE_RANK`和`RANK`的区别是，`DENSE_RANK`不会跳过相同的分数，而`RANK`会跳过相同的分数。
 
 ```sql
 SELECT
@@ -197,4 +197,28 @@ FROM (
     ON e.departmentId = d.Id
 ) AS tmp
 WHERE tmp.rn = 1
+```
+
+## [Department Top Three Salaries](https://leetcode.com/problems/department-top-three-salaries/)
+
+A: 使用`DENSE_RANK`函数。
+
+```sql
+SELECT
+    Department,
+    Employee,
+    Salary
+FROM (
+    SELECT
+        e.name AS Employee,
+        e.salary AS Salary,
+        d.name AS Department,
+        dense_rank() OVER (
+            PARTITION BY d.name
+            ORDER BY e.salary DESC
+        ) AS rn
+    FROM Employee AS e, Department AS d
+    WHERE e.departmentId = d.id
+) AS t
+WHERE rn <= 3
 ```
