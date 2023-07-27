@@ -222,3 +222,13 @@ FROM (
 ) AS t
 WHERE rn <= 3
 ```
+
+## [Delete Duplicate Emails](https://leetcode.com/problems/delete-duplicate-emails/)
+
+A: `DELETE`可以和`JOIN`一起使用。
+
+```sql
+DELETE p1
+FROM Person p1, Person p2
+WHERE p1.Email = p2.Email AND p1.Id > p2.Id
+```
