@@ -232,3 +232,17 @@ DELETE p1
 FROM Person p1, Person p2
 WHERE p1.Email = p2.Email AND p1.Id > p2.Id
 ```
+
+## [Rising Temperature](https://leetcode.com/problems/rising-temperature)
+
+A: 注意MySQL中的日期函数。`DATEDIFF`表示两个日期之间的天数差，`DATE_SUB`表示日期减去一定的天数，`DATE_ADD`表示日期加上一定的天数。
+
+```sql
+SELECT
+    w1.id AS id
+FROM
+    Weather AS w1,
+    Weather AS w2
+WHERE DATEDIFF(w1.recordDate, w2.recordDate) = 1
+    AND w1.temperature > w2.temperature
+```
