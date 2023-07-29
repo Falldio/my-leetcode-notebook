@@ -246,3 +246,25 @@ FROM
 WHERE DATEDIFF(w1.recordDate, w2.recordDate) = 1
     AND w1.temperature > w2.temperature
 ```
+
+## [Trips and Users](https://leetcode.com/problems/trips-and-users/)
+
+A: 注意`ROUND`函数的用法，`ROUND`函数用于四舍五入，第二个参数表示保留几位小数。`COUNT`不统计`NULL`值。
+
+```sql
+SELECT t.request_at AS Day,
+       ROUND(
+           (COUNT(
+               IF(
+                   t.status != 'completed',
+                   TRUE,
+                   NULL
+                )
+            ) / COUNT(*)), 2
+        ) AS 'Cancellation Rate'
+FROM Trips AS t
+WHERE t.client_Id IN (Select users_Id from Users where Banned='No') 
+    AND t.driver_Id IN (Select users_Id from Users where Banned='No')
+    AND t.request_at BETWEEN '2013-10-01' AND '2013-10-03'
+GROUP by t.request_at
+```
