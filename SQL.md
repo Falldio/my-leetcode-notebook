@@ -268,3 +268,15 @@ WHERE t.client_Id IN (Select users_Id from Users where Banned='No')
     AND t.request_at BETWEEN '2013-10-01' AND '2013-10-03'
 GROUP by t.request_at
 ```
+
+## [Game Play Analysis I](https://leetcode.com/problems/game-play-analysis-i/)
+
+A: 窗口函数
+
+```sql
+SELECT DISTINCT
+    player_id,
+    MIN(event_date) OVER(PARTITION BY player_id) AS first_login
+FROM
+    Activity
+```
