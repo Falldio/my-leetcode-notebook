@@ -280,3 +280,19 @@ SELECT DISTINCT
 FROM
     Activity
 ```
+
+## [Game Play Analysis IV](https://leetcode.com/problems/game-play-analysis-iv/)
+
+A: 利用`DATE_SUB`函数在Activity表中查询是否存在连续第二天登陆的情况，统计这种玩家的个数为分子，再统计所有玩家的个数为分母。
+
+```sql
+SELECT
+  ROUND(COUNT(DISTINCT player_id) / (SELECT COUNT(DISTINCT player_id) FROM Activity), 2) AS fraction
+FROM
+  Activity
+WHERE
+  (player_id, DATE_SUB(event_date, INTERVAL 1 DAY))
+  IN (
+    SELECT player_id, MIN(event_date) AS first_login FROM Activity GROUP BY player_id
+  )
+```
