@@ -296,3 +296,16 @@ WHERE
     SELECT player_id, MIN(event_date) AS first_login FROM Activity GROUP BY player_id
   )
 ```
+
+## [Managers with at Least 5 Direct Reports](https://leetcode.com/problems/managers-with-at-least-5-direct-reports/)
+
+A: `INNER JOIN`可以简写为`JOIN`，`ON`表示连接条件，`GROUP BY`表示分组，`HAVING`表示过滤分组后的结果。
+
+```sql
+SELECT m.name
+FROM Employee as e
+INNER JOIN Employee as m
+On e.managerId=m.id
+GROUP BY e.managerId 
+HAVING count(e.id)>=5
+```
