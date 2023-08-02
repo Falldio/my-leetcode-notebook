@@ -309,3 +309,19 @@ On e.managerId=m.id
 GROUP BY e.managerId 
 HAVING count(e.id)>=5
 ```
+
+## [Employee Bonus](https://leetcode.com/problems/employee-bonus/)
+
+A: 使用左连接，确保bonus为NULL的员工也能被查询出来。
+
+```sql
+SELECT
+    name,
+    bonus
+FROM
+    Employee e
+LEFT JOIN Bonus b
+ON e.empId = b.empId
+WHERE bonus < 1000
+    OR bonus IS NULL
+```
