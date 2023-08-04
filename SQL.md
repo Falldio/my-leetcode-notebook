@@ -325,3 +325,22 @@ ON e.empId = b.empId
 WHERE bonus < 1000
     OR bonus IS NULL
 ```
+
+## [Investments in 2016](https://leetcode.com/problems/investments-in-2016/)
+
+A: 可以通过统计2015和地理位置的次数来进行过滤。
+
+```sql
+select
+    round(sum(tiv_2016), 2) as tiv_2016
+from
+    (
+        select
+            tiv_2016
+            , count(*) over (partition by tiv_2015) as tiv_2015_cnt
+            , count(*) over (partition by lat, lon) as location_cnt
+        from
+            insurance
+    ) t 
+where tiv_2015_cnt > 1 and location_cnt = 1
+```
