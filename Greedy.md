@@ -362,6 +362,56 @@ public:
 };
 ```
 
+A: Go的map不保证遍历顺序，因此用最小堆来寻找最小数。
+
+```go
+type H []int
+
+func (h H) Len() int { return len(h) }
+func (h H) Less(i, j int) bool { return h[i] < h[j] }
+func (h H) Swap(i, j int) { h[i], h[j] = h[j], h[i] }
+
+func (h *H) Push(x interface{}) {
+    *h = append(*h, x.(int))
+}
+func (h *H) Pop() interface{} {
+    old := *h
+    n := len(old)
+    x := old[n-1]
+    *h = old[:n-1]
+    return x
+}
+
+func isNStraightHand(hand []int, groupSize int) bool {
+    if len(hand) % groupSize != 0 {
+        return false
+    }
+    m := map[int]int{}
+    h := &H{}
+    heap.Init(h)
+    for i := range hand {
+        heap.Push(h, hand[i])
+        m[hand[i]]++
+    }
+    for h.Len() > 0 {
+        cur := (*h)[0]
+        if m[cur] > 0 {
+            for i := 0; i < groupSize; i++ {
+                if m[cur+i] == 0 {
+                    return false
+                } else {
+                    m[cur+i]--
+                }
+            }
+        }
+        if m[cur] == 0 {
+            heap.Pop(h)
+        }
+    }
+    return true
+}
+```
+
 ## [Merge Triplets to Form Target Triplet](https://leetcode.com/problems/merge-triplets-to-form-target-triplet)
 
 A: 跳过值大于target的三元组，在剩下三元组中选择满足单一条件的元组即可。
