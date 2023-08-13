@@ -20,6 +20,17 @@ public:
 };
 ```
 
+```go
+func hammingWeight(num uint32) int {
+    ans := 0
+    for num != 0 {
+        ans++
+        num = num & (num - 1)
+    }
+    return ans
+}
+```
+
 ## [Sort Integers by The Number of 1 Bits](https://leetcode.com/problems/sort-integers-by-the-number-of-1-bits)
 
 A: 重写sort，按照1的个数排序，如果相同则按照数字大小排序。
