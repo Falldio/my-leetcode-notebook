@@ -344,3 +344,16 @@ from
     ) t 
 where tiv_2015_cnt > 1 and location_cnt = 1
 ```
+
+## [Classes More Than 5 Students](https://leetcode.com/problems/classes-more-than-5-students/description/)
+
+A: 在HAVING中可以添加限定条件。
+
+```sql
+SELECT
+    class
+FROM
+    Courses
+GROUP BY class
+HAVING COUNT(student) >= 5
+```

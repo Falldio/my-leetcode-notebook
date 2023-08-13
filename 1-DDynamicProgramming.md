@@ -1127,6 +1127,50 @@ public:
 };
 ```
 
+A：注意两级排序，先按年龄排序，再按得分排序。
+
+```go
+type player struct {
+    score int
+    age int
+}
+
+func bestTeamScore(scores []int, ages []int) int {
+    ps := make([]player, len(scores))
+    dp := make([]int, len(scores))
+    for i := range scores {
+        ps[i] = player{score: scores[i], age: ages[i]}
+    }
+    sort.Slice(ps, func(i, j int) bool {
+        if ps[i].age == ps[j].age {
+            return ps[i].score > ps[j].score
+        } else {
+            return ps[i].age > ps[j].age
+        }
+    })
+    ans := math.MinInt
+    for i := 0; i < len(scores); i++ {
+        dp[i] = ps[i].score
+        for j := 0; j < i; j++ {
+            if ps[j].score >= ps[i].score {
+                dp[i] = max(dp[i], dp[j] + ps[i].score)
+            }
+        }
+        fmt.Println(i, dp[i])
+        ans = max(ans, dp[i])
+    }
+    return ans
+}
+
+func max(i, j int) int {
+    if i > j {
+        return i
+    } else {
+        return j
+    }
+}
+```
+
 ## [Stickers to Spell Word](https://leetcode.com/problems/stickers-to-spell-word)
 
 A: DP，积累字符直到满足target。
