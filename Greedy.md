@@ -135,6 +135,28 @@ public:
 };
 ```
 
+```go
+func maximumBags(capacity []int, rocks []int, additionalRocks int) int {
+    rest := make([]int, len(capacity))
+    for i := range capacity {
+        rest[i] = capacity[i] - rocks[i]
+    }
+    sort.Ints(rest)
+    for i := 0; i < len(rest); i++ {
+        if rest[i] == 0 {
+            continue
+        }
+        if additionalRocks < rest[i] {
+            return i
+        } else {
+            additionalRocks -= rest[i]
+        }
+        
+    }
+    return len(rest)
+}
+```
+
 ## [Remove Stones to Minimize the Total](https://leetcode.com/problems/remove-stones-to-minimize-the-total)
 
 A: 每次选择最大元素进行处理，用堆排序加快效率。
