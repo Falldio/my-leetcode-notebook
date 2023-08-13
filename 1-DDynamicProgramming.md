@@ -1505,3 +1505,29 @@ func solve(nums string) int {
 	return dp[len(nums)]
 }
 ```
+
+## [Check if There is a Valid Partition For The Array](https://leetcode.com/problems/check-if-there-is-a-valid-partition-for-the-array/description/)
+
+A: 分两种情况，先看i-1处是否满足要求，再看i-2。
+
+```go
+func validPartition(nums []int) bool {
+    dp := make([]bool, len(nums) + 1)
+    dp[0] = true
+    for i := 1; i < len(nums); i++ {
+        flag := false
+        if i - 1 >= 0 && nums[i-1] == nums[i] {
+            flag = dp[i-1] && true
+        }
+        if i - 2 >= 0 && dp[i-2] == true {
+            if (nums[i-2] == nums[i] && nums[i] == nums[i-1]) ||
+                (nums[i-2] == nums[i-1] - 1 && nums[i-1] == nums[i] - 1) {
+                    flag = true
+                }
+        }
+        dp[i+1] = flag
+    }
+    fmt.Println(dp)
+    return dp[len(nums)]
+}
+```
