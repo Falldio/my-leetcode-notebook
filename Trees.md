@@ -40,6 +40,48 @@ func inorderTraversal(root *TreeNode) []int {
 }
 ```
 
+A：Morris 遍历。
+
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func preorderTraversal(root *TreeNode) []int {
+    if root == nil {
+        return []int{}
+    }
+
+    ans := []int{}
+    cur := root
+    var mostRight *TreeNode
+    for cur != nil {
+        mostRight = cur.Left
+        if mostRight != nil {
+            for mostRight.Right != nil && mostRight.Right != cur {
+                mostRight = mostRight.Right
+            }
+            if mostRight.Right == nil {
+                mostRight.Right = cur
+                ans = append(ans, cur.Val)
+                cur = cur.Left
+                continue
+            } else {
+                mostRight.Right = nil
+            }
+        } else {
+            ans = append(ans, cur.Val)
+        }
+        cur = cur.Right
+    }
+    return ans
+}
+```
+
 ## [Binary Tree Inorder Traversal](https://leetcode.com/problems/binary-tree-inorder-traversal)
 
 A: 使用循环时需要用栈记录历史信息，注意入栈的顺序，nil标记已经遍历但是没有加入结果的节点。
@@ -75,6 +117,44 @@ func inorderTraversal(root *TreeNode) []int {
             stk = stk[:len(stk) - 1]
             ans = append(ans, cur.Val)
         }
+    }
+    return ans
+}
+```
+
+A：Morris 遍历
+
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func inorderTraversal(root *TreeNode) []int {
+    ans := []int{}
+    cur := root
+    var mostRight *TreeNode
+    for cur != nil {
+        mostRight = cur.Left
+        if mostRight != nil {
+            for mostRight.Right != nil && mostRight.Right != cur {
+                mostRight =mostRight.Right
+            }
+            if mostRight.Right == nil {
+                mostRight.Right = cur
+                cur = cur.Left
+                continue
+            } else {
+                mostRight.Right = nil
+                ans = append(ans, cur.Val)
+            }
+        } else {
+            ans = append(ans, cur.Val)
+        }
+        cur = cur.Right
     }
     return ans
 }
