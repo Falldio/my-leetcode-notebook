@@ -142,6 +142,37 @@ public:
 };
 ```
 
+```go
+func maxArea(height []int) int {
+    i, j := 0, len(height)-1
+    ans := 0
+    for i < j {
+        area := min(height[i], height[j]) * (j - i)
+        ans = max(ans, area)
+        if height[i] < height[j] {
+            i++
+        } else {
+            j--
+        }
+    }
+    return ans
+}
+
+func min(x, y int) int {
+    if x < y {
+        return x
+    }
+    return y
+}
+
+func max(x, y int) int {
+    if x > y {
+        return x
+    }
+    return y 	
+}
+```
+
 ## [Two Sum II Input Array Is Sorted](https://leetcode.com/problems/two-sum-ii-input-array-is-sorted)
 
 A: 双指针，用`sum`和`target`的大小关系判断滑动方向。
