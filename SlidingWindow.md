@@ -810,3 +810,28 @@ func isValid(r byte) bool {
     return m[r]
 }
 ```
+
+# Max Consective Ones III
+
+## [Max Consecutive Ones III](https://leetcode.com/problems/max-consecutive-ones-iii)
+
+A: 滑动窗口一直右移j，当k不够用时，左移i。这个解法妙在k不够用时，滑动窗口必然是固定长度右移，所以可以直接用j - i得到窗口长度。
+
+```go
+func longestOnes(nums []int, k int) int {
+    i, j := 0, 0
+    for j < len(nums) {
+        if nums[j] == 0 {
+            k--
+        }
+        if k < 0 {
+            if nums[i] == 0 {
+                k++
+            }
+            i++
+        }
+        j++
+    }
+    return j - i
+}
+```
