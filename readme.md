@@ -46,9 +46,7 @@
 
 18. [Bit Manipulation 位运算](https://github.com/Falldio/my-leetcode-notebook/blob/master/BitManipulation.md)
 
-19. System Design 系统设计
-
-20. SQL
+19. SQL
 
 ## TODO
 
