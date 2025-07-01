@@ -811,8 +811,6 @@ func isValid(r byte) bool {
 }
 ```
 
-# Max Consective Ones III
-
 ## [Max Consecutive Ones III](https://leetcode.com/problems/max-consecutive-ones-iii)
 
 A: 滑动窗口一直右移j，当k不够用时，左移i。这个解法妙在k不够用时，滑动窗口必然是固定长度右移，所以可以直接用j - i得到窗口长度。
@@ -833,5 +831,33 @@ func longestOnes(nums []int, k int) int {
         j++
     }
     return j - i
+}
+```
+
+## [Longest Subarray of 1's After Deleting One Element](https://leetcode.com/problems/longest-subarray-of-1s-after-deleting-one-element)
+
+A: 滑动窗口，记录0的个数，当0的个数大于1时，左移i。
+
+```go
+func longestSubarray(nums []int) int {
+    i, j := 0, 0
+    ans := 0
+    zero := 0
+    for j < len(nums) {
+        if nums[j] == 0 {
+            zero++
+        }
+        if zero > 1 {
+            if nums[i] == 0 {
+                zero--
+            }
+            i++
+        }
+        j++
+        if j - i > ans {
+            ans = j - i
+        }
+    }
+    return ans - 1
 }
 ```
