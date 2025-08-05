@@ -3790,3 +3790,34 @@ func VerifySquenceOfBST( sequence []int ) bool {
     return VerifySquenceOfBST(sequence[:leftEnd]) && VerifySquenceOfBST(sequence[leftEnd:len(sequence)-1])
 }
 ```
+
+## [Path Sum III](https://leetcode.com/problems/path-sum-iii)
+
+A: 从每个节点开始，计算路径和是否等于目标值。sumUp 表示计入当前节点，pathSum则表示从某节点开始，计算sum为target的值。
+
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+
+func pathSum(root *TreeNode, sum int) int {
+    if root == nil { return 0 }
+    return sumUp(root, 0, sum) + pathSum(root.Left, sum) + pathSum(root.Right, sum)
+}
+
+func sumUp(root *TreeNode, pre int, sum int) int {
+    if root == nil { return 0 }
+    current := pre + root.Val
+    
+    c:= 0
+    
+    if current == sum { c = 1 }
+    return c + sumUp(root.Left, current, sum) + sumUp(root.Right, current, sum)
+}
+```
+
