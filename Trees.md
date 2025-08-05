@@ -1179,6 +1179,37 @@ private:
 };
 ```
 
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+var curMax = math.MinInt
+func goodNodes(root *TreeNode) int {
+    var ans int
+    dfs(&ans, root)
+    return ans
+}
+
+func dfs(ans *int, node *TreeNode) {
+    if node == nil {
+        return
+    }
+    oldMax := curMax
+    if node.Val >= curMax {
+        curMax = node.Val
+        *ans++
+    }
+    dfs(ans, node.Left)
+    dfs(ans, node.Right)
+    curMax = oldMax
+}
+```
+
 ## [Minimum Time to Collect All Apples in a Tree](https://leetcode.com/problems/minimum-time-to-collect-all-apples-in-a-tree)
 
 A: DFS，传入前一个结点防止来回无限遍历。
