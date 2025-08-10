@@ -3232,6 +3232,85 @@ public:
 };
 ```
 
+```go
+type Item struct {
+	Val   int
+	Index int
+}
+
+type PriorityQueue []*Item
+
+func (pq PriorityQueue) Len() int {
+	return len(pq)
+}
+
+func (pq PriorityQueue) Less(i, j int) bool {
+	return pq[i].Val < pq[j].Val
+}
+
+func (pq PriorityQueue) Swap(i, j int) {
+	pq[i], pq[j] = pq[j], pq[i]
+	pq[i].Index = i
+	pq[j].Index = j
+}
+
+func (pq *PriorityQueue) Push(x interface{}) {
+	item := x.(*Item)
+	item.Index = len(*pq)
+	*pq = append(*pq, item)
+}
+
+func (pq *PriorityQueue) Pop() interface{} {
+	item := (*pq)[len(*pq)-1]
+	*pq = (*pq)[:len(*pq)-1]
+	return item
+}
+
+func (pq *PriorityQueue) Update(item Item, val int) {
+	item.Val = val
+	heap.Fix(pq, item.Index)
+}
+
+type pair struct {
+	first  int
+	second int
+}
+
+func maxScore(nums1 []int, nums2 []int, k int) int64 {
+	n := len(nums1)
+	pairsArr := make([]pair, 0)
+	for idx := 0; idx < len(nums1); idx++ {
+		pairsArr = append(pairsArr, pair{first: nums1[idx], second: nums2[idx]})
+	}
+
+	sort.Slice(pairsArr, func(i, j int) bool {
+		return pairsArr[i].second > pairsArr[j].second
+	})
+
+	minHeap := make(PriorityQueue, 0)
+	heap.Init(&minHeap)
+
+	currSum := 0
+	for idx := 0; idx < k-1; idx++ {
+		firstValue := pairsArr[idx].first
+		currSum += firstValue
+		heap.Push(&minHeap, &Item{Val: firstValue})
+	}
+
+	maxScore := int64(0)
+	for idx := k - 1; idx < n; idx++ {
+		firstValue := pairsArr[idx].first
+		secondValue := pairsArr[idx].second
+		currSum += firstValue
+		heap.Push(&minHeap, &Item{Val: firstValue})
+		maxScore = max(maxScore, int64(currSum)*int64(secondValue))
+		currSum -= ((heap.Pop(&minHeap)).(*Item)).Val
+	}
+
+	return maxScore
+}
+```
+
 ## [Shuffle an Array](https://leetcode.com/problems/shuffle-an-array)
 
 A: 随机将每个元素与其后面的元素交换。
