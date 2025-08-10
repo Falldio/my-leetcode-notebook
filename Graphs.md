@@ -657,6 +657,48 @@ public:
 };
 ```
 
+```go
+func orangesRotting(grid [][]int) int {
+    var q [][]int
+    m, n := len(grid), len(grid[0])
+    var cnt int
+    for i := 0; i < m; i++ {
+        for j := 0; j < n; j++ {
+            if grid[i][j] == 1 {
+                cnt++
+            }
+            if grid[i][j] == 2 {
+                q = append(q, []int{i, j})
+            }
+        }
+    }
+    if cnt == 0 {
+        return 0
+    }
+    var time int
+    for len(q) > 0 {
+        for _, o := range q {
+            x, y := o[0], o[1]
+            q = q[1:]
+            for _, dir := range [][]int{{0, 1}, {0, -1}, {1, 0}, {-1, 0}} {
+                nextX, nextY := x + dir[0], y + dir[1]
+                if nextX < 0 || nextX >= m || nextY < 0 || nextY >= n || grid[nextX][nextY] != 1 {
+                    continue
+                }
+                grid[nextX][nextY] = 2
+                cnt--
+                q = append(q, []int{nextX, nextY})
+            }
+        }
+        time++
+    }
+    if cnt == 0 {
+        return time - 1
+    }
+    return -1
+}
+```
+
 ## [Walls And Gates](https://www.lintcode.com/problem/663)
 
 A: 从门开始执行BFS，更新最短距离。
