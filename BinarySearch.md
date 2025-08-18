@@ -4,7 +4,7 @@
 
 ## [Search In Rotated Sorted Array](https://leetcode.com/problems/search-in-rotated-sorted-array)
 
-A: 判断mid在旋转数组的哪一个顺序部分，利用左右边界的大小判断比较窗口边界。
+A: 比起常规的顺序数组二分查找多了以此判断：判断mid在旋转数组的哪一个顺序部分，以把二分的检索范围缩小到有序的子数组。
 
 ```cpp
 class Solution {
@@ -40,6 +40,32 @@ public:
         return -1;
     }
 };
+```
+
+```go
+func search(nums []int, target int) int {
+    left, right := 0, len(nums)
+    for left < right {
+        mid := left + (right - left) / 2
+        if nums[mid] == target {
+            return mid
+        }
+        if nums[left] <= nums[mid] {
+            if nums[left] <= target && target <= nums[mid] {
+                right = mid
+            } else {
+                left = mid + 1
+            }
+        } else {
+            if nums[mid] <= target && target <= nums[right-1] {
+                left = mid + 1
+            } else {
+                right = mid
+            }
+        }
+    }
+    return -1
+}
 ```
 
 ## [Find Minimum In Rotated Sorted Array](https://leetcode.com/problems/find-minimum-in-rotated-sorted-array)
