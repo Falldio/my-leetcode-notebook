@@ -126,6 +126,40 @@ public:
 };
 ```
 
+```go
+var N int
+var ans []string
+func generateParenthesis(n int) []string {
+    N = n
+    ans = []string{}
+    cur := []byte{}
+    dfs(0, 0, cur)
+    return ans
+}
+
+func dfs(left, right int, cur []byte) {
+    if left > N || right > N {
+        return
+    }
+    if left == N && right == N {
+        ans = append(ans, string(cur))
+        return
+    }
+    if right == left {
+        cur = append(cur, '(')
+        dfs(left + 1, right, cur)
+        cur = cur[:len(cur)-1]
+    } else {
+        cur = append(cur, '(')
+        dfs(left + 1, right, cur)
+        cur = cur[:len(cur)-1]
+        cur = append(cur, ')')
+        dfs(left, right + 1, cur)
+        cur = cur[:len(cur)-1]
+    }
+}
+```
+
 ## [Unique Paths III](https://leetcode.com/problems/unique-paths-iii)
 
 A: 可优化：用`grid`存储是否访问的状态。
