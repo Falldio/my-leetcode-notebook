@@ -103,6 +103,36 @@ private:
 };
 ```
 
+```go
+func exist(board [][]byte, word string) bool {
+    m, n := len(board), len(board[0])
+    for i := range board {
+        for j := range board[i] {
+            if dfs(board, i, j, m, n, 0, word) {
+                return true
+            }
+        }
+    }
+    return false
+}
+
+func dfs(board [][]byte, i, j, m, n, cur int, word string) bool {
+    if cur == len(word) {
+        return true
+    }
+    if i < 0 || i >= m || j < 0 || j >= n || board[i][j] == '!' || word[cur] != board[i][j] {
+        return false
+    }
+    board[i][j] = '!'
+    if dfs(board, i - 1, j, m, n, cur + 1, word) {return true}
+    if dfs(board, i + 1, j, m, n, cur + 1, word) {return true}
+    if dfs(board, i, j - 1, m, n, cur + 1, word) {return true}
+    if dfs(board, i, j + 1, m, n, cur + 1, word) {return true}
+    board[i][j] = word[cur]
+    return false
+}
+```
+
 ## [Generate Parentheses](https://leetcode.com/problems/generate-parentheses)
 
 A: 标记当前左右括号数目。
