@@ -98,6 +98,22 @@ public:
 };
 ```
 
+```go
+func findMin(nums []int) int {
+	left, right := 0, len(nums)-1
+	for left < right {
+		mid := (left + right) / 2
+		if nums[mid] > nums[right] {
+			left = mid + 1
+		} else {
+			right = mid
+		}
+	}
+
+	return nums[left]
+}
+```
+
 ## [旋转数组的最小数字](https://www.nowcoder.com/practice/9f3231a991af4f55b95579b44b7a01ba?tpId=265&tags=&title=&difficulty=0&judgeStatus=0&rp=1&sourceUrl=%2Fexam%2Foj%2Fta%3Fpage%3D1%26tpId%3D13%26type%3D265)
 
 A: 注意此题与上一题的区别，旋转数组中可能存在重复元素，因此需要考虑`nums[l] == nums[r]`的情况。
