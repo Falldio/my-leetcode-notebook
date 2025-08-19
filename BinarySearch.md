@@ -197,6 +197,26 @@ public:
 };
 ```
 
+```go
+func searchMatrix(matrix [][]int, target int) bool {
+    left, right := 0, len(matrix[0]) * len(matrix)
+    for left < right {
+        mid := left + (right - left) / 2
+        row := mid  / len(matrix[0])
+        col := mid % len(matrix[0])
+        cur := matrix[row][col]
+        if target == cur {
+            return true
+        } else if target < cur {
+            right = mid
+        } else {
+            left = mid + 1
+        }
+    }
+    return false
+}
+```
+
 ## [Koko Eating Bananas](https://leetcode.com/problems/koko-eating-bananas)
 
 A: 搜索范围为速度：`[1, max(piles)]`或`[1, 10^9]`（根据限制条件），找到满足条件的最小速度。
