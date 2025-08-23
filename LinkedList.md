@@ -518,6 +518,25 @@ ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
 }
 ```
 
+```go
+func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
+    carry, dummy := 0, new(ListNode)
+    for node := dummy; l1 != nil || l2 != nil || carry > 0; node = node.Next {
+        if l1 != nil {
+            carry += l1.Val
+            l1 = l1.Next
+        }
+        if l2 != nil {
+            carry += l2.Val
+            l2 = l2.Next
+        }
+        node.Next = &ListNode{carry%10, nil}
+        carry /= 10
+    }
+    return dummy.Next
+}
+```
+
 ## [Find The Duplicate Number](https://leetcode.com/problems/find-the-duplicate-number)
 
 A: 数组元素的索引指向另一个数组元素，问题转换为寻找链表环的入口，使用[yd Cycle Detection Algorithm](https://zh.wikipedia.org/wiki/Floyd%E5%88%A4%E5%9C%88%E7%AE%97%E6%B3%95)。
@@ -588,6 +607,55 @@ public:
         }
     }        
 };
+```
+
+```go
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+func reverseKGroup(head *ListNode, k int) *ListNode {
+    dummy := &ListNode{Next: head}
+    prevGroupEnd := dummy
+
+    for {
+        kth := getKthNode(prevGroupEnd, k)
+        if kth == nil {
+            break
+        }
+
+        groupStart := prevGroupEnd.Next
+        nextGroupStart := kth.Next
+
+        // Reverse the group
+        prev := kth.Next
+        curr := groupStart
+        for curr != nextGroupStart {
+            temp := curr.Next
+            curr.Next = prev
+            prev = curr
+            curr = temp
+        }
+
+        // Reconnect to previous part
+        prevGroupEnd.Next = kth
+        prevGroupEnd = groupStart
+    }
+
+    return dummy.Next
+}
+
+// Helper to get the kth node from current position
+func getKthNode(curr *ListNode, k int) *ListNode {
+    for curr != nil && k > 0 {
+        curr = curr.Next
+        k--
+    }
+    return curr
+}
 ```
 
 ## [Swap Nodes In Pairs](https://leetcode.com/problems/swap-nodes-in-pairs)
