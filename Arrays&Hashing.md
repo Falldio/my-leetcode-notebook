@@ -403,6 +403,22 @@ public:
 };
 ```
 
+```go
+func maxProduct(nums []int) int {
+    minProduct, maxProduct, res := nums[0], nums[0], nums[0]
+
+    for i := 1; i < len(nums); i++ {
+        num := nums[i]
+        tempMax := max(num, max(num*maxProduct, num*minProduct))
+        minProduct = min(num, min(num*maxProduct, num*minProduct))
+        maxProduct = tempMax
+        res = max(res, maxProduct)
+    }
+
+    return res
+}
+```
+
 ## [Valid Sudoku](https://leetcode.com/problems/valid-sudoku)
 
 A: 用三个矩阵分别存储行、列和子区域的数字状态。
