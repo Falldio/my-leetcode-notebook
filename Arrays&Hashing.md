@@ -397,6 +397,38 @@ public:
 };
 ```
 
+```go
+func longestConsecutive(nums []int) int {
+	if len(nums) == 0 {
+		return 0
+	}
+
+	numSet := make(map[int]bool)
+	for _, num := range nums {
+		numSet[num] = true
+	}
+
+	maxSubSeq := 0
+	for num := range numSet {
+        if !numSet[num-1] {
+            currentNum := num
+			length := 1 // count length of subsequence
+
+			for numSet[currentNum+1] {
+                currentNum++
+				length++
+			}
+
+			if length > maxSubSeq {
+				maxSubSeq = length
+			}
+		}
+	}
+
+	return maxSubSeq
+}
+```
+
 ## [Maximum Product Subarray](https://leetcode.com/problems/maximum-product-subarray)
 
 A: 维护当前两个最值，最小值应对负值乘积。
