@@ -654,6 +654,32 @@ public:
 };
 ```
 
+```go
+func sortColors(nums []int)  {
+    zeros, ones := 0, 0
+    n := len(nums)
+    for _, num := range nums {
+        if num == 0 {
+            zeros++
+        } else if num == 1 {
+            ones++
+        }
+    }
+
+    for i := 0; i < zeros; i++ {
+        nums[i] = 0
+    }
+
+    for i := zeros; i < zeros+ones; i++ {
+        nums[i] = 1
+    }
+
+    for i := zeros + ones; i < n; i++ {
+        nums[i] = 2
+    }
+}
+```
+
 ## [Maximum Sum Circular Subarray](https://leetcode.com/problems/maximum-sum-circular-subarray)
 
 A: [Maximum Subarray](https://leetcode.com/problems/maximum-subarray)的延伸，考虑目标子数组分布在原数组两端的特殊情况。
