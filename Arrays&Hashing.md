@@ -1995,6 +1995,23 @@ public:
 };
 ```
 
+```go
+func majorityElement(nums []int) int {
+    vote, ans := 0, 0
+    for _, n := range nums {
+        if vote == 0 {
+            ans = n
+        }
+        if ans == n {
+            vote++
+        } else {
+            vote--
+        }
+    }
+    return ans
+}
+```
+
 ## [Next Greater Element I](https://leetcode.com/problems/next-greater-element-i)
 
 A: map保存nums2中每个元素的下一个更大元素，stack保存nums2中的元素，如果当前元素大于栈顶元素，则栈顶元素的下一个更大元素就是当前元素。
