@@ -863,6 +863,22 @@ public:
 };
 ```
 
+```go
+func subarraySum(nums []int, k int) int {
+    prefix := map[int]int{0: 1}
+    var sum int
+    var count int
+
+    for _, num := range nums {
+        sum += num
+        count += prefix[sum-k]
+        prefix[sum]++
+    }
+    
+    return count
+}
+```
+
 ## [Unique Length-3 Palindromic Subsequences](https://leetcode.com/problems/unique-length-3-palindromic-subsequences)
 
 A: 记录首次和末次出现某字母的位置，计算两者之间的字母种数即可得到这个字母为首尾组成的三位回文个数。
