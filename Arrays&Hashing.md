@@ -1665,6 +1665,27 @@ public:
 };
 ```
 
+A: 把nums[i]放到nums[nums[i]-1]的位置上，即nums[i]应该在的位置上。
+
+```go
+func firstMissingPositive(nums []int) int {
+	nlen := len(nums)
+	for i := 0; i < nlen; i++ {
+		if nums[i] >= 1 && nums[i] <= nlen && nums[i] != nums[nums[i]-1] {
+			nums[i], nums[nums[i]-1] = nums[nums[i]-1], nums[i]
+			i-- // keep the same index
+		}
+	}
+
+	for i := 0; i < nlen; i++ {
+		if nums[i] != i+1 {
+			return i + 1
+		}
+	}
+	return nlen + 1
+}
+```
+
 ## [Length of Last Word](https://leetcode.com/problems/length-of-last-word)
 
 A: 从后往前遍历，先找到最后一个非空格字符，然后再找到第一个空格字符。
@@ -2895,7 +2916,7 @@ func nextPermutation(nums []int)  {
         for j:=len(nums)-1;j>i;j--{
             if nums[j]>nums[i]{
                 nums[j], nums[i] = nums[i], nums[j]
-                reverse(nums,0+i+1,len(nums)-1)
+                reverse(nums,i+1,len(nums)-1)
                 return 
             }
         }

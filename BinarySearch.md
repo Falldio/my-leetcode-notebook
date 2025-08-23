@@ -233,6 +233,26 @@ func searchMatrix(matrix [][]int, target int) bool {
 }
 ```
 
+## [Search a 2D Matrix II](https://leetcode.com/problems/search-a-2d-matrix-ii)
+
+A: 从右上角开始搜索，若当前元素大于target，则向左移动，否则向下移动。
+
+```go
+func searchMatrix(matrix [][]int, target int) bool {
+    row, col := 0, len(matrix[0]) - 1
+    for row < len(matrix) && col >= 0 {
+        if matrix[row][col] == target {
+            return true
+        } else if matrix[row][col] > target {
+            col --
+        } else {
+            row ++
+        }
+    }
+    return false
+}
+```
+
 ## [Koko Eating Bananas](https://leetcode.com/problems/koko-eating-bananas)
 
 A: 搜索范围为速度：`[1, max(piles)]`或`[1, 10^9]`（根据限制条件），找到满足条件的最小速度。
