@@ -33,6 +33,33 @@ private:
 };
 ```
 
+```go
+func numIslands(grid [][]byte) int {
+    var ans int
+    m, n := len(grid), len(grid[0])
+    for i := 0; i < m; i++ {
+        for j := 0; j < n; j++ {
+            if grid[i][j] == '1' {
+                ans++
+                dfs(grid, i, j, m, n)
+            }
+        }
+    }
+    return ans
+}
+
+func dfs(grid [][]byte, i, j, m, n int) {
+    if i < 0 || i >= m || j < 0 || j >= n || grid[i][j] != '1' {
+        return
+    }
+    grid[i][j] = 'v'
+    dfs(grid, i - 1, j, m, n)
+    dfs(grid, i, j - 1, m, n)
+    dfs(grid, i + 1, j, m, n)
+    dfs(grid, i, j + 1, m, n)
+}
+```
+
 ## [Clone Graph](https://leetcode.com/problems/clone-graph)
 
 A: DFS，哈希表存放结点状态。
