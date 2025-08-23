@@ -204,6 +204,61 @@ public:
 };
 ```
 
+```go
+func setZeroes(matrix [][]int) {
+    m := len(matrix)
+    if m == 0 {
+        return
+    }
+    n := len(matrix[0])
+    first_row_zero, first_col_zero := false, false
+    for j := 0; j < n; j++ {
+        if matrix[0][j] == 0 {
+            first_row_zero = true
+            break
+        }
+    }
+    for i := 0; i < m; i++ {
+        if matrix[i][0] == 0 {
+            first_col_zero = true
+            break
+        }
+    }
+    for i := 1; i < m; i++ {
+        for j := 1; j < n; j++ {
+            if matrix[i][j] == 0 {
+                matrix[i][0] = 0
+                matrix[0][j] = 0
+            }
+        }
+    }
+    for i := 1; i < m; i++ {
+        if matrix[i][0] == 0 {
+            for j := 1; j < n; j++ {
+                matrix[i][j] = 0
+            }
+        }
+    }
+    for j := 1; j < n; j++ {
+        if matrix[0][j] == 0 {
+            for i := 1; i < m; i++ {
+                matrix[i][j] = 0
+            }
+        }
+    }
+    if first_row_zero {
+        for j := 0; j < n; j++ {
+            matrix[0][j] = 0
+        }
+    }
+    if first_col_zero {
+        for i := 0; i < m; i++ {
+            matrix[i][0] = 0
+        }
+    }
+}
+```
+
 ## [Minimum Rounds to Complete All Tasks](https://leetcode.com/problems/minimum-rounds-to-complete-all-tasks)
 
 A: 完成任务轮数和任务数目之前存在函数关系，直接计算。
