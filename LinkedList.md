@@ -588,6 +588,30 @@ public:
 };
 ```
 
+```go
+func findDuplicate(nums []int) int {
+    slow := nums[0]
+    fast := nums[0]
+    
+    for {
+        slow = nums[slow]
+        fast = nums[nums[fast]]
+        
+        if slow == fast {
+            break
+        }
+    }
+    
+    slow = nums[0]
+    for slow != fast {
+        slow = nums[slow]
+        fast = nums[fast]
+    }
+    
+    return slow
+}
+```
+
 ## [Reverse Nodes In K Group](https://leetcode.com/problems/reverse-nodes-in-k-group)
 
 ```cpp
