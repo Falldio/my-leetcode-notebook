@@ -165,6 +165,26 @@ vector<vector<string>> groupAnagrams(vector<string>& strs) {
 }
 ```
 
+```go
+func groupAnagrams(strs []string) [][]string {
+    var ans [][]string
+    visited := make(map[string][]string)
+    for _, s := range strs {
+        bts := []byte(s)
+        sort.Slice(bts, func(i, j int) bool { return bts[i] < bts[j] })
+        key := string(bts)
+        if _, ok := visited[key]; !ok {
+            visited[key] = []string{}
+        }
+        visited[key] = append(visited[key], s)
+    }
+    for _, v := range visited {
+        ans = append(ans, v)
+    }
+    return ans
+}
+```
+
 ## [Top K Frequent Elements](https://leetcode.com/problems/top-k-frequent-elements)
 
 A: 哈希表统计频次，堆排序。
