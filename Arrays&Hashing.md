@@ -1654,6 +1654,31 @@ public:
 };
 ```
 
+```go
+func generate(numRows int) [][]int {
+    if numRows == 1 {
+        return [][]int{{1}}
+    }
+    if numRows == 2 {
+        return [][]int{{1}, {1,1}}
+    }
+    ans := [][]int{{1}, {1, 1}}
+    pre := []int{1, 1}
+    for row := 3; row <= numRows; row++ {
+        cur := make([]int, row)
+        cur[0], cur[row-1] = 1, 1
+        for i := 1; i < row - 1; i++ {
+            cur[i] = pre[i-1] + pre[i]
+        }
+        tmp := make([]int, row)
+        copy(tmp, cur)
+        ans = append(ans, tmp)
+        pre = cur
+    }
+    return ans
+}
+```
+
 ## [Remove Element](https://leetcode.com/problems/remove-element)
 
 A: 双指针，j指向当前不等于val的位置，i遍历数组，如果nums\[i]不等于val，则将nums\[i]赋值给nums\[j]，然后j++。
