@@ -2952,25 +2952,21 @@ func isLongPressedName(name string, typed string) bool {
 ## [Next Permutation](https://leetcode.com/problems/next-permutation)
 
 A: 从后往前遍历，找到第一组顺序元素，然后将这两个元素交换，然后将后面的逆序元素反转。
+我们需要将一个左边的「较小数」与一个右边的「较大数」交换，以能够让当前排列变大，从而得到下一个排列。
+同时我们要让这个「较小数」尽量靠右，而「较大数」尽可能小。当交换完成后，「较大数」右边的数需要按照升序重新排列。这样可以在保证新排列大于原来排列的情况下，使变大的幅度尽可能小。
 
 ```go
 func nextPermutation(nums []int)  {
-    for i:=len(nums)-1;i>=0;i--{
-        for j:=len(nums)-1;j>i;j--{
-            if nums[j]>nums[i]{
-                nums[j], nums[i] = nums[i], nums[j]
-                reverse(nums,i+1,len(nums)-1)
-                return 
+    for i := len(nums) - 1; i >= 0; i-- {
+        for j := len(nums)-1; j > i; j-- {
+            if nums[j] > nums[i] {
+                nums[i], nums[j] = nums[j], nums[i]
+                sort.Ints(nums[i+1:])
+                return
             }
         }
     }
-    reverse(nums,0,len(nums)-1)
-}
-
-func reverse(a []int,begin,end int){
-    for i,j:=begin,end;i<j;i,j=i+1,j-1{
-        a[i],a[j]=a[j],a[i]
-    }
+    sort.Ints(nums)
 }
 ```
 
