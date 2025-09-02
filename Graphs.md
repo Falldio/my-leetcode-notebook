@@ -2827,3 +2827,66 @@ func find(i int) int {
     return i
 }
 ```
+
+## [Tree Diameter](https://leetcode.com/problems/tree-diameter/)
+
+A: 在树结构中，最长路径（直径）的两个端点具有一个关键性质：​**​从任意节点出发，距离最远的点必然是直径的一个端点​**​。
+
+```go
+package main
+
+func treeDiameter(edges [][]int, weight []int) int {
+    n := len(edges) + 1
+    if n == 0 {
+        return 0
+    }
+
+    // 构建邻接表
+    graph := make([][][2]int, n)
+    for i, e := range edges {
+        u, v := e[0], e[1]
+        w := weight[i]
+        graph[u] = append(graph[u], [2]int{v, w})
+        graph[v] = append(graph[v], [2]int{u, w})
+    }
+
+    // 第一次BFS：从节点0出发，找到最远节点A
+    startNode := 0
+    _, nodeA := bfs(graph, startNode)
+
+    // 第二次BFS：从节点A出发，找到最远距离（直径）
+    diameter, _ := bfs(graph, nodeA)
+    return diameter
+}
+
+// BFS搜索最远节点和距离
+func bfs(graph [][][2]int, start int) (int, int) {
+    n := len(graph)
+    dist := make([]int, n)
+    for i := range dist {
+        dist[i] = -1 // 初始化为-1，表示未访问
+    }
+
+    queue := []int{start}
+    dist[start] = 0
+    maxDist := 0
+    maxNode := start
+
+    for len(queue) > 0 {
+        u := queue[0]
+        queue = queue[1:]
+        if dist[u] > maxDist {
+            maxDist = dist[u]
+            maxNode = u
+        }
+        for _, edge := range graph[u] {
+            v, w := edge[0], edge[1]
+            if dist[v] == -1 { // 未访问过
+                dist[v] = dist[u] + w
+                queue = append(queue, v)
+            }
+        }
+    }
+    return maxDist, maxNode
+}
+```
