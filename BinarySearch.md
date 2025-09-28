@@ -1050,3 +1050,47 @@ public:
     }
 };
 ```
+
+## [三角形的最大周长](https://leetcode.cn/problems/largest-perimeter-triangle)
+
+A: 排序后，从大到小遍历，判断是否能构成三角形。固定前两条边，第三条边转换为找右边界的二分查找问题
+
+```go
+func largestPerimeter(nums []int) int {
+    sort.Ints(nums)
+    for i := len(nums) - 1; i >= 2; i-- {
+        a := nums[i]
+        if i < len(nums) - 1 && nums[i] == nums[i + 1] {
+            continue
+        }
+        for j := i - 1; j >= 1; j-- {
+            b := nums[j]
+            if j < i - 1 && nums[j] == nums[j + 1] {
+                continue
+            }
+            l, r := 0, j - 1
+            if nums[r] <= abs(a - b) {
+                continue
+            }
+            for l <= r {
+                mid := l + (r - l) >> 1
+                cur := nums[mid]
+                if cur >= a + b  {
+                    r = mid
+                } else {
+                    l = mid + 1
+                }
+            }
+            return a + b + nums[r]
+        }
+    }
+    return 0
+}
+
+func abs(x int) int {
+    if x < 0 {
+        return -x
+    }
+    return x
+}
+```
