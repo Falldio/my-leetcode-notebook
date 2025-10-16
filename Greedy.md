@@ -1007,3 +1007,23 @@ func kidsWithCandies(candies []int, extraCandies int) []bool {
     return ans
 }
 ```
+
+## [执行操作后的最大MEX](https://leetcode.cn/problems/smallest-missing-non-negative-integer-after-operations/description/?envType=daily-question&envId=2025-10-16)
+
+A: 一个整数 x 经过若干次操作后可以变成的数字都是相同的，即对 value 取余的结果。故可先按余数分组，从mex = 0开始遍历，依次使用余数操作，递增mex。
+
+```go
+func findSmallestInteger(nums []int, value int) int {
+    mp := make([]int, value)
+    for _, x := range nums {
+        v := ((x % value) + value) % value
+        mp[v]++
+    }
+    mex := 0
+    for mp[mex % value] > 0 {
+        mp[mex % value]--
+        mex++
+    }
+    return mex
+}
+```
